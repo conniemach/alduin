@@ -1,17 +1,22 @@
-import { Icon, type IconName } from "@alduin/design-system";
+import {
+  Icon,
+  type IconName,
+  CheckDrawIcon,
+  ChartDrawIcon,
+  AccountPulseIcon,
+  EarthSpinIcon,
+} from "@alduin/design-system";
 import { DocPage } from "@/components/DocPage";
 import { PreviewCard } from "@/components/PreviewCard";
 import { DeveloperSection } from "@/components/DeveloperSection";
 import { CodeBlock } from "@/components/CodeBlock";
 
 const names: IconName[] = [
-  "cable",
   "check",
   "close",
   "chart",
   "account",
   "earth",
-  "government",
   "paint",
   "arrow-up-right",
   "arrow-left",
@@ -19,23 +24,43 @@ const names: IconName[] = [
   "menu",
 ];
 
+// A few icons have a bespoke hover-animated variant (see AnimatedIcons.tsx).
+// The grid below renders those in place of the plain Icon so the full set
+// stays interactive without a separate demo section.
+const animatedByName: Partial<Record<IconName, typeof CheckDrawIcon>> = {
+  check: CheckDrawIcon,
+  chart: ChartDrawIcon,
+  account: AccountPulseIcon,
+  earth: EarthSpinIcon,
+};
+
 export default function IconsPage() {
   return (
     <DocPage
       kicker="Component"
       title="Icons"
-      description="The full icon set, exported directly from Figma's vector paths. Every icon takes its color from the surrounding text — set text-neutral-500 or any other color class and the icon follows."
+      description="The full icon set, exported directly from Figma's vector paths. Every icon takes its color from the surrounding text — set text-neutral-500 or any other color class and the icon follows. A few (check, chart, account, earth) animate on hover — try it."
       preview={
         <PreviewCard align="stretch">
           <div className="grid w-full grid-cols-3 gap-6 sm:grid-cols-6">
-            {names.map((name) => (
-              <div key={name} className="flex flex-col items-center gap-2">
-                <Icon name={name} className="size-6 text-white" />
-                <span className="font-sans text-[12px] text-neutral-500">
-                  {name}
-                </span>
-              </div>
-            ))}
+            {names.map((name) => {
+              const AnimIcon = animatedByName[name];
+              return (
+                <div
+                  key={name}
+                  className="flex flex-col items-center gap-2"
+                >
+                  {AnimIcon ? (
+                    <AnimIcon className="size-6 text-white" />
+                  ) : (
+                    <Icon name={name} className="size-6 text-white" />
+                  )}
+                  <span className="font-sans text-[12px] text-neutral-500">
+                    {name}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </PreviewCard>
       }

@@ -11,13 +11,11 @@ export default meta;
 type Story = StoryObj<typeof Icon>;
 
 const names: IconName[] = [
-  "cable",
   "check",
   "close",
   "chart",
   "account",
   "earth",
-  "government",
   "paint",
   "arrow-up-right",
   "arrow-left",

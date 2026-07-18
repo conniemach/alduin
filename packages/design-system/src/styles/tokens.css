@@ -30,4 +30,7 @@
   --font-condensed: "IBM Plex Sans Condensed", ui-sans-serif, sans-serif;
   --font-sans: "42dot Sans", ui-sans-serif, system-ui, sans-serif;
   --font-logotype: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  /* Wordmark font confirmed from alduin.org's live header (computed
+     styles: Space Grotesk, 700, uppercase, 0.16em tracking). */
+  --font-wordmark: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }

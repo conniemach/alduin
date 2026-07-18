@@ -13,6 +13,7 @@ export const fontFamily = {
   condensed: ["IBM Plex Sans Condensed", "ui-sans-serif", "sans-serif"],
   sans: ["42dot Sans", "ui-sans-serif", "system-ui", "sans-serif"],
   logotype: ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
+  wordmark: ["Space Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
 } as const;
 
 export const textStyles = {

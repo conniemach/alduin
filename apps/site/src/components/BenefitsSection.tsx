@@ -1,26 +1,36 @@
-import { Icon, type IconName } from "@alduin/design-system";
+import { type SVGAttributes } from "react";
+import {
+  CheckDrawIcon,
+  ChartDrawIcon,
+  AccountPulseIcon,
+  EarthSpinIcon,
+} from "@alduin/design-system";
 
-const benefits: { icon: IconName; label: string; description: string }[] = [
+const benefits: {
+  Icon: (props: SVGAttributes<SVGSVGElement>) => React.JSX.Element;
+  label: string;
+  description: string;
+}[] = [
   {
-    icon: "check",
+    Icon: CheckDrawIcon,
     label: "PREDICT",
     description:
       "Model tsunamis, eruptions, and hurricanes — then auto-generate impact projections across infrastructure, populations, and critical assets.",
   },
   {
-    icon: "chart",
+    Icon: ChartDrawIcon,
     label: "TRACK",
     description:
       "Full incident lifecycle visibility, from escalation to resolution, with ownership, updates, and a timeline built for review.",
   },
   {
-    icon: "account",
+    Icon: AccountPulseIcon,
     label: "RESPOND",
     description:
       "Coordinate response and SAR planning with shared context, decision logs, and clear task routing to the field.",
   },
   {
-    icon: "earth",
+    Icon: EarthSpinIcon,
     label: "COMMAND",
     description:
       "Structured briefings and posture tracking that keep every stakeholder aligned on one operational picture.",
@@ -46,7 +56,7 @@ export function BenefitsSection() {
       <div className="grid grid-cols-4 gap-5">
         {benefits.map((b) => (
           <div key={b.label} className="flex flex-col gap-5 pb-10 pt-10 pr-5">
-            <Icon name={b.icon} className="size-6 text-white" />
+            <b.Icon className="size-6 text-white" />
             <div className="flex flex-col gap-5">
               <p className="font-mono text-[18px] leading-[21.6px] tracking-[-0.54px] text-white">
                 {b.label}

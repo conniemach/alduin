@@ -11,4 +11,5 @@ export * from "./components/ProductFeatures";
 export * from "./components/Features";
 export * from "./components/Logo";
 export * from "./components/icons/Icon";
+export * from "./components/icons/AnimatedIcons";
 export * from "./tokens";

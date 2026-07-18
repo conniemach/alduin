@@ -13,12 +13,14 @@
     },
     "./styles.css": "./dist/styles.css",
     "./tokens.css": "./src/styles/tokens.css",
-    "./fonts.css": "./src/styles/fonts.css"
+    "./fonts.css": "./src/styles/fonts.css",
+    "./icon-motion.css": "./src/styles/icon-motion.css"
   },
   "files": [
     "dist",
     "src/styles/tokens.css",
-    "src/styles/fonts.css"
+    "src/styles/fonts.css",
+    "src/styles/icon-motion.css"
   ],
   "scripts": {
     "dev": "tsup --watch",
