@@ -10,6 +10,10 @@ import { Tab } from "./Tab";
  * Desktop shows headline and eyebrow/description as two side-by-side
  * columns (1140px content, 546/546 split); that collapses to a single
  * column on narrower viewports.
+ * Layout rules: the tab bar is horizontally centered over the content
+ * below it (not left-aligned), and the component always fills the full
+ * width it's given — it never imposes its own max-width or side margins,
+ * so it runs edge-to-edge up to whatever page padding the parent applies.
  */
 export interface ProductFeatureItem {
   id: string;
@@ -41,8 +45,8 @@ export function ProductFeatures({
   if (!active) return null;
 
   return (
-    <div className={clsx("flex flex-col gap-12 pb-20 pt-10", className)}>
-      <div className="inline-flex w-fit items-center gap-3 rounded-full bg-neutral-850 px-4 py-2">
+    <div className={clsx("flex w-full flex-col gap-12 pb-20 pt-10", className)}>
+      <div className="inline-flex w-fit items-center gap-3 self-center rounded-full bg-neutral-850 px-4 py-2">
         {items.map((item) => (
           <Tab
             key={item.id}

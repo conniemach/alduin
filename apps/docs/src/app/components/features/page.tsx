@@ -38,7 +38,7 @@ export default function FeaturesPage() {
     <DocPage
       kicker="Component"
       title="Features"
-      description="A self-driving carousel for general feature highlights — it advances on its own every 5 seconds (straight from Figma's own prototype timing), and clicking a dot jumps there directly and resets the timer."
+      description="A self-driving carousel for general feature highlights — it advances on its own every 8 seconds, with the active dot filling up like a countdown as it goes. Clicking a dot jumps there directly and resets the timer."
       preview={
         <PreviewCard align="stretch">
           <Features slides={slides} />
@@ -50,8 +50,9 @@ export default function FeaturesPage() {
           Watch it
         </h2>
         <p className="mt-2 font-sans text-[15px] leading-[24px] text-neutral-700">
-          Leave the preview above alone for 5 seconds and it moves to the
-          next slide on its own. Click a dot to jump directly.
+          Leave the preview above alone for 8 seconds and it moves to the
+          next slide on its own — watch the active dot fill up as it counts
+          down. Click a dot to jump directly.
         </p>
       </div>
 

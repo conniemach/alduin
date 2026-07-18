@@ -32,5 +32,18 @@ export const motion = {
     duration: "300ms",
     easing: "ease-in-out",
   },
-  carouselInterval: 5000,
+  /**
+   * Not from Figma's prototype (its AFTER_TIMEOUT trigger just cuts
+   * instantly between slides) — added so the Features carousel crossfades
+   * instead of hard-cutting. Reuses the "Gentle" curve above for the same
+   * smooth-decel feel as the rest of the system.
+   */
+  featureCrossfade: {
+    duration: "1200ms",
+    easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+  },
+  // Widened from Figma's literal 5s AFTER_TIMEOUT — 8s reads less rushed
+  // and gives the crossfade above room to land before the next cut.
+  // The active dot's fill indicator animates over this same duration.
+  carouselInterval: 8000,
 } as const;
