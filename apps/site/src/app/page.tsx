@@ -47,8 +47,8 @@ const productItems: ProductFeatureItem[] = [
 export default function Home() {
   return (
     <main className="min-h-screen bg-neutral-900">
-      <div className="mx-auto max-w-[1280px]">
-        <GlobalNav />
+      <GlobalNav />
+      <div className="mx-auto max-w-[1280px] pt-[116px]">
         <Hero />
         <div className="flex flex-col px-[70px]">
           <BenefitsSection />
