@@ -12,11 +12,13 @@
       "import": "./dist/index.js"
     },
     "./styles.css": "./dist/styles.css",
-    "./tokens.css": "./src/styles/tokens.css"
+    "./tokens.css": "./src/styles/tokens.css",
+    "./fonts.css": "./src/styles/fonts.css"
   },
   "files": [
     "dist",
-    "src/styles/tokens.css"
+    "src/styles/tokens.css",
+    "src/styles/fonts.css"
   ],
   "scripts": {
     "dev": "tsup --watch",

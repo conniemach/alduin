@@ -1,44 +1,33 @@
 /**
- * Design tokens — the single visual source of truth.
- * Every color, radius, and font here becomes a Tailwind utility
- * (e.g. --color-brand-500 -> bg-brand-500 / text-brand-500) in both
- * this package and the site, since the site imports this file directly.
- * Keep values in sync with src/tokens/*.ts (used for JS-side consumption).
+ * Design tokens — the single visual source of truth, pulled from the
+ * "Styles" frame in Figma (Alduin Design System). Every color, radius,
+ * and font here becomes a Tailwind utility (e.g. --color-neutral-200 ->
+ * bg-neutral-200 / text-neutral-200) in both this package and the site,
+ * since the site imports this file directly.
+ * Keep values in sync with src/tokens/*.ts (used for JS-side consumption,
+ * e.g. inline styles or non-Tailwind contexts).
  */
 @theme {
-  --color-brand-50: #f2f0ff;
-  --color-brand-100: #e6e1ff;
-  --color-brand-200: #c4b8ff;
-  --color-brand-300: #a28eff;
-  --color-brand-400: #8164ff;
-  --color-brand-500: #6238ff;
-  --color-brand-600: #4f26e0;
-  --color-brand-700: #3d1cb3;
-  --color-brand-800: #2c1486;
-  --color-brand-900: #1c0c59;
-
-  --color-neutral-0: #ffffff;
-  --color-neutral-50: #f7f7f8;
-  --color-neutral-100: #eeeef0;
-  --color-neutral-200: #d9d9de;
-  --color-neutral-300: #b8b8c0;
-  --color-neutral-400: #8f8f9a;
-  --color-neutral-500: #6b6b76;
-  --color-neutral-600: #4f4f59;
-  --color-neutral-700: #3a3a42;
-  --color-neutral-800: #26262c;
-  --color-neutral-900: #141417;
-  --color-neutral-1000: #000000;
-
-  --color-success: #1ca551;
-  --color-warning: #c98a04;
-  --color-danger: #d93636;
+  /* Monochrome neutral ramp. white/black already match Tailwind's
+     built-in #fff/#000, so only the in-between stops are added here. */
+  --color-neutral-100: #e9e9e9;
+  --color-neutral-150: #dcdcdc;
+  --color-neutral-200: #d1d1d1;
+  --color-neutral-500: #6f6f6f;
+  --color-neutral-700: #393939;
+  --color-neutral-800: #282828;
+  --color-neutral-850: #272727;
+  --color-neutral-900: #1e1e1e;
 
   --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 20px;
+  --radius-md: 10px;
+  --radius-lg: 20px;
 
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, "SFMono-Regular", monospace;
+  /* "Header" in Figma specifies Damascus (a macOS-only system font);
+     Manrope is substituted so the display style renders on the web. */
+  --font-display: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+  --font-condensed: "IBM Plex Sans Condensed", ui-sans-serif, sans-serif;
+  --font-sans: "42dot Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-logotype: "DM Sans", ui-sans-serif, system-ui, sans-serif;
 }

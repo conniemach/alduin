@@ -1,0 +1,6 @@
+/**
+ * Font loading, kept separate from tokens.css: CSS requires @import
+ * rules to be the first statement in a stylesheet, so this has to be
+ * imported first in any entry file, ahead of "tailwindcss" itself.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@400&family=42dot+Sans:wght@400;700&family=DM+Sans:wght@500&display=swap");

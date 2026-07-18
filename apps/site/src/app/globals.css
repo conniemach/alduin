@@ -1,3 +1,4 @@
+@import "@alduin/design-system/fonts.css";
 @import "tailwindcss";
 @import "@alduin/design-system/tokens.css";
 
@@ -5,25 +6,10 @@
    used inside its components, so those utilities get generated here too. */
 @source "../../node_modules/@alduin/design-system";
 
-:root {
-  --background: #ffffff;
-  --foreground: var(--color-neutral-900);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--color-neutral-900);
-    --foreground: var(--color-neutral-50);
-  }
-}
-
+/* The design system is a single dark UI (no light-mode variant defined
+   in Figma), so the site background is fixed rather than theme-switched. */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--color-neutral-900);
+  color: white;
   font-family: var(--font-sans);
 }

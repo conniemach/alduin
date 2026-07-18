@@ -1,9 +1,12 @@
+/**
+ * Corner radius values observed in the Figma components.
+ * "full" covers pill buttons and carousel dots (radius >= half of height).
+ */
 export const radius = {
   none: "0px",
   sm: "4px",
-  md: "8px",
-  lg: "12px",
-  xl: "20px",
+  md: "10px",
+  lg: "20px",
   full: "9999px",
 } as const;
 
@@ -20,9 +23,4 @@ export const spacing = {
   12: "48px",
   16: "64px",
   20: "80px",
-} as const;
-
-export const fontFamily = {
-  sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
-  mono: ["ui-monospace", "SFMono-Regular", "monospace"],
 } as const;
