@@ -1,0 +1,20 @@
+@import "@alduin/design-system/fonts.css";
+@import "tailwindcss";
+@import "@alduin/design-system/tokens.css";
+
+/* Let Tailwind scan the design system's compiled output for the class
+   names used inside embedded live component previews. */
+@source "../../node_modules/@alduin/design-system";
+
+/*
+ * The docs site itself uses a light, readable "reference document"
+ * chrome (like standards.apple.com) regardless of the product being
+ * documented being dark — long-form guidance text reads better on
+ * light backgrounds. Live component previews still render on their
+ * native dark surface, inside preview cards.
+ */
+body {
+  background: #fbfbfa;
+  color: var(--color-neutral-900);
+  font-family: var(--font-sans);
+}
