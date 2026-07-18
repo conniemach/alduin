@@ -1,0 +1,29 @@
+@import "tailwindcss";
+@import "@alduin/design-system/tokens.css";
+
+/* Let Tailwind scan the design system's compiled output for class names
+   used inside its components, so those utilities get generated here too. */
+@source "../../node_modules/@alduin/design-system";
+
+:root {
+  --background: #ffffff;
+  --foreground: var(--color-neutral-900);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--color-neutral-900);
+    --foreground: var(--color-neutral-50);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}

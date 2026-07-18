@@ -1,0 +1,44 @@
+/**
+ * Design tokens — the single visual source of truth.
+ * Every color, radius, and font here becomes a Tailwind utility
+ * (e.g. --color-brand-500 -> bg-brand-500 / text-brand-500) in both
+ * this package and the site, since the site imports this file directly.
+ * Keep values in sync with src/tokens/*.ts (used for JS-side consumption).
+ */
+@theme {
+  --color-brand-50: #f2f0ff;
+  --color-brand-100: #e6e1ff;
+  --color-brand-200: #c4b8ff;
+  --color-brand-300: #a28eff;
+  --color-brand-400: #8164ff;
+  --color-brand-500: #6238ff;
+  --color-brand-600: #4f26e0;
+  --color-brand-700: #3d1cb3;
+  --color-brand-800: #2c1486;
+  --color-brand-900: #1c0c59;
+
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f7f7f8;
+  --color-neutral-100: #eeeef0;
+  --color-neutral-200: #d9d9de;
+  --color-neutral-300: #b8b8c0;
+  --color-neutral-400: #8f8f9a;
+  --color-neutral-500: #6b6b76;
+  --color-neutral-600: #4f4f59;
+  --color-neutral-700: #3a3a42;
+  --color-neutral-800: #26262c;
+  --color-neutral-900: #141417;
+  --color-neutral-1000: #000000;
+
+  --color-success: #1ca551;
+  --color-warning: #c98a04;
+  --color-danger: #d93636;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", monospace;
+}
