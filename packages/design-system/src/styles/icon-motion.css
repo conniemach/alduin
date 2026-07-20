@@ -5,6 +5,16 @@
  * than `transition`, so re-hovering always restarts it from the top —
  * that's what makes it read as "being drawn" each time rather than a
  * one-shot state change.
+ *
+ * `.icon-animate` mirrors each `:hover` rule so consumers can trigger the
+ * same entrance from JS (see the `animate` prop in AnimatedIcons.tsx),
+ * e.g. once on scroll into view. Deliberately kept as its own rule rather
+ * than folded into the `:hover` selector: JS is expected to add and then
+ * remove the class once the animation finishes, and if `:hover` shared
+ * the exact same declaration, hovering while `.icon-animate` still lingered
+ * wouldn't register as a change and wouldn't restart the animation. The
+ * earth-spin variant also drops `infinite` to a single pass — as a
+ * one-shot entrance it should draw in and stop, not spin forever.
  */
 
 @keyframes icon-stroke-draw {
@@ -34,6 +44,9 @@
 .icon-check-draw:hover path {
   animation: icon-stroke-draw 500ms ease-out;
 }
+.icon-check-draw.icon-animate path {
+  animation: icon-stroke-draw 500ms ease-out;
+}
 
 .icon-chart-draw .chart-line {
   stroke-dasharray: 100;
@@ -61,6 +74,24 @@
 .icon-chart-draw:hover .chart-dot-4 {
   animation-delay: 650ms;
 }
+.icon-chart-draw.icon-animate .chart-line {
+  animation: icon-stroke-draw 700ms ease-out;
+}
+.icon-chart-draw.icon-animate .chart-dot {
+  animation: icon-dot-pop 200ms ease-out backwards;
+}
+.icon-chart-draw.icon-animate .chart-dot-1 {
+  animation-delay: 0ms;
+}
+.icon-chart-draw.icon-animate .chart-dot-2 {
+  animation-delay: 220ms;
+}
+.icon-chart-draw.icon-animate .chart-dot-3 {
+  animation-delay: 430ms;
+}
+.icon-chart-draw.icon-animate .chart-dot-4 {
+  animation-delay: 650ms;
+}
 
 @keyframes icon-account-pulse {
   0%,
@@ -84,6 +115,15 @@
 .icon-account-pulse:hover .account-arc-lg {
   animation: icon-dot-pop 200ms ease-out 480ms backwards;
 }
+.icon-account-pulse.icon-animate .account-person {
+  animation: icon-account-pulse 320ms ease-in-out;
+}
+.icon-account-pulse.icon-animate .account-arc-sm {
+  animation: icon-dot-pop 200ms ease-out 320ms backwards;
+}
+.icon-account-pulse.icon-animate .account-arc-lg {
+  animation: icon-dot-pop 200ms ease-out 480ms backwards;
+}
 
 @keyframes icon-earth-scroll {
   from {
@@ -95,4 +135,7 @@
 }
 .icon-earth-spin:hover .earth-surface {
   animation: icon-earth-scroll 2200ms linear infinite;
+}
+.icon-earth-spin.icon-animate .earth-surface {
+  animation: icon-earth-scroll 2200ms linear 1;
 }

@@ -48,9 +48,9 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-neutral-900">
       <GlobalNav />
-      <div className="mx-auto max-w-[1280px] pt-[116px]">
+      <div className="pt-[116px]">
         <Hero />
-        <div className="flex flex-col px-[70px]">
+        <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
           <BenefitsSection />
           <ProductFeatures items={productItems} />
           <CenteredCta />

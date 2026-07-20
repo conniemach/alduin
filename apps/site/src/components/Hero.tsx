@@ -11,18 +11,20 @@ import { Button, ButtonLinkout } from "@alduin/design-system";
 export function Hero() {
   return (
     <section
-      className="relative overflow-hidden px-[70px] pb-5 pt-5"
+      className="relative px-[70px] pb-20 pt-5 min-[1441px]:px-[150px]"
       style={{
         backgroundImage:
           "linear-gradient(to bottom, #1e1e1e 2%, rgba(0, 0, 0, 0.8) 54%, #1e1e1e 95%)",
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/hero-globe.png"
-        alt=""
+      <video
+        src="/hero-globe.mov"
+        autoPlay
+        loop
+        muted
+        playsInline
         aria-hidden="true"
-        className="pointer-events-none absolute left-[20%] top-1/2 w-[106%] max-w-none -translate-y-1/2 select-none"
+        className="pointer-events-none absolute right-[1%] top-[46%] w-[46%] max-w-none -translate-y-1/2 select-none"
       />
       <div className="relative flex flex-col gap-10 py-[110px]">
         <div className="flex max-w-[632px] flex-col gap-0">

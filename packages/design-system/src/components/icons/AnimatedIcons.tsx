@@ -13,17 +13,23 @@ import { useId, type SVGAttributes } from "react";
  * styles/icon-motion.css for the actual keyframes; each icon here just
  * wires up the class names and per-part structure those keyframes target.
  * Requires icon-motion.css to be imported by the consuming app.
+ *
+ * `animate` is an escape hatch for consumers that want to trigger the same
+ * entrance programmatically (e.g. once on scroll into view) instead of, or
+ * in addition to, hover — it adds an `icon-animate` class that icon-motion.css
+ * wires up to the identical keyframes as `:hover`, kept as separate rules so
+ * hovering still replays the animation fresh even while `animate` is on.
  */
-type AnimatedIconProps = SVGAttributes<SVGSVGElement>;
+type AnimatedIconProps = SVGAttributes<SVGSVGElement> & { animate?: boolean };
 
-export function CheckDrawIcon({ className, ...props }: AnimatedIconProps) {
+export function CheckDrawIcon({ className, animate, ...props }: AnimatedIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 16 16"
       fill="none"
       aria-hidden="true"
-      className={`icon-check-draw ${className ?? ""}`}
+      className={`icon-check-draw ${animate ? "icon-animate" : ""} ${className ?? ""}`}
       {...props}
     >
       <path
@@ -45,14 +51,14 @@ const CHART_POINTS = [
   { x: 14.5, y: 3.5 },
 ];
 
-export function ChartDrawIcon({ className, ...props }: AnimatedIconProps) {
+export function ChartDrawIcon({ className, animate, ...props }: AnimatedIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 16 16"
       fill="none"
       aria-hidden="true"
-      className={`icon-chart-draw ${className ?? ""}`}
+      className={`icon-chart-draw ${animate ? "icon-animate" : ""} ${className ?? ""}`}
       {...props}
     >
       <path
@@ -78,14 +84,14 @@ export function ChartDrawIcon({ className, ...props }: AnimatedIconProps) {
   );
 }
 
-export function AccountPulseIcon({ className, ...props }: AnimatedIconProps) {
+export function AccountPulseIcon({ className, animate, ...props }: AnimatedIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 16 16"
       fill="none"
       aria-hidden="true"
-      className={`icon-account-pulse ${className ?? ""}`}
+      className={`icon-account-pulse ${animate ? "icon-animate" : ""} ${className ?? ""}`}
       {...props}
     >
       <path
@@ -144,7 +150,7 @@ function EarthContinents({ offset }: { offset: number }) {
  * the continents are stamped side by side (0 and +16, one full viewBox
  * width apart) so the loop has no visible seam.
  */
-export function EarthSpinIcon({ className, ...props }: AnimatedIconProps) {
+export function EarthSpinIcon({ className, animate, ...props }: AnimatedIconProps) {
   const clipId = useId();
   return (
     <svg
@@ -152,7 +158,7 @@ export function EarthSpinIcon({ className, ...props }: AnimatedIconProps) {
       viewBox="0 0 16 16"
       fill="none"
       aria-hidden="true"
-      className={`icon-earth-spin ${className ?? ""}`}
+      className={`icon-earth-spin ${animate ? "icon-animate" : ""} ${className ?? ""}`}
       {...props}
     >
       <defs>

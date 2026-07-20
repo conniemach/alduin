@@ -57,18 +57,16 @@ export function GlobalNav() {
           }}
         />
       ))}
-      <div className="relative mx-auto flex h-full w-full max-w-[1280px] items-center justify-between px-[70px]">
+      <div className="relative flex h-full w-full items-center justify-between px-[70px] min-[1441px]:px-[150px]">
         <LogoLockup />
         <div className="flex items-center gap-8">
-          <div className="flex items-center gap-5">
-            <ProductsMenu />
-            <a
-              href="#contact"
-              className="font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-neutral-100"
-            >
-              Contact Us
-            </a>
-          </div>
+          <ProductsMenu />
+          <a
+            href="#contact"
+            className="font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-neutral-100"
+          >
+            Contact Us
+          </a>
           <Button>Request a Demo</Button>
         </div>
       </div>

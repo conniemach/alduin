@@ -4,7 +4,7 @@ const links = ["Products", "Operations", "Contact Us"];
 
 export function Footer() {
   return (
-    <footer className="flex flex-col gap-20 px-[70px] pb-10 pt-20">
+    <footer className="flex flex-col gap-20 px-[70px] pb-10 pt-20 min-[1441px]:px-[150px]">
       <nav className="flex gap-[27px]">
         {links.map((link) => (
           <a
