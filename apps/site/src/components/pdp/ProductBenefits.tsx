@@ -42,7 +42,7 @@ export function ProductBenefits({
             42dot Sans: at equal line-heights, the mono glyphs render lower
             since more of its box is reserved above the actual ink (see
             BenefitsSection.tsx). */}
-        <p className="-mt-[3.3px] flex-1 font-mono text-[32px] leading-[38.4px] text-white">
+        <p className="-mt-[3.3px] w-[40%] flex-none font-mono text-[32px] leading-[38.4px] text-white">
           {headline}
         </p>
         <p className="flex-1 font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-white">

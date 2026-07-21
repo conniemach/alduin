@@ -17,59 +17,60 @@ import { ProductPricing } from "@/components/pdp/ProductPricing";
 const benefits: Benefit[] = [
   {
     Icon: EarthSpinIcon,
-    label: "GLOBAL TRAVELER VISIBILITY",
+    label: "UNIFIED TRAVELER VISIBILITY",
     description:
-      "Track every traveler's live location across flights, hotels, and ground transit in a single unified view.",
+      "Replaces fragmented travel logs with one coordinated view of personnel movement, hotel geolocation, and live aircraft tracking across dynamic global itineraries.",
     animationMs: 2200,
   },
   {
     Icon: ChartDrawIcon,
-    label: "PROACTIVE RISK SCORING",
+    label: "PROACTIVE EXPOSURE CROSS-CHECKS",
     description:
-      "Automatically score itineraries against live geopolitical and weather threats before travelers are exposed.",
+      "Go from static duty-of-care checklists to automated exposure cross-checks against geopolitical, environmental, and operational risk events as conditions change.",
     animationMs: 850,
   },
   {
     Icon: AccountPulseIcon,
-    label: "RAPID DUTY-OF-CARE RESPONSE",
+    label: "ACCELERATED INTERVENTION RESPONSE",
     description:
-      "Coordinate alerts, rebooking, and evacuation support the moment conditions change.",
+      "Ingest real-time threat conditions to validate traveler safety posture quickly and coordinate interventions across regional and corporate stakeholders before exposure becomes incident.",
     animationMs: 680,
   },
 ];
 
 const slides: FeatureSlide[] = [
   {
-    id: "unified-traveler-risk-map",
-    heading: "UNIFIED TRAVELER RISK MAP",
-    subheading: "From scattered itineraries to one live picture.",
+    id: "unified-traveler-risk-picture",
+    heading: "UNIFIED TRAVELER RISK PICTURE",
+    subheading: "From fragmented travel logs to one coordinated view.",
     body: (
       <>
         <strong className="font-bold">Live Traveler Exposure Mapping</strong>{" "}
-        Instantly overlay every traveler's flight status, hotel location,
-        and ground movement against real-time risk layers—eliminating the
-        need to manually cross-reference disparate travel and intelligence
-        feeds.
+        Instantly overlay live aircraft movement, hotel geolocation, and
+        personnel routing against real-time threat conditions. Boreas gives
+        corporate security and GSOC teams one coordinated view of movement
+        and risk proximity across volatile routes, airports, and destination
+        clusters.
       </>
     ),
     imageSrc: "/products/boreas.png",
-    imageAlt: "Boreas unified traveler risk map",
+    imageAlt: "Boreas unified traveler risk picture",
   },
   {
-    id: "proactive-itinerary-screening",
-    heading: "PROACTIVE ITINERARY SCREENING",
-    subheading: "From reactive lookups to automatic screening.",
-    body: "Go beyond manual risk checks. Boreas automatically screens every booked itinerary against evolving geopolitical, health, and weather risk feeds, flagging exposure before travel begins so duty-of-care teams can act early.",
+    id: "proactive-exposure-cross-checks",
+    heading: "PROACTIVE EXPOSURE CROSS-CHECKS",
+    subheading: "From manual duty-of-care checks to automated cross-checks.",
+    body: "Go beyond periodic safety reviews. Boreas continuously cross-checks traveler exposure against geopolitical, environmental, and operational risk events, reducing blind spots in high-risk movement windows. Travel risk teams maintain continuous duty-of-care awareness without re-validating posture by hand.",
     imageSrc: "/products/boreas.png",
-    imageAlt: "Boreas proactive itinerary screening",
+    imageAlt: "Boreas proactive exposure cross-checks",
   },
   {
-    id: "faster-duty-of-care-coordination",
-    heading: "FASTER DUTY-OF-CARE COORDINATION",
-    subheading: "From delayed outreach to immediate action.",
-    body: "When conditions change, Boreas generates live traveler rosters and shareable status dashboards that sync across security, HR, and executive stakeholders—cutting response time when travelers need help fastest.",
+    id: "accelerated-intervention-response",
+    heading: "ACCELERATED INTERVENTION RESPONSE",
+    subheading: "From delayed outreach to enterprise-scale response.",
+    body: "Speed up intervention when exposure turns into incident. Boreas helps teams validate traveler safety posture quickly and coordinate interventions across regional and corporate stakeholders, strengthening duty-of-care execution at enterprise scale.",
     imageSrc: "/products/boreas.png",
-    imageAlt: "Boreas duty-of-care coordination",
+    imageAlt: "Boreas accelerated intervention response",
   },
 ];
 
@@ -80,15 +81,15 @@ export default function BoreasPage() {
       <div className="pt-[116px]">
         <ProductHero
           name="BOREAS"
-          description="A corporate travel intelligence tool that tracks live aircraft movement, hotel locations, and traveler exposure to geopolitical and weather risk events."
+          description="Command-grade visibility into every traveler, route, and risk signal—before exposure becomes incident."
           Mark={BoreasMark}
         />
         <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
           <ScrollReveal>
             <div className="mt-[60px]">
               <ProductBenefits
-                headline="Corporate travel risk, visualized in real time"
-                description="Unlike static travel itineraries, Boreas fuses live flight tracking, hotel geolocation, and evolving risk feeds—weather, geopolitical, and civil unrest—into a single traveler exposure map."
+                headline="See every traveler's exposure before it becomes an incident"
+                description="Aircraft movement, hotel geolocation, and shifting threat conditions rarely line up in one place. Boreas puts them on the same map, so security teams spot exposure while it's still building—not after it becomes an incident."
                 benefits={benefits}
               />
             </div>

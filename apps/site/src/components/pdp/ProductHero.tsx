@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@alduin/design-system";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type ComponentType } from "react";
 
 export interface ProductHeroProps {
@@ -22,6 +23,7 @@ export function ProductHero({ name, description, Mark }: ProductHeroProps) {
     const t = setTimeout(() => setRevealed(true), REVEAL_DELAY_MS);
     return () => clearTimeout(t);
   }, []);
+  const router = useRouter();
 
   return (
     <section className="relative flex items-center bg-black px-[70px] pb-20 pt-5 min-[1441px]:px-[150px]">
@@ -35,7 +37,9 @@ export function ProductHero({ name, description, Mark }: ProductHeroProps) {
           </p>
         </div>
         <div className="flex items-center gap-5">
-          <Button>Request a Demo</Button>
+          <Button onClick={() => router.push("/request-a-demo")}>
+            Request a Demo
+          </Button>
         </div>
       </div>
 

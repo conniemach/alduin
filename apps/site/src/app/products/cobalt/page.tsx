@@ -89,7 +89,7 @@ export default function CobaltPage() {
           <ScrollReveal>
             <div className="mt-[60px]">
               <ProductBenefits
-                headline="The ultimate single-pane-of-glass geospatial command center"
+                headline="One map for every hazard that can stop a mission"
                 description="Unlike fragmented monitoring tools, Cobalt fuses real-time global risk data—weather, seismic, volcanic, marine, and infrastructure—into a single tactical map to accelerate early detection and response."
                 benefits={benefits}
               />

@@ -70,7 +70,13 @@ export function GlobalNav() {
         />
       ))}
       <div className="relative flex h-full w-full items-center justify-between px-[70px] min-[1441px]:px-[150px]">
-        <LogoLockup />
+        <button
+          type="button"
+          onClick={() => router.push("/")}
+          aria-label="Alduin home"
+        >
+          <LogoLockup />
+        </button>
         <div className="flex items-center gap-8">
           <ProductsMenu
             onSelect={(product) => {
@@ -79,12 +85,20 @@ export function GlobalNav() {
             }}
           />
           <a
-            href="#contact"
+            href="#"
             className="font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-neutral-100"
           >
-            Contact Us
+            Pricing
           </a>
-          <Button>Request a Demo</Button>
+          <a
+            href="#"
+            className="font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-neutral-100"
+          >
+            About
+          </a>
+          <Button onClick={() => router.push("/request-a-demo")}>
+            Request a Demo
+          </Button>
         </div>
       </div>
     </header>

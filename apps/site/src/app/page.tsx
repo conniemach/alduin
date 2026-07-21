@@ -28,7 +28,7 @@ export default function Home() {
       tabLabel: "BOREAS",
       eyebrow: "BOREAS",
       description:
-        "A corporate travel intelligence tool that tracks live aircraft movement, hotel locations, and traveler exposure to geopolitical and weather risk events.",
+        "Command-grade visibility into every traveler, route, and risk signal—before exposure becomes incident.",
       imageSrc: "/products/boreas.png",
       imageAlt: "Boreas product screenshot",
       onLearnMore: () => router.push("/products/boreas"),
@@ -38,7 +38,7 @@ export default function Home() {
       tabLabel: "CYPHER",
       eyebrow: "CYPHER",
       description:
-        "A case management and person-of-interest investigation tool for structured investigations, case-file control, and geospatial targeting.",
+        "Person-of-interest workflows, case files, and geospatial targeting, unified into one governed record built for legal defensibility.",
       imageSrc: "/products/cypher.png",
       imageAlt: "Cypher product screenshot",
       onLearnMore: () => router.push("/products/cypher"),
@@ -48,7 +48,7 @@ export default function Home() {
       tabLabel: "NIGHTWATCH",
       eyebrow: "NIGHTWATCH",
       description:
-        "A daily situation briefing engine that pulls from trusted sources to generate a command-ready morning brief.",
+        "Every trusted source, ranked and delivered as a command-ready brief before the first meeting starts.",
       imageSrc: "/products/nightwatch.png",
       mobileImageSrc: "/products/nightwatch-mobile.png",
       imageAlt: "Nightwatch product screenshot",

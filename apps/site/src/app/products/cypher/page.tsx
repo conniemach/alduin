@@ -17,23 +17,23 @@ import { ProductPricing } from "@/components/pdp/ProductPricing";
 const benefits: Benefit[] = [
   {
     Icon: EarthSpinIcon,
-    label: "UNIFIED CASE-FILE CONTROL",
+    label: "UNIFIED CASE-FILE GOVERNANCE",
     description:
-      "Replace disconnected spreadsheets and shared drives with a single, structured system of record for every active investigation.",
+      "Replaces disconnected files and informal handoffs with a single governed case record that preserves chronology, ownership, and procedural integrity.",
     animationMs: 2200,
   },
   {
     Icon: ChartDrawIcon,
-    label: "GEOSPATIAL TARGETING",
+    label: "GEOSPATIAL TARGETING PRECISION",
     description:
-      "Plot persons of interest, incidents, and evidence on a live map to reveal patterns and connections across cases.",
+      "Go from static case notes to live geospatial targeting overlays, plotting persons of interest and evidence with the precision investigative outcomes and legal defensibility require.",
     animationMs: 850,
   },
   {
     Icon: AccountPulseIcon,
-    label: "STRUCTURED CASE COORDINATION",
+    label: "ACCELERATED TARGET DEVELOPMENT",
     description:
-      "Assign tasks, track leads, and coordinate across investigators with a clear chain of custody.",
+      "Ingest leads and evidence into one auditable chain of custody, so investigators spend less time reconciling process gaps and more time advancing actionable targets.",
     animationMs: 680,
   },
 ];
@@ -42,34 +42,35 @@ const slides: FeatureSlide[] = [
   {
     id: "unified-case-intelligence-picture",
     heading: "UNIFIED CASE INTELLIGENCE PICTURE",
-    subheading: "From scattered case files to one structured workspace.",
+    subheading: "From scattered case files to one governed record.",
     body: (
       <>
         <strong className="font-bold">Live Person-of-Interest Mapping</strong>{" "}
-        Instantly overlay subjects, incidents, and evidence onto a single
-        geospatial case view. Cypher fuses structured case data directly
-        over your investigation timeline—eliminating the need to manually
-        cross-reference disconnected files during active cases.
+        Instantly centralize investigative workflows, evidence context, and
+        geospatial targeting into a single case record. Cypher preserves
+        chronology, ownership, and procedural integrity for every complex
+        case—eliminating the ownership gaps and lost context that come from
+        working across disconnected files.
       </>
     ),
     imageSrc: "/products/cypher.png",
     imageAlt: "Cypher unified case intelligence picture",
   },
   {
-    id: "proactive-lead-prioritization",
-    heading: "PROACTIVE LEAD PRIORITIZATION",
-    subheading: "From manual triage to automatic prioritization.",
-    body: "Go beyond static case queues. Cypher automatically surfaces high-priority leads based on evidence strength, geospatial proximity, and case urgency, so investigators focus on what matters first.",
+    id: "proactive-chain-of-custody-control",
+    heading: "PROACTIVE CHAIN-OF-CUSTODY CONTROL",
+    subheading: "From informal handoffs to accountable case discipline.",
+    body: "Go beyond ad hoc tracking. Cypher enforces chain-of-custody logic and timeline fidelity across every handoff, so investigators inherit a fully accountable case record instead of reconstructing history after the fact. The platform is built for environments where procedural integrity directly affects legal defensibility.",
     imageSrc: "/products/cypher.png",
-    imageAlt: "Cypher proactive lead prioritization",
+    imageAlt: "Cypher proactive chain-of-custody control",
   },
   {
-    id: "accelerated-case-collaboration",
-    heading: "ACCELERATED CASE COLLABORATION",
-    subheading: "From isolated files to synchronized teams.",
-    body: "Speed up investigations when time matters. Cypher generates live, shareable case dashboards and timelines that sync in real time across investigators, supervisors, and legal counsel.",
+    id: "accelerated-target-development",
+    heading: "ACCELERATED TARGET DEVELOPMENT",
+    subheading: "From process gaps to faster, auditable progression.",
+    body: "Speed up case resolution when target development can't wait. Cypher gives investigators, supervisors, and legal counsel a synchronized view of case status, evidence, and geospatial context—cutting the friction of reconciling process gaps so teams advance actionable leads with confidence in the record.",
     imageSrc: "/products/cypher.png",
-    imageAlt: "Cypher accelerated case collaboration",
+    imageAlt: "Cypher accelerated target development",
   },
 ];
 
@@ -80,15 +81,15 @@ export default function CypherPage() {
       <div className="pt-[116px]">
         <ProductHero
           name="CYPHER"
-          description="A case management and person-of-interest investigation tool for structured investigations, case-file control, and geospatial targeting."
+          description="Person-of-interest workflows, case files, and geospatial targeting, unified into one governed record built for legal defensibility."
           Mark={CypherMark}
         />
         <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
           <ScrollReveal>
             <div className="mt-[60px]">
               <ProductBenefits
-                headline="The ultimate single-pane-of-glass investigation workspace"
-                description="Unlike scattered spreadsheets and disconnected case files, Cypher fuses person-of-interest records, evidence, and geospatial data into a single structured investigation workspace."
+                headline="Investigations built to hold up under scrutiny"
+                description="Case files break down when evidence, ownership, and chronology live in different systems. Cypher keeps everything in one governed record, so investigators can hand off cases without losing the thread—or the chain of custody."
                 benefits={benefits}
               />
             </div>

@@ -10,7 +10,7 @@ export function Hero() {
         muted
         playsInline
         aria-hidden="true"
-        className="pointer-events-none absolute right-[1%] top-[46%] w-[46%] max-w-none -translate-y-1/2 select-none"
+        className="pointer-events-none absolute right-[1%] top-[46%] w-[46%] max-w-none -translate-x-[45px] -translate-y-1/2 select-none"
       />
       <div className="relative flex flex-col gap-10 py-[110px]">
         <div className="flex max-w-[632px] flex-col gap-0">

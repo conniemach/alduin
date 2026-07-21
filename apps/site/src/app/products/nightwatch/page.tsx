@@ -19,21 +19,21 @@ const benefits: Benefit[] = [
     Icon: EarthSpinIcon,
     label: "UNIFIED SOURCE AGGREGATION",
     description:
-      "Replace dozens of manual news checks with a single feed pulling from trusted global sources and advisories.",
+      "Replaces dozens of manual source checks with a single pipeline that ingests selected reporting and reduces briefing noise without losing decision-critical context.",
     animationMs: 2200,
   },
   {
     Icon: ChartDrawIcon,
-    label: "PRIORITIZED DAILY BRIEFS",
+    label: "PROACTIVE SIGNAL RANKING",
     description:
-      "Automatically rank overnight developments by relevance to your operations, regions, and assets.",
+      "Go from a flat stream of reporting to priority-ranked signals, automatically scored so leadership sees what matters most before tempo spikes.",
     animationMs: 850,
   },
   {
     Icon: AccountPulseIcon,
-    label: "COMMAND-READY DISTRIBUTION",
+    label: "ACCELERATED MORNING DISTRIBUTION",
     description:
-      "Generate and share a polished morning brief across leadership in minutes, not hours.",
+      "Ingest overnight developments to generate a command-ready brief at start of day, cutting the delays that come from manual morning synthesis.",
     animationMs: 680,
   },
 ];
@@ -42,33 +42,33 @@ const slides: FeatureSlide[] = [
   {
     id: "unified-overnight-intelligence-picture",
     heading: "UNIFIED OVERNIGHT INTELLIGENCE PICTURE",
-    subheading: "From scattered news feeds to one command brief.",
+    subheading: "From scattered sources to one repeatable pipeline.",
     body: (
       <>
         <strong className="font-bold">Live Source Aggregation</strong>{" "}
-        Instantly compile overnight developments from trusted open-source
-        reporting, government advisories, and internal alerts into a
-        single briefing. Nightwatch fuses global reporting directly over
-        your organization's regions and assets—eliminating the need to
-        manually scan dozens of sources each morning.
+        Instantly ingest selected reporting and consolidate it into a
+        single overnight briefing. Nightwatch reduces source-by-source
+        noise while preserving the context decision-makers need—giving
+        teams a repeatable pipeline that holds up across rotating shifts
+        and changing source conditions.
       </>
     ),
     imageSrc: "/products/nightwatch.png",
     imageAlt: "Nightwatch unified overnight intelligence picture",
   },
   {
-    id: "proactive-relevance-ranking",
-    heading: "PROACTIVE RELEVANCE RANKING",
-    subheading: "From raw headlines to ranked priorities.",
-    body: "Go beyond a flat news feed. Nightwatch automatically ranks overnight developments by relevance to your specific regions, assets, and operations, surfacing what leadership needs to see first.",
+    id: "proactive-signal-ranking",
+    heading: "PROACTIVE SIGNAL RANKING",
+    subheading: "From flat reporting to ranked, decision-ready signals.",
+    body: "Go beyond raw headlines. Nightwatch automatically ranks priority signals so the same high-quality discipline holds regardless of who's on shift or how source conditions change. The platform surfaces what leadership needs before tempo spikes, without sacrificing analyst judgment.",
     imageSrc: "/products/nightwatch.png",
-    imageAlt: "Nightwatch proactive relevance ranking",
+    imageAlt: "Nightwatch proactive signal ranking",
   },
   {
     id: "accelerated-morning-distribution",
     heading: "ACCELERATED MORNING DISTRIBUTION",
-    subheading: "From manual compilation to instant distribution.",
-    body: "Speed up your morning battle rhythm. Nightwatch generates a polished, shareable command brief automatically, syncing across leadership, watch officers, and field teams before the first meeting starts.",
+    subheading: "From manual synthesis to command-ready delivery.",
+    body: "Speed up the start of day when leadership can't wait. Nightwatch generates a command-ready brief and syncs it in real time across leadership, watch officers, and field teams—improving decision tempo and closing the delays caused by manual morning synthesis.",
     imageSrc: "/products/nightwatch.png",
     imageAlt: "Nightwatch accelerated morning distribution",
   },
@@ -81,15 +81,15 @@ export default function NightwatchPage() {
       <div className="pt-[116px]">
         <ProductHero
           name="NIGHTWATCH"
-          description="A daily situation briefing engine that pulls from trusted sources to generate a command-ready morning brief."
+          description="Every trusted source, ranked and delivered as a command-ready brief before the first meeting starts."
           Mark={NightwatchMark}
         />
         <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
           <ScrollReveal>
             <div className="mt-[60px]">
               <ProductBenefits
-                headline="The ultimate single-pane-of-glass daily briefing engine"
-                description="Unlike manual news scanning, Nightwatch fuses trusted open-source reporting, government advisories, and internal alerts into a single command-ready morning brief."
+                headline="The morning brief leadership actually reads first"
+                description="Most teams start the day piecing together a dozen sources by hand. Nightwatch does the ranking overnight, so leadership opens one command-ready brief instead of a stack of raw reporting."
                 benefits={benefits}
               />
             </div>
