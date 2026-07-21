@@ -2,6 +2,7 @@
 @import "tailwindcss";
 @import "@alduin/design-system/tokens.css";
 @import "@alduin/design-system/icon-motion.css";
+@import "@alduin/design-system/product-mark.css";
 
 /* Let Tailwind scan the design system's compiled output for the class
    names used inside embedded live component previews. */

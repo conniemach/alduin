@@ -15,7 +15,7 @@ const swatches: { name: string; className: string; hex: string }[] = [
   { name: "neutral-700", className: "bg-neutral-700", hex: "#393939" },
   { name: "neutral-800", className: "bg-neutral-800", hex: "#282828" },
   { name: "neutral-850", className: "bg-neutral-850", hex: "#272727" },
-  { name: "neutral-900", className: "bg-neutral-900", hex: "#1e1e1e" },
+  { name: "neutral-900", className: "bg-neutral-900", hex: "#000000" },
   { name: "black", className: "bg-black", hex: "#000000" },
 ];
 

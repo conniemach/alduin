@@ -1,0 +1,393 @@
+/**
+ * Visual treatment + motion shared by every product mark (CobaltMark,
+ * BoreasMark, CypherMark, NightwatchMark — see components/ProductMark.tsx,
+ * the internal base they all render). Unlike the rest of the design
+ * system, which composes from Tailwind utilities off the shared tokens,
+ * these marks need real CSS 3D (preserve-3d, translateZ) and a stack of
+ * blend-mode layers Tailwind has no vocabulary for, so it gets its own
+ * stylesheet, same rationale as icon-motion.css. One shared sheet for
+ * all four marks since they're the exact same treatment applied to
+ * different source art, not four bespoke looks.
+ *
+ * Structure: a preserve-3d "chip" with six faces (front, back, four thin
+ * edge strips) so tilting it in 3D reveals real side thickness rather
+ * than a flat image with a fake shadow. The front face layers the source
+ * artwork under several effects, in order: a two-tier glow masked to the
+ * icon's own silhouette (screen blend, so it reads as light escaping the
+ * grooves, not a light sitting on top of the plate), then an emboss
+ * trio using that same silhouette mask — a soft dark halo (ambient
+ * occlusion), a crisp dark copy offset up-left (the groove's near wall,
+ * in shadow), and a crisp copy of the mark's own green offset down-right
+ * (the groove's far wall, catching the glow's own light) — which is
+ * what sells "engraved into the plate, lit from within" rather than
+ * "printed on it, lit from outside". The far wall is deliberately green,
+ * not white: the only light in the scene is the icon's own glow, so
+ * anything it lights up should pick up its color, not read as a second,
+ * unrelated white light. Finally a directional sheen and a corner
+ * vignette (overlay/multiply) for the plate's own matte, slightly-curved
+ * read, and a tight specular band on each edge strip (see
+ * .product-mark-edge below) for the plate's own reflectivity.
+ *
+ * The green here (--product-mark-green) is shared brand color across all
+ * four marks' glow/emboss treatment, kept local rather than promoted to
+ * tokens/colors.ts — the system palette is deliberately monochrome (see
+ * colors.ts), and this is product artwork, not a reusable UI color.
+ */
+
+.product-mark-scene {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  perspective: 1000px;
+}
+
+.product-mark-shadow-wrap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.product-mark-shadow {
+  position: absolute;
+  left: 50%;
+  top: 73%;
+  width: 200px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(5, 8, 6, 0.55) 0%,
+    rgba(5, 8, 6, 0.28) 55%,
+    rgba(5, 8, 6, 0) 78%
+  );
+  filter: blur(4px);
+  animation: product-mark-shadow-drift 11s ease-in-out infinite;
+}
+
+.product-mark-chip {
+  --product-mark-green: #1ee128;
+  --product-mark-green-rgb: 30, 225, 40;
+  --product-mark-back: #141514;
+  --product-mark-edge: #0c0d0c;
+  --product-mark-edge-lo: #060706;
+
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 30px;
+  transform-style: preserve-3d;
+  animation: product-mark-tilt 11s ease-in-out infinite;
+}
+
+.product-mark-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 48px;
+  backface-visibility: hidden;
+}
+
+.product-mark-face.product-mark-front {
+  transform: translateZ(9px);
+  overflow: hidden;
+  box-shadow:
+    inset 0 1.5px 2.5px rgba(255, 255, 255, 0.14),
+    inset 7px 8px 16px rgba(0, 0, 0, 0.46),
+    inset 0 -14px 22px rgba(0, 0, 0, 0.68);
+}
+
+.product-mark-face.product-mark-front img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  /* The material's own color, not the light — bold and deeply saturated
+     but deliberately not brightened, so it reads as a strong solid green
+     rather than something already glowing. The "shining through" effect
+     comes entirely from the glow layers below. */
+  filter: saturate(1.85) brightness(0.96) contrast(1.05);
+}
+
+.product-mark-face.product-mark-back {
+  transform: translateZ(-9px);
+  background: linear-gradient(155deg, var(--product-mark-back) 0%, var(--product-mark-edge-lo) 100%);
+}
+
+.product-mark-rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 48px;
+  transform: translateZ(-9px) scale(1.006);
+  background: var(--product-mark-edge);
+  filter: blur(0.4px);
+}
+
+.product-mark-edge {
+  position: absolute;
+  background: linear-gradient(180deg, var(--product-mark-edge) 0%, var(--product-mark-edge-lo) 100%);
+}
+
+/* A specular band on each edge, standing in for a fixed light source
+ * above and in front of the chip (same direction as .product-mark-sheen
+ * on the face). Static top/bottom bands sell that fixed direction — the
+ * top edge (tilted back, rotateX never animates) catches it, the bottom
+ * edge (tilted toward the viewer) mostly doesn't.
+ *
+ * rotateY is the only thing that ever animates, and it's what swings
+ * the left/right edges in and out of view, so their shine is keyed to
+ * that same timeline (identical duration/easing/keyframe split as
+ * product-mark-tilt) rather than sitting at a fixed brightness — it
+ * peaks at 50%, exactly when rotateY is furthest around and that edge
+ * is most face-on to the implied light, so the highlight visibly
+ * sweeps as the chip turns instead of reading as painted on. */
+.product-mark-edge::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.product-mark-edge-top::after {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 32%,
+    rgba(255, 255, 255, 0.65) 48%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.65) 52%,
+    rgba(255, 255, 255, 0) 68%
+  );
+  opacity: 0.5;
+}
+.product-mark-edge-bottom::after {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 62%);
+  opacity: 0.28;
+}
+.product-mark-edge-right::after {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 32%,
+    rgba(255, 255, 255, 0.75) 47%,
+    rgba(255, 255, 255, 0.92) 50%,
+    rgba(255, 255, 255, 0.75) 53%,
+    rgba(255, 255, 255, 0) 68%
+  );
+  animation: product-mark-edge-shine-right 11s ease-in-out infinite;
+}
+.product-mark-edge-left::after {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 38%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0) 62%);
+  animation: product-mark-edge-shine-left 11s ease-in-out infinite;
+}
+
+.product-mark-edge-top,
+.product-mark-edge-bottom {
+  left: 50px;
+  right: 50px;
+  height: 18px;
+  transform-origin: 50% 50%;
+}
+.product-mark-edge-left,
+.product-mark-edge-right {
+  top: 50px;
+  bottom: 50px;
+  width: 18px;
+  transform-origin: 50% 50%;
+}
+.product-mark-edge-top {
+  top: 0;
+  transform: rotateX(90deg) translateZ(9px);
+}
+.product-mark-edge-bottom {
+  bottom: 0;
+  transform: rotateX(-90deg) translateZ(9px);
+}
+.product-mark-edge-left {
+  left: 0;
+  transform: rotateY(-90deg) translateZ(9px);
+}
+.product-mark-edge-right {
+  right: 0;
+  transform: rotateY(90deg) translateZ(9px);
+}
+
+/* Glow + emboss share the icon's own alpha shape (passed in as a
+   background/mask image by the component) so they trace each mark's
+   artwork exactly, rather than an unrelated blurred blob.
+ *
+ * The glow is deliberately two layers, same green, same mask, different
+ * blur/opacity — one soft, wide bloom (the light bouncing around inside
+ * the groove) and one tight, barely-blurred core sitting right on the
+ * artwork (the light source itself). Stacking two screen-blended copies
+ * of the same saturated green pushes the green channel bright without
+ * dragging red/blue up with it, so the hot core reads as vivid, strong
+ * green rather than fading toward white — "glowing" without going pale
+ * or fully neon. */
+.product-mark-core-glow {
+  position: absolute;
+  inset: 0;
+  background: var(--product-mark-green);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  mix-blend-mode: screen;
+  filter: blur(5px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.product-mark-core-glow-hot {
+  position: absolute;
+  inset: 0;
+  background: var(--product-mark-green);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  mix-blend-mode: screen;
+  filter: blur(1.2px);
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.product-mark-emboss-ao,
+.product-mark-emboss-shadow {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+/* A thin dark contact-shadow right at the wall, just outside the crisp
+ * bevel below — standing in for ambient occlusion pooling at the base
+ * of a real carved groove. Kept deliberately tight (small blur, small
+ * offset): a wider/blurrier version of this used to visibly sweep all
+ * the way across each stroke, which for these fairly thin glyphs read
+ * as the whole recess being curved/domed rather than flat-bottomed with
+ * a defined edge — the floor of the groove should stay flat and even,
+ * only the wall itself should shade. */
+.product-mark-emboss-ao {
+  filter: brightness(0) blur(1.4px);
+  transform: translate(-2.6px, -2.6px);
+  opacity: 0.32;
+  mix-blend-mode: multiply;
+}
+.product-mark-emboss-shadow {
+  filter: brightness(0) blur(0.5px);
+  transform: translate(-3.2px, -3.2px);
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+}
+/* The lit wall of the groove — tinted the mark's own green (mask +
+ * solid fill, same technique as the glow layers above) rather than
+ * white. The groove's only light source is the green glow itself, so
+ * the wall it hits should pick up that same green, not read as a
+ * separate white light shining in from somewhere else. */
+.product-mark-emboss-highlight {
+  position: absolute;
+  inset: 0;
+  background: var(--product-mark-green);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  filter: blur(0.5px);
+  transform: translate(2.8px, 2.8px);
+  opacity: 0.6;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.product-mark-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.04) 20%,
+    rgba(255, 255, 255, 0) 42%,
+    rgba(0, 0, 0, 0) 58%,
+    rgba(0, 0, 0, 0.3) 100%
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.product-mark-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 120% at 28% 18%, rgba(255, 255, 255, 0) 38%, rgba(0, 0, 0, 0.5) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Only the horizontal tilt animates, on a fixed base rotateX/rotateZ.
+   Earlier iterations also bobbed vertically and drifted position, but
+   that read as "bouncing" rather than "floating" — a slow side-to-side
+   rock alone reads calmer, closer to a chip resting on a surface that's
+   gently tilting than an object bobbing in water. */
+@keyframes product-mark-tilt {
+  0%,
+  100% {
+    transform: rotateX(10deg) rotateY(-19deg) rotateZ(2deg);
+  }
+  50% {
+    transform: rotateX(10deg) rotateY(-37deg) rotateZ(2deg);
+  }
+}
+
+@keyframes product-mark-edge-shine-right {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes product-mark-edge-shine-left {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes product-mark-shadow-drift {
+  0%,
+  100% {
+    transform: translate(calc(-50% - 7px), -50%) scaleX(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translate(calc(-50% + 7px), -50%) scaleX(0.94);
+    opacity: 0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-mark-chip {
+    animation: none;
+    transform: rotateX(10deg) rotateY(-28deg) rotateZ(2deg);
+  }
+  .product-mark-shadow {
+    animation: none;
+    transform: translate(-50%, -50%);
+  }
+  .product-mark-edge-right::after {
+    animation: none;
+    opacity: 0.55;
+  }
+  .product-mark-edge-left::after {
+    animation: none;
+    opacity: 0.22;
+  }
+}

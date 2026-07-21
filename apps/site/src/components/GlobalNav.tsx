@@ -1,4 +1,14 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { LogoLockup, Button, ProductsMenu } from "@alduin/design-system";
+
+const PRODUCT_ROUTES: Record<string, string> = {
+  Cobalt: "/products/cobalt",
+  Boreas: "/products/boreas",
+  Cypher: "/products/cypher",
+  Nightwatch: "/products/nightwatch",
+};
 
 /**
  * The homepage's actual nav bar — Figma's "Global Nav" frame on the Home
@@ -36,6 +46,8 @@ const PROGRESSIVE_BLUR_LAYERS = [
 ];
 
 export function GlobalNav() {
+  const router = useRouter();
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 h-[116px]">
       <div
@@ -60,7 +72,12 @@ export function GlobalNav() {
       <div className="relative flex h-full w-full items-center justify-between px-[70px] min-[1441px]:px-[150px]">
         <LogoLockup />
         <div className="flex items-center gap-8">
-          <ProductsMenu />
+          <ProductsMenu
+            onSelect={(product) => {
+              const route = PRODUCT_ROUTES[product];
+              if (route) router.push(route);
+            }}
+          />
           <a
             href="#contact"
             className="font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-neutral-100"

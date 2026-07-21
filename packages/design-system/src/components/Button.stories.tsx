@@ -16,6 +16,9 @@ type Story = StoryObj<typeof Button>;
 export const Default: Story = {};
 export const Disabled: Story = { args: { disabled: true } };
 export const ForcedHover: Story = {
-  args: { className: "!bg-neutral-800 !text-neutral-100" },
+  args: {
+    className:
+      "[&_[data-slot=hover-layer]]:!opacity-100 [&_[data-slot=label]]:!text-neutral-100",
+  },
   name: "Hover (forced, for visual review)",
 };

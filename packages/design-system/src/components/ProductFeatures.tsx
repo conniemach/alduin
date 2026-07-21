@@ -28,6 +28,8 @@ export interface ProductFeatureItem {
   eyebrow: string;
   description: string;
   imageSrc: string;
+  /** Swapped in via a `(max-width: 375px)` source when provided; falls back to imageSrc otherwise. */
+  mobileImageSrc?: string;
   imageAlt: string;
   onLearnMore?: () => void;
 }
@@ -123,7 +125,7 @@ export function ProductFeatures({
         ))}
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-8">
         <div className="flex flex-col gap-12 md:flex-row">
           <p className="flex-1 font-mono text-[32px] leading-[38.4px] text-white">
             {headline}
@@ -166,23 +168,29 @@ export function ProductFeatures({
           </div>
         </div>
 
-        <div className="relative aspect-[1140/424] w-full overflow-hidden rounded-lg bg-neutral-850">
+        <div className="relative aspect-[1140/424] w-full overflow-hidden">
           {SLOTS.map((slot) => {
             const item = items[slotItem[slot]];
             if (!item) return null;
             const isFront = slot === activeSlot;
             return (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                key={slot}
-                src={item.imageSrc}
-                alt={isFront ? item.imageAlt : ""}
-                aria-hidden={!isFront}
-                className={clsx(
-                  "absolute inset-0 size-full object-cover transition-opacity duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-                  isFront ? "opacity-100" : "opacity-0",
+              <picture key={slot}>
+                {item.mobileImageSrc && (
+                  <source media="(max-width: 375px)" srcSet={item.mobileImageSrc} />
                 )}
-              />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.imageSrc}
+                  alt={isFront ? item.imageAlt : ""}
+                  aria-hidden={!isFront}
+                  onClick={isFront ? item.onLearnMore : undefined}
+                  className={clsx(
+                    "absolute inset-0 size-full object-cover transition-opacity duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+                    isFront ? "opacity-100" : "pointer-events-none opacity-0",
+                    isFront && item.onLearnMore && "cursor-pointer",
+                  )}
+                />
+              </picture>
             );
           })}
         </div>

@@ -1,4 +1,11 @@
-import { useEffect, useLayoutEffect, useState, useCallback, useRef } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useCallback,
+  useRef,
+  type ReactNode,
+} from "react";
 import clsx from "clsx";
 import { motion } from "../tokens/motion";
 
@@ -51,7 +58,8 @@ export interface FeatureSlide {
   id: string;
   heading: string;
   subheading: string;
-  body: string;
+  /** Accepts JSX (e.g. a bolded lead-in phrase before the rest of the copy), not just plain text. */
+  body: ReactNode;
   imageSrc: string;
   imageAlt: string;
 }
@@ -186,7 +194,7 @@ export function Features({ slides, className }: FeaturesProps) {
           })}
         </div>
 
-        <div className="relative aspect-[1140/348] w-full overflow-hidden rounded-lg bg-neutral-850">
+        <div className="relative aspect-[1140/348] w-full overflow-hidden">
           {SLOTS.map((slot) => {
             const slide = slides[slotSlide[slot]];
             if (!slide) return null;

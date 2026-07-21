@@ -31,4 +31,10 @@ export const nav: NavGroup[] = [
       { label: "Logo", href: "/components/logo", blurb: "Wordmark placeholder" },
     ],
   },
+  {
+    title: "Brand",
+    items: [
+      { label: "Product Marks", href: "/brand/product-marks", blurb: "Boreas, Cobalt, Cypher, Nightwatch" },
+    ],
+  },
 ];

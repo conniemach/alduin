@@ -37,9 +37,19 @@ export function ProductsMenu({
       >
         Products
       </button>
+      {/* Bridges the visual mt-3 gap below: without it, that gap isn't
+          covered by any element in this hoverable subtree, so the mouse
+          passing through it briefly counts as leaving the whole menu and
+          closes it before it ever reaches the dropdown. */}
+      <div aria-hidden="true" className="absolute left-0 top-full h-3 w-40" />
       <div
         className={clsx(
-          "absolute left-0 top-full z-10 mt-3 flex w-40 flex-col gap-3 rounded-md bg-neutral-900 p-2",
+          "absolute left-0 top-full z-10 mt-3 flex w-40 flex-col gap-3 rounded-md p-2",
+          // Liquid glass: translucent dark fill + blur so it reads clearly
+          // over whatever page content sits behind it, matching
+          // ButtonLinkout's darker glass treatment elsewhere in the system.
+          "border border-white/15 bg-neutral-900/70 backdrop-blur-xl",
+          "shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_12px_28px_-12px_rgba(0,0,0,0.7)]",
           "origin-top transition-[opacity,transform] duration-300 ease-out",
           open
             ? "pointer-events-auto scale-100 opacity-100"
