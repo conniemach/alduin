@@ -1,6 +1,11 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { Button, ButtonLinkout } from "@alduin/design-system";
 
 export function Hero() {
+  const router = useRouter();
+
   return (
     <section className="relative bg-black px-[70px] pb-20 pt-5 min-[1441px]:px-[150px]">
       <video
@@ -23,8 +28,12 @@ export function Hero() {
           </p>
         </div>
         <div className="flex items-center gap-5">
-          <Button>Request a Demo</Button>
-          <ButtonLinkout>View Products</ButtonLinkout>
+          <Button onClick={() => router.push("/request-a-demo")}>
+            Request a Demo
+          </Button>
+          <ButtonLinkout onClick={() => router.push("/pricing")}>
+            View Pricing
+          </ButtonLinkout>
         </div>
       </div>
     </section>

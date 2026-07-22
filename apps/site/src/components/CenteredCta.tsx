@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import { ButtonLinkout } from "@alduin/design-system";
 
 const DEFAULT_CLASSNAME =
@@ -14,6 +17,8 @@ export interface CenteredCtaProps {
 }
 
 export function CenteredCta({ className = DEFAULT_CLASSNAME }: CenteredCtaProps) {
+  const router = useRouter();
+
   return (
     <section className={className}>
       {/* Grouped so a caller can swap the outer gap for justify-between
@@ -29,7 +34,9 @@ export function CenteredCta({ className = DEFAULT_CLASSNAME }: CenteredCtaProps)
           high-stakes environments.
         </p>
       </div>
-      <ButtonLinkout>Contact Us</ButtonLinkout>
+      <ButtonLinkout onClick={() => router.push("/request-a-demo")}>
+        Request a Demo
+      </ButtonLinkout>
     </section>
   );
 }

@@ -15,3 +15,25 @@ body {
   color: white;
   font-family: var(--font-sans);
 }
+
+/* Pricing page: four marks animating in parallel all the time reads as
+   busy for a page that's meant to be scanned quickly, so each mark stays
+   parked on its resting frame until its own card is hovered. Freezing via
+   animation-play-state (rather than only rendering on hover) keeps every
+   mark on the same resting keyframe instead of visibly jumping to it.
+   The duration is also sped up from the PDP hero's 11s loop — at the
+   card's much smaller size the same slow drift barely reads as motion,
+   so a brisker cycle is what actually makes "this is animating" land. */
+.mark-hover-only .product-mark-chip,
+.mark-hover-only .product-mark-shadow,
+.mark-hover-only .product-mark-edge-right::after,
+.mark-hover-only .product-mark-edge-left::after {
+  animation-play-state: paused;
+  animation-duration: 3s;
+}
+.mark-hover-only:hover .product-mark-chip,
+.mark-hover-only:hover .product-mark-shadow,
+.mark-hover-only:hover .product-mark-edge-right::after,
+.mark-hover-only:hover .product-mark-edge-left::after {
+  animation-play-state: running;
+}

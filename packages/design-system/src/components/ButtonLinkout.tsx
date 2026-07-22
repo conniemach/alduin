@@ -1,6 +1,5 @@
 import { type ButtonHTMLAttributes, forwardRef } from "react";
 import clsx from "clsx";
-import { Icon } from "./icons/Icon";
 
 /**
  * Figma "Button linkout" component (State=Primary / State=Hover),
@@ -35,7 +34,6 @@ export const ButtonLinkout = forwardRef<HTMLButtonElement, ButtonLinkoutProps>(
       />
       <span className="relative z-10 flex items-center gap-0.5">
         {children}
-        <Icon name="arrow-up-right" className="size-[6px]" />
       </span>
     </button>
   ),

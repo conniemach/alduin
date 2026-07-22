@@ -62,8 +62,8 @@ export function DemoForm() {
 
   if (submitted) {
     return (
-      <div className="w-[603px] max-w-full rounded-[20px] bg-gradient-to-b from-[#666666] via-[#242424] to-[#666666] p-px">
-        <div className="flex min-h-[461px] flex-col items-center justify-center gap-3 rounded-[20px] bg-neutral-850/40 p-5 text-center backdrop-blur-xl">
+      <div className="w-full rounded-[20px] bg-gradient-to-b from-[#666666] via-[#242424] to-[#666666] p-px">
+        <div className="flex min-h-[461px] flex-col items-center justify-center gap-3 rounded-[20px] bg-neutral-850/10 p-5 text-center backdrop-blur-xl">
           <p className="font-mono text-[20px] leading-[24px] text-white">
             Message sent
           </p>
@@ -82,9 +82,9 @@ export function DemoForm() {
         e.preventDefault();
         setSubmitted(true);
       }}
-      className="w-[603px] max-w-full rounded-[20px] bg-gradient-to-b from-[#666666] via-[#242424] to-[#666666] p-px"
+      className="w-full rounded-[20px] bg-gradient-to-b from-[#666666] via-[#242424] to-[#666666] p-px"
     >
-      <div className="flex flex-col gap-5 rounded-[20px] bg-neutral-850/40 p-5 backdrop-blur-xl">
+      <div className="flex flex-col gap-5 rounded-[20px] bg-neutral-850/10 p-5 backdrop-blur-xl">
         <Row>
           <Field
             label="Full name"

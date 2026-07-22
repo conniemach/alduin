@@ -84,12 +84,13 @@ export function GlobalNav() {
               if (route) router.push(route);
             }}
           />
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={() => router.push("/pricing")}
             className="font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-neutral-100"
           >
             Pricing
-          </a>
+          </button>
           <a
             href="#"
             className="font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-neutral-100"

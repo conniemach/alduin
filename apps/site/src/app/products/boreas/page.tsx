@@ -102,14 +102,14 @@ export default function BoreasPage() {
               <ProductPricing
                 name="BOREAS"
                 tagline="Predictable budgeting with zero seat-licensing friction."
-                price="$450"
+                price="$2,000"
                 included={[
                   "All inclusive software access",
                   "No Variable Overage Fees",
                   "Core API Feeds Included",
                 ]}
               />
-              <CenteredCta className="flex min-h-[340px] flex-col items-center justify-between rounded-[40px] border border-white/10 bg-neutral-850/50 px-20 py-10 text-center backdrop-blur-xl" />
+              <CenteredCta className="flex min-h-[304px] flex-col items-center justify-between rounded-[40px] border border-white/10 bg-neutral-850/50 px-10 py-10 text-center backdrop-blur-xl" />
             </div>
           </ScrollReveal>
         </div>
