@@ -91,12 +91,13 @@ export function GlobalNav() {
           >
             Pricing
           </button>
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={() => router.push("/about")}
             className="font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-neutral-100"
           >
             About
-          </a>
+          </button>
           <Button onClick={() => router.push("/request-a-demo")}>
             Request a Demo
           </Button>

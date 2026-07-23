@@ -65,31 +65,27 @@ export default function PricingPage() {
         <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
           <ScrollReveal>
             <section className="flex flex-col gap-[50px] pb-20 pt-20">
-              <div className="flex w-full flex-col gap-4">
+              <div className="flex flex-col gap-4">
                 <p className="font-mono text-[32px] leading-[38.4px] text-white">
                   Four products. One predictable bill.
                 </p>
                 <p className="font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-white">
-                  Every plan below includes full software access, every
-                  core API feed, and a fixed monthly rate—no metered
-                  usage to track and no surprise invoices at the end of
-                  the month.
+                  Predictable budgeting with zero seat-licensing
+                  friction—pick a product, and the price on the card is
+                  the price you pay every month.
                 </p>
+                <div className="flex items-center gap-[40px]">
+                  {INCLUDED.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-2 font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-white"
+                    >
+                      <Icon name="check" className="size-4 text-white" />
+                      {item}
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              <div className="flex items-center justify-between">
-                {INCLUDED.map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-2 font-sans text-[14px] font-bold leading-[19.6px] tracking-[-0.35px] text-white"
-                  >
-                    <Icon name="check" className="size-4 text-white" />
-                    {item}
-                  </div>
-                ))}
-              </div>
-
-              <div className="border-t border-white/20" />
 
               <div className="grid grid-cols-4 gap-5">
                 {PRODUCTS.map((product) => (
