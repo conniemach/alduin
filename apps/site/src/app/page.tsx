@@ -8,6 +8,7 @@ import { BenefitsSection } from "@/components/BenefitsSection";
 import { CenteredCta } from "@/components/CenteredCta";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { withBasePath } from "@/lib/base-path";
 
 export default function Home() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function Home() {
       eyebrow: "COBALT",
       description:
         "The weather intelligence command center for high-tempo operational planning, risk awareness, and mission timing.",
-      imageSrc: "/products/cobalt.png",
+      imageSrc: withBasePath("/products/cobalt.png"),
       imageAlt: "Cobalt product screenshot",
       onLearnMore: () => router.push("/products/cobalt"),
     },
@@ -29,7 +30,7 @@ export default function Home() {
       eyebrow: "BOREAS",
       description:
         "Command-grade visibility into every traveler, route, and risk signal—before exposure becomes incident.",
-      imageSrc: "/products/boreas.png",
+      imageSrc: withBasePath("/products/boreas.png"),
       imageAlt: "Boreas product screenshot",
       onLearnMore: () => router.push("/products/boreas"),
     },
@@ -39,7 +40,7 @@ export default function Home() {
       eyebrow: "CYPHER",
       description:
         "Person-of-interest workflows, case files, and geospatial targeting, unified into one governed record built for legal defensibility.",
-      imageSrc: "/products/cypher.png",
+      imageSrc: withBasePath("/products/cypher.png"),
       imageAlt: "Cypher product screenshot",
       onLearnMore: () => router.push("/products/cypher"),
     },
@@ -49,8 +50,8 @@ export default function Home() {
       eyebrow: "NIGHTWATCH",
       description:
         "Every trusted source, ranked and delivered as a command-ready brief before the first meeting starts.",
-      imageSrc: "/products/nightwatch.png",
-      mobileImageSrc: "/products/nightwatch-mobile.png",
+      imageSrc: withBasePath("/products/nightwatch.png"),
+      mobileImageSrc: withBasePath("/products/nightwatch-mobile.png"),
       imageAlt: "Nightwatch product screenshot",
       onLearnMore: () => router.push("/products/nightwatch"),
     },

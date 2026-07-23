@@ -13,6 +13,7 @@ import { CenteredCta } from "@/components/CenteredCta";
 import { ProductHero } from "@/components/pdp/ProductHero";
 import { ProductBenefits, type Benefit } from "@/components/pdp/ProductBenefits";
 import { ProductPricing } from "@/components/pdp/ProductPricing";
+import { withBasePath } from "@/lib/base-path";
 
 const benefits: Benefit[] = [
   {
@@ -53,7 +54,7 @@ const slides: FeatureSlide[] = [
         clusters.
       </>
     ),
-    imageSrc: "/products/boreas.png",
+    imageSrc: withBasePath("/products/boreas.png"),
     imageAlt: "Boreas unified traveler risk picture",
   },
   {
@@ -61,7 +62,7 @@ const slides: FeatureSlide[] = [
     heading: "PROACTIVE EXPOSURE CROSS-CHECKS",
     subheading: "From manual duty-of-care checks to automated cross-checks.",
     body: "Go beyond periodic safety reviews. Boreas continuously cross-checks traveler exposure against geopolitical, environmental, and operational risk events, reducing blind spots in high-risk movement windows. Travel risk teams maintain continuous duty-of-care awareness without re-validating posture by hand.",
-    imageSrc: "/products/boreas.png",
+    imageSrc: withBasePath("/products/boreas.png"),
     imageAlt: "Boreas proactive exposure cross-checks",
   },
   {
@@ -69,7 +70,7 @@ const slides: FeatureSlide[] = [
     heading: "ACCELERATED INTERVENTION RESPONSE",
     subheading: "From delayed outreach to enterprise-scale response.",
     body: "Speed up intervention when exposure turns into incident. Boreas helps teams validate traveler safety posture quickly and coordinate interventions across regional and corporate stakeholders, strengthening duty-of-care execution at enterprise scale.",
-    imageSrc: "/products/boreas.png",
+    imageSrc: withBasePath("/products/boreas.png"),
     imageAlt: "Boreas accelerated intervention response",
   },
 ];

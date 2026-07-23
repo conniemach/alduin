@@ -13,6 +13,7 @@ import { CenteredCta } from "@/components/CenteredCta";
 import { ProductHero } from "@/components/pdp/ProductHero";
 import { ProductBenefits, type Benefit } from "@/components/pdp/ProductBenefits";
 import { ProductPricing } from "@/components/pdp/ProductPricing";
+import { withBasePath } from "@/lib/base-path";
 
 const benefits: Benefit[] = [
   {
@@ -53,7 +54,7 @@ const slides: FeatureSlide[] = [
         cross-reference disconnected hazard maps during a crisis.
       </>
     ),
-    imageSrc: "/products/cobalt-pdp-feature-1.png",
+    imageSrc: withBasePath("/products/cobalt-pdp-feature-1.png"),
     imageAlt: "Cobalt unified operating picture",
   },
   {
@@ -61,7 +62,7 @@ const slides: FeatureSlide[] = [
     heading: "PROACTIVE THREAT MITIGATION",
     subheading: "From watching a storm to predicting its tactical impact.",
     body: "Go beyond basic threshold alerts. Cobalt automatically calculates projected impact corridors along your key areas of responsibility (AORs). The platform triggers early warning notifications only when evolving conditions directly threaten an active mission or physical asset, filtering out noise so operators focus on true risks.",
-    imageSrc: "/products/cobalt-pdp-feature-2.png",
+    imageSrc: withBasePath("/products/cobalt-pdp-feature-2.png"),
     imageAlt: "Cobalt proactive threat mitigation",
   },
   {
@@ -70,7 +71,7 @@ const slides: FeatureSlide[] = [
     subheading:
       "From chaotic communication to streamlined go/no-go coordination.",
     body: "Speed up decision loops when minutes matter. Cobalt generates live, shareable tactical dashboards and event timelines that sync in real time across field personnel, operations centers, and executive leadership. Coordinate posture adjustments, evacuations, and resource staging with complete situational alignment.",
-    imageSrc: "/products/cobalt-pdp-feature-1.png",
+    imageSrc: withBasePath("/products/cobalt-pdp-feature-1.png"),
     imageAlt: "Cobalt accelerated command decisions",
   },
 ];

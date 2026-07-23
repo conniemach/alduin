@@ -13,6 +13,7 @@ import { CenteredCta } from "@/components/CenteredCta";
 import { ProductHero } from "@/components/pdp/ProductHero";
 import { ProductBenefits, type Benefit } from "@/components/pdp/ProductBenefits";
 import { ProductPricing } from "@/components/pdp/ProductPricing";
+import { withBasePath } from "@/lib/base-path";
 
 const benefits: Benefit[] = [
   {
@@ -53,7 +54,7 @@ const slides: FeatureSlide[] = [
         and changing source conditions.
       </>
     ),
-    imageSrc: "/products/nightwatch.png",
+    imageSrc: withBasePath("/products/nightwatch.png"),
     imageAlt: "Nightwatch unified overnight intelligence picture",
   },
   {
@@ -61,7 +62,7 @@ const slides: FeatureSlide[] = [
     heading: "PROACTIVE SIGNAL RANKING",
     subheading: "From flat reporting to ranked, decision-ready signals.",
     body: "Go beyond raw headlines. Nightwatch automatically ranks priority signals so the same high-quality discipline holds regardless of who's on shift or how source conditions change. The platform surfaces what leadership needs before tempo spikes, without sacrificing analyst judgment.",
-    imageSrc: "/products/nightwatch.png",
+    imageSrc: withBasePath("/products/nightwatch.png"),
     imageAlt: "Nightwatch proactive signal ranking",
   },
   {
@@ -69,7 +70,7 @@ const slides: FeatureSlide[] = [
     heading: "ACCELERATED MORNING DISTRIBUTION",
     subheading: "From manual synthesis to command-ready delivery.",
     body: "Speed up the start of day when leadership can't wait. Nightwatch generates a command-ready brief and syncs it in real time across leadership, watch officers, and field teams—improving decision tempo and closing the delays caused by manual morning synthesis.",
-    imageSrc: "/products/nightwatch.png",
+    imageSrc: withBasePath("/products/nightwatch.png"),
     imageAlt: "Nightwatch accelerated morning distribution",
   },
 ];

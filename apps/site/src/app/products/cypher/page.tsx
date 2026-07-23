@@ -13,6 +13,7 @@ import { CenteredCta } from "@/components/CenteredCta";
 import { ProductHero } from "@/components/pdp/ProductHero";
 import { ProductBenefits, type Benefit } from "@/components/pdp/ProductBenefits";
 import { ProductPricing } from "@/components/pdp/ProductPricing";
+import { withBasePath } from "@/lib/base-path";
 
 const benefits: Benefit[] = [
   {
@@ -53,7 +54,7 @@ const slides: FeatureSlide[] = [
         working across disconnected files.
       </>
     ),
-    imageSrc: "/products/cypher.png",
+    imageSrc: withBasePath("/products/cypher.png"),
     imageAlt: "Cypher unified case intelligence picture",
   },
   {
@@ -61,7 +62,7 @@ const slides: FeatureSlide[] = [
     heading: "PROACTIVE CHAIN-OF-CUSTODY CONTROL",
     subheading: "From informal handoffs to accountable case discipline.",
     body: "Go beyond ad hoc tracking. Cypher enforces chain-of-custody logic and timeline fidelity across every handoff, so investigators inherit a fully accountable case record instead of reconstructing history after the fact. The platform is built for environments where procedural integrity directly affects legal defensibility.",
-    imageSrc: "/products/cypher.png",
+    imageSrc: withBasePath("/products/cypher.png"),
     imageAlt: "Cypher proactive chain-of-custody control",
   },
   {
@@ -69,7 +70,7 @@ const slides: FeatureSlide[] = [
     heading: "ACCELERATED TARGET DEVELOPMENT",
     subheading: "From process gaps to faster, auditable progression.",
     body: "Speed up case resolution when target development can't wait. Cypher gives investigators, supervisors, and legal counsel a synchronized view of case status, evidence, and geospatial context—cutting the friction of reconciling process gaps so teams advance actionable leads with confidence in the record.",
-    imageSrc: "/products/cypher.png",
+    imageSrc: withBasePath("/products/cypher.png"),
     imageAlt: "Cypher accelerated target development",
   },
 ];
