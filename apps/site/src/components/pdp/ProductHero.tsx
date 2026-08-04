@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@alduin/design-system";
+import { Button, SplitFlapText } from "@alduin/design-system";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type ComponentType } from "react";
 
@@ -29,9 +29,10 @@ export function ProductHero({ name, description, Mark }: ProductHeroProps) {
     <section className="relative flex items-center bg-black px-[70px] pb-20 pt-5 min-[1441px]:px-[150px]">
       <div className="flex flex-col gap-10 py-[110px]">
         <div className="flex max-w-[632px] flex-col gap-0">
-          <h1 className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]">
-            {name}
-          </h1>
+          <SplitFlapText
+            text={name}
+            className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]"
+          />
           <p className="mt-4 font-mono text-[18px] leading-[21.6px] tracking-[-0.54px] text-white">
             {description}
           </p>

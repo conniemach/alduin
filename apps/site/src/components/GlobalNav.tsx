@@ -25,19 +25,12 @@ const PRODUCT_ROUTES: Record<string, string> = {
  * Figma has this frame in a "FIXED" group, separate from the page's
  * "SCROLLS" content — it's meant to stay pinned to the top while the
  * page scrolls underneath, not scroll away with the rest of the header.
- * Its fill is a 116px-tall gradient (#1e1e1e opaque from the top down to
- * fully transparent by the bottom, not a flat color).
- * The blur behind it used to be faked as "progressive" (several stacked
- * backdrop-blur layers, each a different radius, each masked to fade out
- * over a different portion of the height) to avoid a flat blur's hard
- * seam at the header's edge. In practice each layer's backdrop-filter
- * samples whatever the layer behind it already rendered — blur included
- * — so the layers didn't just overlap, they compounded: blurring an
- * already-blurred image spreads bright pixels further each pass. Over
- * bright backgrounds (the hero globe's glowing line art) that compounding
- * washed the top of the nav out into a hazy white fog. A single blur
- * layer can't do that to itself, so this uses just one, masked to taper
- * out near the header's own bottom edge instead of stopping abruptly.
+ * No blur (tried it, tried a progressive multi-layer version of it too
+ * — both read as a distracting haze over bright content like the hero
+ * globe). Instead this just fades whatever's behind it straight to
+ * pure black — the same black as the page's own background — so
+ * content doesn't get blurred, it disappears into the page itself, and
+ * nothing here reads as its own tinted panel.
  * Page.tsx compensates for this being taken out of flow with a
  * matching `pt-[116px]` on the content below.
  */
@@ -49,17 +42,8 @@ export function GlobalNav() {
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          maskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 70%, transparent 100%)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
           backgroundImage:
-            "linear-gradient(to bottom, #1e1e1e 35%, rgba(30, 30, 30, 0) 97%)",
+            "linear-gradient(to bottom, #000000 35%, rgba(0, 0, 0, 0) 97%)",
         }}
       />
       <div className="relative flex h-full w-full items-center justify-between px-[70px] min-[1441px]:px-[150px]">

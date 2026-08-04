@@ -130,6 +130,38 @@ export function useFisheyeGlobe(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
+    // A pre-rendered soft-white radial sprite, reused for every glow via
+    // drawImage. shadowBlur runs a real blur convolution on every single
+    // call — with up to 46 pulses re-blurring every frame on a 2x-DPR
+    // canvas, that was the main source of the frame-time spikes that
+    // read as choppy rotation once nothing was left blending frames
+    // together to hide them.
+    const GLOW_SPRITE_SIZE = 128;
+    const glowSprite = document.createElement("canvas");
+    glowSprite.width = GLOW_SPRITE_SIZE;
+    glowSprite.height = GLOW_SPRITE_SIZE;
+    const glowSpriteCtx = glowSprite.getContext("2d")!;
+    const glowGradient = glowSpriteCtx.createRadialGradient(
+      GLOW_SPRITE_SIZE / 2,
+      GLOW_SPRITE_SIZE / 2,
+      0,
+      GLOW_SPRITE_SIZE / 2,
+      GLOW_SPRITE_SIZE / 2,
+      GLOW_SPRITE_SIZE / 2,
+    );
+    glowGradient.addColorStop(0, "rgba(255,255,255,1)");
+    glowGradient.addColorStop(1, "rgba(255,255,255,0)");
+    glowSpriteCtx.fillStyle = glowGradient;
+    glowSpriteCtx.fillRect(0, 0, GLOW_SPRITE_SIZE, GLOW_SPRITE_SIZE);
+
+    function drawGlow(cx: number, cy: number, radius: number, alpha: number) {
+      if (alpha <= 0 || radius <= 0) return;
+      const d = radius * 2;
+      ctx!.globalAlpha = alpha;
+      ctx!.drawImage(glowSprite, cx - radius, cy - radius, d, d);
+      ctx!.globalAlpha = 1;
+    }
+
     const continentOutlines: Vec3[][] = Object.values(
       continentOutlineData as unknown as Record<string, [number, number][]>,
     ).map((ring) => ring.map(([lon, lat]) => lonLatToXYZ(lon, lat)));
@@ -170,6 +202,16 @@ export function useFisheyeGlobe(
       }
       gridLines.push(merid);
     }
+
+    // Reused every frame instead of a fresh Map — this loop projects
+    // ~6,800 coastline vertices/frame, and re-hashing them into a new
+    // Map on top of that was extra per-frame allocation work for no
+    // reason since the bucket count is fixed.
+    const COAST_BUCKETS = 12;
+    const coastBucketArrays: number[][] = Array.from(
+      { length: COAST_BUCKETS + 1 },
+      () => [],
+    );
 
     // Signal pulses: fire from a land point (r=1) inward toward the
     // camera (r≈0.05), then respawn elsewhere — "data coming out of"
@@ -332,8 +374,7 @@ export function useFisheyeGlobe(
       // is still only ~12 stroke() calls total, not one per segment.
       ctx!.lineWidth = 1.4;
       ctx!.lineJoin = "round";
-      const COAST_BUCKETS = 12;
-      const coastBuckets = new Map<number, number[]>();
+      for (const arr of coastBucketArrays) arr.length = 0;
       for (const poly of continentOutlines) {
         const proj = poly.map((v) => project(rotatePoint(v)));
         for (let i = 0; i < proj.length - 1; i++) {
@@ -346,12 +387,12 @@ export function useFisheyeGlobe(
           const segAlpha = 0.95 * depthT((pA.theta + pB.theta) / 2);
           const bucket = Math.round(segAlpha * COAST_BUCKETS);
           if (bucket <= 0) continue;
-          const arr = coastBuckets.get(bucket) ?? [];
-          arr.push(pA.px, pA.py, pB.px, pB.py);
-          coastBuckets.set(bucket, arr);
+          coastBucketArrays[bucket]!.push(pA.px, pA.py, pB.px, pB.py);
         }
       }
-      coastBuckets.forEach((pts, bucket) => {
+      for (let bucket = 1; bucket <= COAST_BUCKETS; bucket++) {
+        const pts = coastBucketArrays[bucket]!;
+        if (pts.length === 0) continue;
         ctx!.beginPath();
         for (let i = 0; i < pts.length; i += 4) {
           ctx!.moveTo(pts[i]!, pts[i + 1]!);
@@ -359,7 +400,7 @@ export function useFisheyeGlobe(
         }
         ctx!.strokeStyle = `rgba(255,255,255,${(bucket / COAST_BUCKETS).toFixed(3)})`;
         ctx!.stroke();
-      });
+      }
 
       // pings: a quick alert flash plus a data-point callout that
       // reveals in sequence (marker -> leader line grows out -> the
@@ -425,14 +466,11 @@ export function useFisheyeGlobe(
         const overshoot = 1 + (1 - markerT) * 0.9;
         const core = pg.dpSize * (0.55 + 0.45 * markerT) * overshoot;
 
-        ctx!.save();
-        ctx!.shadowColor = "rgba(255,255,255,0.95)";
-        ctx!.shadowBlur = 7;
+        drawGlow(projC.px, projC.py, core + 6, finalAlpha * 0.95);
         ctx!.beginPath();
         ctx!.arc(projC.px, projC.py, core, 0, Math.PI * 2);
         ctx!.fillStyle = `rgba(255,255,255,${finalAlpha.toFixed(3)})`;
         ctx!.fill();
-        ctx!.restore();
 
         ctx!.lineWidth = 1;
         ctx!.strokeStyle = `rgba(255,255,255,${(finalAlpha * 0.75).toFixed(3)})`;
@@ -520,14 +558,12 @@ export function useFisheyeGlobe(
         ctx!.stroke();
 
         const headSize = 1.1 + (1 - r) * 2.2;
-        ctx!.save();
-        ctx!.shadowColor = "rgba(255,255,255,0.9)";
-        ctx!.shadowBlur = 6 + (1 - r) * 10;
+        const glowRadius = headSize + (6 + (1 - r) * 10) * 0.5;
+        drawGlow(projHead.px, projHead.py, glowRadius, pulseAlpha * 0.9);
         ctx!.beginPath();
         ctx!.arc(projHead.px, projHead.py, headSize, 0, Math.PI * 2);
         ctx!.fillStyle = `rgba(255,255,255,${pulseAlpha.toFixed(3)})`;
         ctx!.fill();
-        ctx!.restore();
       }
 
       ctx!.globalCompositeOperation = "source-over";

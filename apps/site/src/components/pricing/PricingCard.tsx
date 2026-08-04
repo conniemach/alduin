@@ -14,7 +14,12 @@ export interface PricingCardProps {
 // Every ProductMark is a fixed 280x280 scene (see product-mark.css); the
 // wrapper below scales it down and clips the overflow rather than
 // resizing it directly, same technique ProductHero uses to blow one up.
-const MARK_SCALE = 0.32;
+// Sized for a 3-up grid inside a half-width column rather than the full
+// page width — every size below (mark, name, description, price) scales
+// together at roughly the same ratio so the card still reads as the
+// same design, just denser, rather than one piece growing or shrinking
+// out of proportion with the rest.
+const MARK_SCALE = 0.25;
 const MARK_BOX_PX = 280 * MARK_SCALE;
 
 export function PricingCard({
@@ -29,7 +34,7 @@ export function PricingCard({
   return (
     <div
       className={[
-        "mark-hover-only group flex flex-col gap-6 rounded-[40px] px-9 py-10",
+        "mark-hover-only group flex flex-col gap-5 rounded-[28px] px-4 py-4",
         // Same liquid-glass treatment as ProductPricing/CenteredCta so
         // this reads as the same design system, not a bespoke card.
         "border border-white/10 bg-neutral-850/50 backdrop-blur-xl",
@@ -55,7 +60,7 @@ export function PricingCard({
         type="button"
         onClick={() => router.push(`/products/${slug}`)}
         aria-label={`View ${name} product page`}
-        className="flex flex-col items-start gap-4 text-left"
+        className="flex flex-col items-start gap-3 text-left"
       >
         <div
           className="flex shrink-0 items-center justify-center overflow-hidden"
@@ -65,16 +70,16 @@ export function PricingCard({
             <Mark />
           </div>
         </div>
-        <span className="font-display text-[28px] leading-[1] text-white transition-colors duration-300 group-hover:text-neutral-200">
+        <span className="font-logotype text-[30px] font-medium leading-[36px] tracking-[-1.5px] text-white transition-colors duration-300 group-hover:text-neutral-200">
           {name}
         </span>
       </button>
-      <p className="font-sans text-[14px] leading-[19.6px] text-neutral-200">
+      <p className="font-sans text-[13px] leading-[18.2px] text-neutral-200">
         {description}
       </p>
       <p className="font-mono text-white">
-        <span className="text-[40px] leading-[1]">{price}</span>
-        <span className="text-[16px] leading-[1] text-neutral-200">
+        <span className="text-[28px] leading-[1]">{price}</span>
+        <span className="text-[13px] leading-[1] text-neutral-200">
           /month
         </span>
       </p>

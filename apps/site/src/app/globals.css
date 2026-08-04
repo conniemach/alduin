@@ -4,6 +4,7 @@
 @import "@alduin/design-system/icon-motion.css";
 @import "@alduin/design-system/product-mark.css";
 @import "@alduin/design-system/product-scene.css";
+@import "@alduin/design-system/split-flap.css";
 
 /* Let Tailwind scan the design system's compiled output for class names
    used inside its components, so those utilities get generated here too. */

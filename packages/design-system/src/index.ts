@@ -11,6 +11,7 @@ export * from "./components/ProductFeatures";
 export * from "./components/Features";
 export * from "./components/ProductScene";
 export type { ProductSceneMode } from "./lib/product-scene-draw";
+export * from "./components/SplitFlapText";
 export * from "./components/Logo";
 export * from "./components/CobaltMark";
 export * from "./components/BoreasMark";

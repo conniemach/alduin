@@ -1,15 +1,32 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, ButtonLinkout } from "@alduin/design-system";
+import { Button, ButtonLinkout, SplitFlapText } from "@alduin/design-system";
 import { useFisheyeGlobe } from "./hero-globe/useFisheyeGlobe";
+
+// Same landing treatment as ProductHero's mark: a short delay then a
+// gentle fade/scale-in, softening the arrival instead of dropping
+// everything in at once. Unlike ProductHero (where only the mark
+// animates and the text stays put, since there's nothing else on that
+// page to sequence against), the homepage hero's globe and text share
+// this same timing so the whole section lands as one composed moment
+// rather than the globe animating in behind already-settled copy.
+const REVEAL_DELAY_MS = 300;
+const REVEAL_MS = 1400;
+const REVEAL_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 export function Hero() {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const globeContainerRef = useRef<HTMLDivElement>(null);
   useFisheyeGlobe(canvasRef, globeContainerRef);
+
+  const [revealed, setRevealed] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setRevealed(true), REVEAL_DELAY_MS);
+    return () => clearTimeout(t);
+  }, []);
 
   return (
     <section
@@ -26,6 +43,11 @@ export function Hero() {
         ref={globeContainerRef}
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 select-none"
+        style={{
+          opacity: revealed ? 1 : 0,
+          transform: `scale(${revealed ? 1 : 0.92})`,
+          transition: `opacity ${REVEAL_MS}ms ${REVEAL_EASE}, transform ${REVEAL_MS}ms ${REVEAL_EASE}`,
+        }}
       >
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
         <div className="absolute inset-0 scale-110 rounded-full bg-white/[0.03] blur-3xl" />
@@ -51,11 +73,19 @@ export function Hero() {
           }}
         />
       </div>
-      <div className="relative flex flex-col gap-10">
+      <div
+        className="relative flex flex-col gap-10"
+        style={{
+          opacity: revealed ? 1 : 0,
+          transform: `scale(${revealed ? 1 : 0.96})`,
+          transition: `opacity ${REVEAL_MS}ms ${REVEAL_EASE}, transform ${REVEAL_MS}ms ${REVEAL_EASE}`,
+        }}
+      >
         <div className="flex max-w-[632px] flex-col gap-0">
-          <h1 className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]">
-            SIGNAL OVER NOISE
-          </h1>
+          <SplitFlapText
+            text="SIGNAL OVER NOISE"
+            className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]"
+          />
           <p className="mt-4 font-mono text-[18px] leading-[21.6px] tracking-[-0.54px] text-white">
             Secure software built for teams that need clarity, resilience,
             and command-grade visibility

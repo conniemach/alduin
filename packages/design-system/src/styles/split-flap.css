@@ -1,0 +1,58 @@
+/**
+ * Split-flap text reveal (see components/SplitFlapText.tsx) — a
+ * departure-board style character flip. Deliberately has no boxed
+ * tiles or board chrome: each character is sized in em off the host
+ * element's own font-size, so it reads as the real headline flipping
+ * into place, not a widget dropped on top of it. Two half-height
+ * clipping windows per character (top/bottom) plus one falling "leaf"
+ * sell the mechanical flip; a drop-shadow on the leaf is the only
+ * depth cue, since there's no tile surface to shade.
+ */
+
+.split-flap-tile {
+  position: relative;
+  display: inline-block;
+  height: 1.1em;
+  vertical-align: top;
+  perspective: 5em;
+}
+
+.split-flap-spacer {
+  visibility: hidden;
+  display: inline-block;
+}
+
+.split-flap-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+}
+
+.split-flap-top {
+  top: 0;
+}
+
+.split-flap-bottom {
+  bottom: 0;
+}
+
+.split-flap-bottom .split-flap-glyph {
+  margin-top: -0.55em;
+}
+
+.split-flap-leaf {
+  transform-origin: bottom;
+  backface-visibility: hidden;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+  z-index: 2;
+}
+
+.split-flap-glyph {
+  display: block;
+  width: 100%;
+  height: 1.1em;
+  line-height: 1.1em;
+  text-align: center;
+}
