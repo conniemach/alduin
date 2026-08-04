@@ -25,6 +25,16 @@ function Field({
 }
 
 const COMPANY_SIZES = ["1–50", "51–200", "201–1,000", "1,000+"];
+const INDUSTRIES = [
+  "Government / Public Sector",
+  "Defense & Intelligence",
+  "Law Enforcement",
+  "Corporate Security",
+  "Travel & Executive Protection",
+  "Insurance",
+  "Critical Infrastructure",
+  "Other",
+];
 
 // No chevron icon exists in the design system yet — a native <select>'s own
 // arrow can't be restyled to match the glass inputs, so this draws a plain
@@ -52,11 +62,52 @@ function Row({ children }: { children: ReactNode }) {
   return <div className="flex flex-col gap-5 min-[701px]:flex-row">{children}</div>;
 }
 
+function SelectField({
+  label,
+  placeholder,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  placeholder: string;
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <label className="flex flex-1 flex-col gap-2">
+      <span className="font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-white">
+        {label}
+      </span>
+      <div className="relative">
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          required
+          className={`${FIELD_CLASSNAME} appearance-none pr-8 ${value ? "" : "text-neutral-500"}`}
+        >
+          <option value="" disabled hidden>
+            {placeholder}
+          </option>
+          {options.map((option) => (
+            <option key={option} value={option} className="bg-neutral-900 text-white">
+              {option}
+            </option>
+          ))}
+        </select>
+        <ChevronIcon />
+      </div>
+    </label>
+  );
+}
+
 export function DemoForm() {
   const [fullName, setFullName] = useState("");
   const [workEmail, setWorkEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [companySize, setCompanySize] = useState("");
+  const [industry, setIndustry] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -82,14 +133,14 @@ export function DemoForm() {
       }}
       className="flex w-full flex-col gap-5 rounded-[20px] border border-white/15 p-6"
     >
+      <Field
+        label="Full name"
+        placeholder="John Smith"
+        value={fullName}
+        onChange={(e) => setFullName(e.target.value)}
+        required
+      />
       <Row>
-        <Field
-          label="Full name"
-          placeholder="John Smith"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
-        />
         <Field
           label="Work email"
           type="email"
@@ -98,8 +149,6 @@ export function DemoForm() {
           onChange={(e) => setWorkEmail(e.target.value)}
           required
         />
-      </Row>
-      <Row>
         <Field
           label="Company name"
           placeholder="Smith Co."
@@ -107,33 +156,22 @@ export function DemoForm() {
           onChange={(e) => setCompanyName(e.target.value)}
           required
         />
-        <label className="flex flex-1 flex-col gap-2">
-          <span className="font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-white">
-            Company size
-          </span>
-          <div className="relative">
-            <select
-              value={companySize}
-              onChange={(e) => setCompanySize(e.target.value)}
-              required
-              className={`${FIELD_CLASSNAME} appearance-none pr-8 ${companySize ? "" : "text-neutral-500"}`}
-            >
-              <option value="" disabled hidden>
-                Select size
-              </option>
-              {COMPANY_SIZES.map((size) => (
-                <option
-                  key={size}
-                  value={size}
-                  className="bg-neutral-900 text-white"
-                >
-                  {size}
-                </option>
-              ))}
-            </select>
-            <ChevronIcon />
-          </div>
-        </label>
+      </Row>
+      <Row>
+        <SelectField
+          label="Company size"
+          placeholder="Select size"
+          options={COMPANY_SIZES}
+          value={companySize}
+          onChange={setCompanySize}
+        />
+        <SelectField
+          label="Industry"
+          placeholder="Select industry"
+          options={INDUSTRIES}
+          value={industry}
+          onChange={setIndustry}
+        />
       </Row>
       <label className="flex flex-col gap-2">
         <span className="font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-white">

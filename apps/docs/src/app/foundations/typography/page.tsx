@@ -7,8 +7,8 @@ const styles = [
   {
     name: "Display",
     usage: "Hero headlines only",
-    spec: "Manrope · 80/104",
-    className: "font-display text-[64px] leading-[1.1]",
+    spec: "Science Gothic · 52/48/28 (desktop/tablet/mobile)",
+    className: "font-science-gothic text-[28px] md:text-[48px] lg:text-[52px] leading-[1.1]",
     sample: "Header",
   },
   {
@@ -89,16 +89,19 @@ export default function TypographyPage() {
           A note on the Display style
         </h2>
         <p className="mt-3 font-sans text-[15px] leading-[24px] text-neutral-700">
-          The Figma file specifies &ldquo;Damascus&rdquo; for the hero
-          headline — a font built into macOS that isn&rsquo;t available on
-          the web. Manrope stands in for it here: a similar clean,
-          geometric feel that actually renders for site visitors.
+          Display is responsive rather than a single fixed size: 52px on
+          desktop, shrinking to 48px at tablet widths and 28px at mobile
+          widths.
         </p>
       </div>
 
       <DeveloperSection>
         <p className="font-sans text-[14px] leading-[22px] text-neutral-700">
           Font families are available as Tailwind utilities:{" "}
+          <code className="rounded bg-neutral-900/5 px-1 py-0.5 font-mono text-[13px]">
+            font-science-gothic
+          </code>
+          ,{" "}
           <code className="rounded bg-neutral-900/5 px-1 py-0.5 font-mono text-[13px]">
             font-display
           </code>

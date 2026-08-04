@@ -1,7 +1,6 @@
 import {
   CobaltMark,
   BoreasMark,
-  CypherMark,
   NightwatchMark,
   Icon,
 } from "@alduin/design-system";
@@ -39,14 +38,7 @@ const PRODUCTS: PricingCardProps[] = [
     price: "$2,000",
     Mark: BoreasMark,
   },
-  {
-    slug: "cypher",
-    name: "CYPHER",
-    description:
-      "Person-of-interest workflows and case files, unified into one governed, legally defensible record.",
-    price: "$3,500",
-    Mark: CypherMark,
-  },
+  // Cypher is hidden for now — see GlobalNav.tsx.
   {
     slug: "nightwatch",
     name: "NIGHTWATCH",
@@ -67,7 +59,7 @@ export default function PricingPage() {
             <section className="flex flex-col gap-[50px] pb-20 pt-20">
               <div className="flex flex-col gap-4">
                 <p className="font-mono text-[32px] leading-[38.4px] text-white">
-                  Four products. One predictable bill.
+                  Three products. One predictable bill.
                 </p>
                 <p className="font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-white">
                   Predictable budgeting with zero seat-licensing
@@ -87,7 +79,7 @@ export default function PricingPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-5">
+              <div className="grid grid-cols-3 gap-5">
                 {PRODUCTS.map((product) => (
                   <PricingCard key={product.slug} {...product} />
                 ))}

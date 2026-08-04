@@ -18,8 +18,8 @@ export default function RequestADemoPage() {
                   "radial-gradient(60% 60% at 75% 35%, rgba(39, 39, 39, 0.8), rgba(0, 0, 0, 0) 70%)",
               }}
             />
-            <div className="relative -mt-[24px] flex flex-1 flex-col gap-5">
-              <h1 className="font-display text-[80px] leading-[104px] text-white">
+            <div className="relative flex flex-1 flex-col gap-5">
+              <h1 className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]">
                 Secure What Matters Most
               </h1>
               <p className="font-mono text-[18px] leading-[21.6px] tracking-[-0.54px] text-white">

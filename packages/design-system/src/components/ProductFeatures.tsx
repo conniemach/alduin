@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { Tab } from "./Tab";
+import { ProductScene } from "./ProductScene";
+import type { ProductSceneMode } from "../lib/product-scene-draw";
 
 /**
  * Figma "Product Features (Desktop)" / "(Mobile)" component set.
@@ -27,7 +29,9 @@ export interface ProductFeatureItem {
   tabLabel: string;
   eyebrow: string;
   description: string;
-  imageSrc: string;
+  /** A live ProductScene animation, keyed to the product it represents. Takes priority over imageSrc when set. */
+  scene?: ProductSceneMode;
+  imageSrc?: string;
   /** Swapped in via a `(max-width: 375px)` source when provided; falls back to imageSrc otherwise. */
   mobileImageSrc?: string;
   imageAlt: string;
@@ -173,6 +177,25 @@ export function ProductFeatures({
             const item = items[slotItem[slot]];
             if (!item) return null;
             const isFront = slot === activeSlot;
+            const crossfadeClassName = clsx(
+              "absolute inset-0 size-full transition-opacity duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
+              isFront ? "opacity-100" : "pointer-events-none opacity-0",
+              isFront && item.onLearnMore && "cursor-pointer",
+            );
+            if (item.scene) {
+              return (
+                <div
+                  key={slot}
+                  role={item.onLearnMore ? "button" : undefined}
+                  aria-label={isFront ? item.imageAlt : undefined}
+                  aria-hidden={!isFront}
+                  onClick={isFront ? item.onLearnMore : undefined}
+                  className={crossfadeClassName}
+                >
+                  <ProductScene mode={item.scene} className="size-full" />
+                </div>
+              );
+            }
             return (
               <picture key={slot}>
                 {item.mobileImageSrc && (
@@ -184,11 +207,7 @@ export function ProductFeatures({
                   alt={isFront ? item.imageAlt : ""}
                   aria-hidden={!isFront}
                   onClick={isFront ? item.onLearnMore : undefined}
-                  className={clsx(
-                    "absolute inset-0 size-full object-cover transition-opacity duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]",
-                    isFront ? "opacity-100" : "pointer-events-none opacity-0",
-                    isFront && item.onLearnMore && "cursor-pointer",
-                  )}
+                  className={clsx(crossfadeClassName, "object-cover")}
                 />
               </picture>
             );

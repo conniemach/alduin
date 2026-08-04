@@ -8,7 +8,6 @@ import { BenefitsSection } from "@/components/BenefitsSection";
 import { CenteredCta } from "@/components/CenteredCta";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { withBasePath } from "@/lib/base-path";
 
 export default function Home() {
   const router = useRouter();
@@ -20,8 +19,8 @@ export default function Home() {
       eyebrow: "COBALT",
       description:
         "The weather intelligence command center for high-tempo operational planning, risk awareness, and mission timing.",
-      imageSrc: withBasePath("/products/cobalt.png"),
-      imageAlt: "Cobalt product screenshot",
+      scene: "cobalt",
+      imageAlt: "Cobalt command map, showing fused weather, seismic, volcanic, marine, and infrastructure alerts",
       onLearnMore: () => router.push("/products/cobalt"),
     },
     {
@@ -30,29 +29,20 @@ export default function Home() {
       eyebrow: "BOREAS",
       description:
         "Command-grade visibility into every traveler, route, and risk signal—before exposure becomes incident.",
-      imageSrc: withBasePath("/products/boreas.png"),
-      imageAlt: "Boreas product screenshot",
+      scene: "boreas",
+      imageAlt: "Boreas exposure map, showing live flight paths and traveler locations against threat zones",
       onLearnMore: () => router.push("/products/boreas"),
     },
-    {
-      id: "cypher",
-      tabLabel: "CYPHER",
-      eyebrow: "CYPHER",
-      description:
-        "Person-of-interest workflows, case files, and geospatial targeting, unified into one governed record built for legal defensibility.",
-      imageSrc: withBasePath("/products/cypher.png"),
-      imageAlt: "Cypher product screenshot",
-      onLearnMore: () => router.push("/products/cypher"),
-    },
+    // Cypher is hidden for now (not deleted — the PDP and design-system
+    // pieces still exist) — see the ProductsMenu/pricing/about hides too.
     {
       id: "nightwatch",
       tabLabel: "NIGHTWATCH",
       eyebrow: "NIGHTWATCH",
       description:
         "Every trusted source, ranked and delivered as a command-ready brief before the first meeting starts.",
-      imageSrc: withBasePath("/products/nightwatch.png"),
-      mobileImageSrc: withBasePath("/products/nightwatch-mobile.png"),
-      imageAlt: "Nightwatch product screenshot",
+      scene: "nightwatch",
+      imageAlt: "Nightwatch briefing pipeline, showing ranked sources flowing into a daily brief",
       onLearnMore: () => router.push("/products/nightwatch"),
     },
   ];

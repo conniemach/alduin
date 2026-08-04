@@ -14,8 +14,8 @@ const styles: {
 }[] = [
   {
     name: "Display",
-    spec: "Manrope 400 · 80/104 · substitutes Figma's Damascus",
-    className: "font-display text-[80px] leading-[104px]",
+    spec: "Science Gothic 400 · 52/48/28 (desktop/tablet/mobile)",
+    className: "font-science-gothic text-[28px] md:text-[48px] lg:text-[52px] leading-[1.1]",
     sample: "Header",
   },
   {

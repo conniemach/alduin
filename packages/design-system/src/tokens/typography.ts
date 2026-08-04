@@ -14,14 +14,23 @@ export const fontFamily = {
   sans: ["42dot Sans", "ui-sans-serif", "system-ui", "sans-serif"],
   logotype: ["DM Sans", "ui-sans-serif", "system-ui", "sans-serif"],
   wordmark: ["Space Grotesk", "ui-sans-serif", "system-ui", "sans-serif"],
+  scienceGothic: ["Science Gothic", "ui-sans-serif", "system-ui", "sans-serif"],
 } as const;
 
 export const textStyles = {
+  /**
+   * Reference style shown on the Foundations > Typography docs page.
+   * Responsive by breakpoint rather than a single fixed size.
+   */
   display: {
-    fontFamily: fontFamily.display,
+    fontFamily: fontFamily.scienceGothic,
     fontWeight: 400,
-    fontSize: "80px",
-    lineHeight: "104px",
+    fontSize: {
+      desktop: "52px",
+      tablet: "48px",
+      mobile: "28px",
+    },
+    lineHeight: "1.1",
     letterSpacing: "0px",
   },
   headingLg: {

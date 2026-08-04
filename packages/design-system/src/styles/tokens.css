@@ -33,4 +33,6 @@
   /* Wordmark font confirmed from alduin.org's live header (computed
      styles: Space Grotesk, 700, uppercase, 0.16em tracking). */
   --font-wordmark: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  /* Display style reference font (Foundations > Typography docs). */
+  --font-science-gothic: "Science Gothic", ui-sans-serif, system-ui, sans-serif;
 }

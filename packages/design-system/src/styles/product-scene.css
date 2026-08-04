@@ -1,0 +1,192 @@
+/**
+ * Chrome for ProductScene (see components/ProductScene.tsx): the ambient
+ * glow blobs, glass status card, pulsing badge chip, and stage stepper
+ * layered over each product's live canvas. Ported from the "Product
+ * Visual Concepts v7" exploration — its own small stylesheet, same
+ * rationale as product-mark.css, since it's glass/blur/glow chrome
+ * Tailwind utilities don't reach for cleanly.
+ */
+
+:root {
+  --product-scene-good: #6fae82;
+  --product-scene-warn: #cf9f52;
+  --product-scene-crit: #c46a5e;
+  --product-scene-glow-a: radial-gradient(circle, rgba(70, 170, 90, 0.26), transparent 70%);
+  --product-scene-glow-b: radial-gradient(circle, rgba(50, 140, 75, 0.16), transparent 70%);
+}
+
+.product-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #050506;
+}
+
+.product-scene-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.product-scene-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+.product-scene-card {
+  position: absolute;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.015));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 10px 12px;
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+.product-scene-card-title {
+  font-size: 9px;
+  letter-spacing: 0.09em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 7px;
+}
+
+.product-scene-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+  padding: 3px 0;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+.product-scene-row-name {
+  flex: 1;
+  color: rgba(255, 255, 255, 0.85);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.product-scene-row-sub {
+  color: rgba(255, 255, 255, 0.4);
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 9.5px;
+}
+
+.product-scene-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: none;
+}
+.product-scene-dot-good { background: var(--product-scene-good); box-shadow: 0 0 6px rgba(111, 174, 130, 0.85); }
+.product-scene-dot-warn { background: var(--product-scene-warn); box-shadow: 0 0 6px rgba(207, 159, 82, 0.85); }
+.product-scene-dot-crit { background: var(--product-scene-crit); box-shadow: 0 0 6px rgba(196, 106, 94, 0.85); }
+
+.product-scene-avatar {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  flex: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 7px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.product-scene-badge {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 5px 11px 5px 8px;
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  animation: product-scene-chip-float 3s ease-in-out infinite;
+}
+@keyframes product-scene-chip-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.product-scene-badge .product-scene-dot {
+  animation: product-scene-chip-dot-pulse 1.6s ease-in-out infinite;
+}
+@keyframes product-scene-chip-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.product-scene-stepper {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.product-scene-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.product-scene-step-node {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.4);
+  flex: none;
+}
+.product-scene-step-done .product-scene-step-node {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.product-scene-step-active .product-scene-step-node {
+  background: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+.product-scene-step-label {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.4);
+}
+.product-scene-step-active .product-scene-step-label,
+.product-scene-step-done .product-scene-step-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+.product-scene-step-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 2px;
+}
+.product-scene-step-line-done {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-scene-badge,
+  .product-scene-badge .product-scene-dot {
+    animation: none !important;
+  }
+}
