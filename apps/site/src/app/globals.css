@@ -39,3 +39,17 @@ body {
 .mark-hover-only:hover .product-mark-edge-left::after {
   animation-play-state: running;
 }
+
+/* About hero: signal rings broadcasting outward from the Alduin mark
+   (see AnimatedLogoMark) — the same "signal" motif as the product-mark
+   glow and the hero globe's pulses, instead of a generic loading ring. */
+@keyframes about-logo-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}

@@ -12,7 +12,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { CenteredCta } from "@/components/CenteredCta";
 import { ProductMarkLink } from "@/components/about/ProductMarkLink";
 import { TeamGrid, type TeamGridItem } from "@/components/about/TeamGrid";
-import { SystemClock } from "@/components/about/SystemClock";
+import { AnimatedLogoMark } from "@/components/about/AnimatedLogoMark";
 
 // Every section intro is the same shape (one-line headline, one-sentence
 // description, stacked in a single narrow column) so the page reads as
@@ -124,8 +124,8 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="hidden pt-[110px] min-[901px]:block">
-            <SystemClock />
+          <div className="hidden flex-1 items-center justify-center self-stretch min-[901px]:flex">
+            <AnimatedLogoMark />
           </div>
         </section>
 
