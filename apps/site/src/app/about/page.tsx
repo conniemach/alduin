@@ -1,83 +1,30 @@
-import {
-  CobaltMark,
-  BoreasMark,
-  NightwatchMark,
-  EarthSpinIcon,
-  ChartDrawIcon,
-  AccountPulseIcon,
-} from "@alduin/design-system";
+import { CobaltMark, BoreasMark, NightwatchMark, SplitFlapText } from "@alduin/design-system";
 import { GlobalNav } from "@/components/GlobalNav";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { CenteredCta } from "@/components/CenteredCta";
 import { ProductMarkLink } from "@/components/about/ProductMarkLink";
-import { TeamGrid, type TeamGridItem } from "@/components/about/TeamGrid";
 import { AnimatedLogoMark } from "@/components/about/AnimatedLogoMark";
+import { ProblemPhilosophy } from "@/components/about/ProblemPhilosophy";
+import { RoleTicker } from "@/components/about/RoleTicker";
 
-// Every section intro is the same shape (one-line headline, one-sentence
-// description, stacked in a single narrow column) so the page reads as
-// one consistent system rather than a different layout invented per
-// section — sized to match the headline treatment used everywhere else
-// on the site (BenefitsSection, ProductBenefits, CenteredCta).
-function SectionIntro({
-  headline,
-  description,
-}: {
-  headline: string;
-  description: string;
-}) {
+// Every section headline is the same shape (short mono label, sized to
+// match the treatment used everywhere else on the site—BenefitsSection,
+// ProductBenefits, CenteredCta) so the page reads as one consistent
+// system rather than a different layout invented per section.
+function SectionHeadline({ children }: { children: string }) {
   return (
-    <div className="flex max-w-[600px] flex-col gap-4">
-      <p className="font-mono text-[32px] leading-[38.4px] text-white">
-        {headline}
-      </p>
-      <p className="font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
-        {description}
-      </p>
-    </div>
+    <p className="font-mono text-[32px] leading-[38.4px] text-white">
+      {children}
+    </p>
   );
 }
 
-const TEAM: TeamGridItem[] = [
-  {
-    Icon: EarthSpinIcon,
-    label: "FIELD INTELLIGENCE",
-    description:
-      "Analysts and former operators who shape what “useful” actually means in the field, not just in a demo.",
-    animationMs: 2200,
-  },
-  {
-    Icon: ChartDrawIcon,
-    label: "PLATFORM ENGINEERING",
-    description:
-      "The team turning fragmented feeds and formats into one reliable, governed data layer.",
-    animationMs: 850,
-  },
-  {
-    Icon: AccountPulseIcon,
-    label: "CUSTOMER OPERATIONS",
-    description:
-      "Hands-on onboarding and support from people who understand what's actually at stake in your queue.",
-    animationMs: 680,
-  },
-];
-
-const VALUES = [
-  {
-    label: "OPERATOR-LED",
-    description:
-      "Every workflow is shaped by people who've actually run the incident, worked the case, or briefed the principal—not guessed at it from a whiteboard.",
-  },
-  {
-    label: "SIGNAL OVER NOISE",
-    description:
-      "We'd rather ship one feed that's actually trustworthy than ten that each say something slightly different. Less to reconcile, more to act on.",
-  },
-  {
-    label: "BUILT TO BE TRUSTED",
-    description:
-      "Chain of custody, audit trails, and governed records aren't an afterthought—they're what makes a decision defensible after the fact.",
-  },
+const FOUNDING_DOMAINS = [
+  "CORPORATE SECURITY",
+  "PROTECTIVE INTELLIGENCE",
+  "CRISIS MANAGEMENT",
+  "GLOBAL OPERATIONS",
 ];
 
 const PRODUCTS = [
@@ -131,57 +78,77 @@ export default function AboutPage() {
 
         <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
           <ScrollReveal>
-            <section className="flex flex-col gap-16 pb-24 pt-20">
-              <SectionIntro
-                headline="The team"
-                description="Alduin is built by a small, cross-disciplinary group who've sat on both sides of the tools we ship—as operators and as engineers."
-              />
-              <TeamGrid items={TEAM} />
-            </section>
-          </ScrollReveal>
-
-          <ScrollReveal>
-            <section className="flex flex-col gap-16 pb-24 pt-20">
-              <SectionIntro
-                headline="What we believe"
-                description="None of this works if the platform itself becomes one more thing to manage. These are the principles we hold ourselves to."
-              />
-
-              <div className="flex max-w-[760px] flex-col">
-                {VALUES.map((v, i) => (
-                  <div
-                    key={v.label}
-                    className="flex gap-8 border-t border-white/10 py-8 first:pt-0"
+            <section className="flex flex-col gap-10 pb-24 pt-20">
+              <SectionHeadline>Who we are</SectionHeadline>
+              <p className="max-w-[720px] font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
+                Alduin was founded by security and intelligence
+                professionals who spent years working in private and
+                public sector operations centers—supporting corporate
+                security, protective intelligence, crisis management, and
+                global operations.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {FOUNDING_DOMAINS.map((domain) => (
+                  <span
+                    key={domain}
+                    className="rounded-full border border-white/15 px-4 py-2 font-mono text-[13px] tracking-[0.04em] text-neutral-300 transition-colors duration-300 ease-out hover:border-white/40 hover:text-white"
                   >
-                    <span className="w-8 flex-none font-mono text-[14px] leading-[21px] text-neutral-500">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <div className="flex flex-col gap-2">
-                      <p className="font-mono text-[16px] leading-[19.2px] text-white">
-                        {v.label}
-                      </p>
-                      <p className="font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-400">
-                        {v.description}
-                      </p>
-                    </div>
-                  </div>
+                    {domain}
+                  </span>
                 ))}
               </div>
             </section>
           </ScrollReveal>
 
           <ScrollReveal>
-            <section className="flex flex-col gap-16 pb-24 pt-20">
-              <SectionIntro
-                headline="Three products, one team."
-                description="Cobalt, Boreas, and Nightwatch each solve a specific operational problem, but they share the same data fabric and the same design language throughout."
-              />
+            <section className="flex flex-col gap-10 pb-24 pt-20">
+              <ProblemPhilosophy />
+            </section>
+          </ScrollReveal>
 
-              <div className="grid grid-cols-3 gap-5">
-                {PRODUCTS.map((product) => (
-                  <ProductMarkLink key={product.slug} {...product} />
-                ))}
+          <ScrollReveal>
+            <section className="flex flex-col gap-10 pb-24 pt-20">
+              <SectionHeadline>
+                Built for the way operators work
+              </SectionHeadline>
+              <p className="max-w-[760px] font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
+                Every product is designed around the way intelligence
+                analysts, GSOC operators, investigators, emergency
+                managers, and security professionals actually work.
+                Whether monitoring severe weather, tracking geopolitical
+                developments, managing investigations, producing
+                intelligence briefings, or coordinating crisis response,
+                the objective is the same: deliver the right information
+                at the right time, in a format that supports confident
+                decision-making.
+              </p>
+
+              <RoleTicker />
+
+              <div className="flex flex-col gap-8 pt-6">
+                <span className="font-mono text-[12px] tracking-[0.08em] text-neutral-500">
+                  ACROSS THE PLATFORM
+                </span>
+                <div className="grid grid-cols-3 gap-5">
+                  {PRODUCTS.map((product) => (
+                    <ProductMarkLink key={product.slug} {...product} />
+                  ))}
+                </div>
               </div>
+            </section>
+          </ScrollReveal>
+
+          <ScrollReveal>
+            <section className="flex flex-col items-center gap-10 pb-16 pt-24 text-center">
+              <p className="max-w-[600px] font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
+                Alduin is built by operators, for operators—guided by the
+                same principle that inspired the company in the first
+                place.
+              </p>
+              <SplitFlapText
+                text="SIGNAL OVER NOISE"
+                className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[36px] lg:text-[42px]"
+              />
             </section>
           </ScrollReveal>
 
