@@ -37,7 +37,7 @@ export function Hero() {
       // keeps the headline at the same visual position it was at
       // before: the negative margin and the added padding cancel out,
       // so this doesn't change layout for anything below the hero.
-      className="relative -mt-[116px] flex min-h-[650px] flex-col justify-center overflow-hidden bg-black px-[70px] pb-[40px] pt-[24px] min-[1441px]:px-[150px]"
+      className="relative -mt-[116px] flex min-h-[650px] flex-col justify-center overflow-hidden bg-black pb-[40px] pt-[24px]"
     >
       <div
         ref={globeContainerRef}
@@ -73,31 +73,33 @@ export function Hero() {
           }}
         />
       </div>
-      <div
-        className="relative flex flex-col gap-10"
-        style={{
-          opacity: revealed ? 1 : 0,
-          transform: `scale(${revealed ? 1 : 0.96})`,
-          transition: `opacity ${REVEAL_MS}ms ${REVEAL_EASE}, transform ${REVEAL_MS}ms ${REVEAL_EASE}`,
-        }}
-      >
-        <div className="flex max-w-[632px] flex-col gap-0">
-          <SplitFlapText
-            text="SIGNAL OVER NOISE"
-            className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]"
-          />
-          <p className="mt-4 font-mono text-[18px] leading-[21.6px] tracking-[-0.54px] text-white">
-            Secure software built for teams that need clarity, resilience,
-            and command-grade visibility
-          </p>
-        </div>
-        <div className="flex items-center gap-5">
-          <Button onClick={() => router.push("/request-a-demo")}>
-            Request a Demo
-          </Button>
-          <ButtonLinkout onClick={() => router.push("/pricing")}>
-            View Pricing
-          </ButtonLinkout>
+      <div className="relative mx-auto w-full max-w-[1440px] px-[70px] min-[1440px]:px-[150px]">
+        <div
+          className="flex flex-col gap-10"
+          style={{
+            opacity: revealed ? 1 : 0,
+            transform: `scale(${revealed ? 1 : 0.96})`,
+            transition: `opacity ${REVEAL_MS}ms ${REVEAL_EASE}, transform ${REVEAL_MS}ms ${REVEAL_EASE}`,
+          }}
+        >
+          <div className="flex max-w-[632px] flex-col gap-0">
+            <SplitFlapText
+              text="SIGNAL OVER NOISE"
+              className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]"
+            />
+            <p className="mt-4 font-mono text-[18px] leading-[21.6px] tracking-[-0.54px] text-white">
+              Secure software built for teams that need clarity, resilience,
+              and command-grade visibility
+            </p>
+          </div>
+          <div className="flex items-center gap-5">
+            <Button onClick={() => router.push("/request-a-demo")}>
+              Request a Demo
+            </Button>
+            <ButtonLinkout onClick={() => router.push("/pricing")}>
+              View Pricing
+            </ButtonLinkout>
+          </div>
         </div>
       </div>
     </section>

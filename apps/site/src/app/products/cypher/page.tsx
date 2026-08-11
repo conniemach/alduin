@@ -85,7 +85,7 @@ export default function CypherPage() {
           description="Person-of-interest workflows, case files, and geospatial targeting, unified into one governed record built for legal defensibility."
           Mark={CypherMark}
         />
-        <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
+        <div className="mx-auto flex max-w-[1440px] flex-col px-[70px] min-[1440px]:px-[150px]">
           <ScrollReveal>
             <div className="mt-[60px]">
               <ProductBenefits

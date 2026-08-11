@@ -54,22 +54,18 @@ export default function PricingPage() {
     <main className="min-h-screen bg-neutral-900">
       <GlobalNav />
       <div className="pt-[116px]">
-        <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
+        <div className="mx-auto flex max-w-[1440px] flex-col px-[70px] min-[1440px]:px-[150px]">
           <ScrollReveal>
-            {/* Same two-column shape as request-a-demo, but not an even
-                50/50 split: the left column is 10% narrower than an even
-                split (45% vs. 50%) so the card grid on the right — the
-                thing that actually needs the room — gets that space
-                instead. min-[901px]-scoped so it doesn't constrain
-                height in the stacked flex-col layout below that. */}
-            <section className="flex flex-col gap-10 pb-20 pt-20 min-[901px]:flex-row min-[901px]:items-start min-[901px]:gap-[24px]">
-              <div className="flex flex-col gap-6 min-[901px]:basis-[45%]">
+            {/* Hero: heading + included list, full width now that the
+                product grid sits in its own row below rather than beside
+                it. The included list runs horizontally once there's a
+                full-width row to spread across, and stacks on mobile. */}
+            <section className="flex flex-col gap-10 pb-16 pt-20">
+              <div className="flex flex-col gap-6">
                 <p className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]">
-                  Three products.
-                  <br />
-                  One predictable bill.
+                  Three products. One predictable bill.
                 </p>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 min-[901px]:flex-row min-[901px]:gap-8">
                   {INCLUDED.map((item) => (
                     <div
                       key={item}
@@ -82,7 +78,7 @@ export default function PricingPage() {
                 </div>
               </div>
 
-              <div className="grid flex-1 grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-4">
                 {PRODUCTS.map((product) => (
                   <PricingCard key={product.slug} {...product} />
                 ))}

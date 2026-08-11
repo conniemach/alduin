@@ -26,7 +26,7 @@ export function ProductHero({ name, description, Mark }: ProductHeroProps) {
   const router = useRouter();
 
   return (
-    <section className="relative flex items-center bg-black px-[70px] pb-20 pt-5 min-[1441px]:px-[150px]">
+    <section className="relative mx-auto flex max-w-[1440px] items-center bg-black px-[70px] pb-20 pt-5 min-[1440px]:px-[150px]">
       <div className="flex flex-col gap-10 py-[110px]">
         <div className="flex max-w-[632px] flex-col gap-0">
           <SplitFlapText

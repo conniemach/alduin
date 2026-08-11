@@ -85,7 +85,7 @@ export default function BoreasPage() {
           description="Command-grade visibility into every traveler, route, and risk signal—before exposure becomes incident."
           Mark={BoreasMark}
         />
-        <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
+        <div className="mx-auto flex max-w-[1440px] flex-col px-[70px] min-[1440px]:px-[150px]">
           <ScrollReveal>
             <div className="mt-[60px]">
               <ProductBenefits

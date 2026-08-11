@@ -9,7 +9,7 @@ export default function RequestADemoPage() {
       <GlobalNav />
       <div className="pt-[116px]">
         <ScrollReveal>
-          <section className="relative flex flex-col gap-10 overflow-hidden bg-black px-[70px] pb-20 pt-[80px] min-[1441px]:px-[150px] min-[901px]:flex-row min-[901px]:items-start min-[901px]:gap-[64px] min-[901px]:pt-[140px]">
+          <section className="relative mx-auto flex max-w-[1440px] flex-col gap-10 overflow-hidden bg-black px-[70px] pb-20 pt-[80px] min-[1440px]:px-[150px] min-[901px]:flex-row min-[901px]:items-start min-[901px]:gap-[64px] min-[901px]:pt-[140px]">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0"

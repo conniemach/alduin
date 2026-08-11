@@ -86,7 +86,7 @@ export default function CobaltPage() {
           description="The weather intelligence command center for high-tempo operational planning, risk awareness, and mission timing."
           Mark={CobaltMark}
         />
-        <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
+        <div className="mx-auto flex max-w-[1440px] flex-col px-[70px] min-[1440px]:px-[150px]">
           <ScrollReveal>
             <div className="mt-[60px]">
               <ProductBenefits

@@ -46,7 +46,7 @@ export function GlobalNav() {
             "linear-gradient(to bottom, #000000 35%, rgba(0, 0, 0, 0) 97%)",
         }}
       />
-      <div className="relative flex h-full w-full items-center justify-between px-[70px] min-[1441px]:px-[150px]">
+      <div className="relative mx-auto flex h-full w-full max-w-[1440px] items-center justify-between px-[70px] min-[1440px]:px-[150px]">
         <button
           type="button"
           onClick={() => router.push("/")}

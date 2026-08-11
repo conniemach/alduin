@@ -14,11 +14,10 @@ export interface PricingCardProps {
 // Every ProductMark is a fixed 280x280 scene (see product-mark.css); the
 // wrapper below scales it down and clips the overflow rather than
 // resizing it directly, same technique ProductHero uses to blow one up.
-// Sized for a 3-up grid inside a half-width column rather than the full
-// page width — every size below (mark, name, description, price) scales
-// together at roughly the same ratio so the card still reads as the
-// same design, just denser, rather than one piece growing or shrinking
-// out of proportion with the rest.
+// Sized for a 3-up grid across the full page width — every size below
+// (mark, name, description, price) scales together at roughly the same
+// ratio so the card still reads as the same design, just denser, rather
+// than one piece growing or shrinking out of proportion with the rest.
 const MARK_SCALE = 0.25;
 const MARK_BOX_PX = 280 * MARK_SCALE;
 

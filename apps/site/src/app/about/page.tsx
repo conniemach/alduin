@@ -1,12 +1,10 @@
-import { CobaltMark, BoreasMark, NightwatchMark, SplitFlapText } from "@alduin/design-system";
+import { SplitFlapText } from "@alduin/design-system";
 import { GlobalNav } from "@/components/GlobalNav";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { CenteredCta } from "@/components/CenteredCta";
-import { ProductMarkLink } from "@/components/about/ProductMarkLink";
-import { AnimatedLogoMark } from "@/components/about/AnimatedLogoMark";
 import { ProblemPhilosophy } from "@/components/about/ProblemPhilosophy";
-import { RoleTicker } from "@/components/about/RoleTicker";
+import { FocusAreaGrid } from "@/components/about/FocusAreaGrid";
 
 // Every section headline is the same shape (short mono label, sized to
 // match the treatment used everywhere else on the site—BenefitsSection,
@@ -20,44 +18,12 @@ function SectionHeadline({ children }: { children: string }) {
   );
 }
 
-const FOUNDING_DOMAINS = [
-  "CORPORATE SECURITY",
-  "PROTECTIVE INTELLIGENCE",
-  "CRISIS MANAGEMENT",
-  "GLOBAL OPERATIONS",
-];
-
-const PRODUCTS = [
-  {
-    slug: "cobalt",
-    name: "COBALT",
-    description:
-      "The weather intelligence command center for high-tempo operational planning, risk awareness, and mission timing.",
-    Mark: CobaltMark,
-  },
-  {
-    slug: "boreas",
-    name: "BOREAS",
-    description:
-      "Command-grade visibility into every traveler, route, and risk signal—before exposure becomes incident.",
-    Mark: BoreasMark,
-  },
-  // Cypher is hidden for now — see GlobalNav.tsx.
-  {
-    slug: "nightwatch",
-    name: "NIGHTWATCH",
-    description:
-      "Every trusted source, ranked and delivered as a command-ready brief before the first meeting starts.",
-    Mark: NightwatchMark,
-  },
-];
-
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-neutral-900">
       <GlobalNav />
       <div className="pt-[116px]">
-        <section className="relative flex items-start justify-between bg-black px-[70px] pb-20 pt-5 min-[1441px]:px-[150px]">
+        <section className="relative mx-auto flex max-w-[1440px] items-start bg-black px-[70px] pb-20 pt-5 min-[1440px]:px-[150px]">
           <div className="flex flex-col gap-10 py-[110px]">
             <div className="flex max-w-[632px] flex-col gap-0">
               <h1 className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]">
@@ -71,32 +37,17 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="hidden flex-1 items-center justify-center self-stretch min-[901px]:flex">
-            <AnimatedLogoMark />
-          </div>
         </section>
 
-        <div className="flex flex-col px-[70px] min-[1441px]:px-[150px]">
+        <div className="mx-auto flex max-w-[1440px] flex-col px-[70px] min-[1440px]:px-[150px]">
           <ScrollReveal>
             <section className="flex flex-col gap-10 pb-24 pt-20">
-              <SectionHeadline>Who we are</SectionHeadline>
-              <p className="max-w-[720px] font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
-                Alduin was founded by security and intelligence
-                professionals who spent years working in private and
-                public sector operations centers—supporting corporate
-                security, protective intelligence, crisis management, and
-                global operations.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {FOUNDING_DOMAINS.map((domain) => (
-                  <span
-                    key={domain}
-                    className="rounded-full border border-white/15 px-4 py-2 font-mono text-[13px] tracking-[0.04em] text-neutral-300 transition-colors duration-300 ease-out hover:border-white/40 hover:text-white"
-                  >
-                    {domain}
-                  </span>
-                ))}
-              </div>
+              <h2 className="font-mono text-[32px] leading-[38.4px] text-white">
+                Forged in high-stakes ops centers, Alduin was founded by
+                intelligence veterans to bring frontline experience
+                directly to corporate security, crisis management, and
+                global protection.
+              </h2>
             </section>
           </ScrollReveal>
 
@@ -115,26 +66,9 @@ export default function AboutPage() {
                 Every product is designed around the way intelligence
                 analysts, GSOC operators, investigators, emergency
                 managers, and security professionals actually work.
-                Whether monitoring severe weather, tracking geopolitical
-                developments, managing investigations, producing
-                intelligence briefings, or coordinating crisis response,
-                the objective is the same: deliver the right information
-                at the right time, in a format that supports confident
-                decision-making.
               </p>
 
-              <RoleTicker />
-
-              <div className="flex flex-col gap-8 pt-6">
-                <span className="font-mono text-[12px] tracking-[0.08em] text-neutral-500">
-                  ACROSS THE PLATFORM
-                </span>
-                <div className="grid grid-cols-3 gap-5">
-                  {PRODUCTS.map((product) => (
-                    <ProductMarkLink key={product.slug} {...product} />
-                  ))}
-                </div>
-              </div>
+              <FocusAreaGrid />
             </section>
           </ScrollReveal>
 
