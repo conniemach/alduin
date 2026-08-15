@@ -96,7 +96,12 @@ export function SplitFlapText({ text, className }: SplitFlapTextProps) {
         observer.disconnect();
         playFlip();
       },
-      { threshold: 0.2 },
+      // rootMargin shrinks the effective viewport's bottom edge (same
+      // trick ScrollReveal uses) so a fast scroll doesn't trigger the
+      // flip while the text is still mostly below the fold, just
+      // grazing the bottom of the window — it only counts once the
+      // text is substantially inside the visible viewport.
+      { threshold: 0.3, rootMargin: "0px 0px -20% 0px" },
     );
     observer.observe(root);
 

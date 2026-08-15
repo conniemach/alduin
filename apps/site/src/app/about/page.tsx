@@ -1,9 +1,13 @@
+"use client";
+
+import { useState } from "react";
 import { SplitFlapText } from "@alduin/design-system";
 import { GlobalNav } from "@/components/GlobalNav";
 import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { CenteredCta } from "@/components/CenteredCta";
-import { ProblemPhilosophy } from "@/components/about/ProblemPhilosophy";
+import { AboutHero } from "@/components/about/AboutHero";
+import { ProblemSolutionScroll } from "@/components/about/ProblemSolutionScroll";
 import { FocusAreaGrid } from "@/components/about/FocusAreaGrid";
 
 // Every section headline is the same shape (short mono label, sized to
@@ -19,29 +23,17 @@ function SectionHeadline({ children }: { children: string }) {
 }
 
 export default function AboutPage() {
+  const [problemSolutionProgress, setProblemSolutionProgress] = useState(0);
+
   return (
     <main className="min-h-screen bg-neutral-900">
       <GlobalNav />
       <div className="pt-[116px]">
-        <section className="relative mx-auto flex max-w-[1440px] items-start bg-black px-[70px] pb-20 pt-5 min-[1440px]:px-[150px]">
-          <div className="flex flex-col gap-10 py-[110px]">
-            <div className="flex max-w-[632px] flex-col gap-0">
-              <h1 className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]">
-                CLARITY UNDER PRESSURE
-              </h1>
-              <p className="mt-4 font-mono text-[18px] leading-[21.6px] tracking-[-0.54px] text-white">
-                Alduin exists for the teams making high-stakes calls under
-                fire, under deadline, under scrutiny—command centers,
-                security desks, and investigators who can&rsquo;t afford to
-                guess.
-              </p>
-            </div>
-          </div>
-        </section>
+        <AboutHero />
 
         <div className="mx-auto flex max-w-[1440px] flex-col px-[70px] min-[1440px]:px-[150px]">
           <ScrollReveal>
-            <section className="flex flex-col gap-10 pb-24 pt-20">
+            <section className="flex flex-col gap-10 pb-0 pt-10">
               <h2 className="font-mono text-[32px] leading-[38.4px] text-white">
                 Forged in high-stakes ops centers, Alduin was founded by
                 intelligence veterans to bring frontline experience
@@ -51,40 +43,53 @@ export default function AboutPage() {
             </section>
           </ScrollReveal>
 
-          <ScrollReveal>
-            <section className="flex flex-col gap-10 pb-24 pt-20">
-              <ProblemPhilosophy />
-            </section>
-          </ScrollReveal>
+          <section className="flex flex-col pb-8 pt-8">
+            <ProblemSolutionScroll onProgressChange={setProblemSolutionProgress} />
+          </section>
 
-          <ScrollReveal>
-            <section className="flex flex-col gap-10 pb-24 pt-20">
-              <SectionHeadline>
-                Built for the way operators work
-              </SectionHeadline>
-              <p className="max-w-[760px] font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
-                Every product is designed around the way intelligence
-                analysts, GSOC operators, investigators, emergency
-                managers, and security professionals actually work.
-              </p>
+          {/* No ScrollReveal here — this section sits directly below the
+              pinned Problem/Solution panel, still fully in view (not
+              scrolled to) while that panel is mid-transition, so
+              ScrollReveal's own IntersectionObserver hadn't fired yet
+              and this just read as a big empty gap under "Our Solution".
+              Tying opacity directly to the pinned panel's own scroll
+              progress instead: partially visible the whole time it's
+              pinned, full opacity only once "Our Solution" finishes. */}
+          <section
+            className="flex flex-col gap-10 pb-24 pt-0"
+            style={{
+              opacity: problemSolutionProgress >= 1 ? 1 : 0.4,
+              transition: "opacity 600ms cubic-bezier(0.16, 1, 0.3, 1)",
+            }}
+          >
+            <SectionHeadline>
+              Built for the way operators work
+            </SectionHeadline>
+            <p className="max-w-[760px] font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
+              Every product is designed around the way intelligence
+              analysts, GSOC operators, investigators, emergency
+              managers, and security professionals actually work.
+            </p>
 
-              <FocusAreaGrid />
-            </section>
-          </ScrollReveal>
+            <FocusAreaGrid />
+          </section>
 
-          <ScrollReveal>
-            <section className="flex flex-col items-center gap-10 pb-16 pt-24 text-center">
-              <p className="max-w-[600px] font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
-                Alduin is built by operators, for operators—guided by the
-                same principle that inspired the company in the first
-                place.
-              </p>
-              <SplitFlapText
-                text="SIGNAL OVER NOISE"
-                className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[36px] lg:text-[42px]"
-              />
-            </section>
-          </ScrollReveal>
+          {/* No ScrollReveal wrapper here, unlike the other sections —
+              SplitFlapText already plays its own scroll-triggered flip
+              (same as the homepage Hero's), and fading the section in
+              on top of that flip washed it out: by the time the section
+              reached full opacity, the letters had already landed. */}
+          <section className="flex flex-col items-center gap-10 pb-14 pt-16 text-center">
+            <p className="w-full font-sans text-[15px] leading-[21px] tracking-[-0.075px] text-neutral-300">
+              Alduin is built by operators, for operators—guided by the
+              same principle that inspired the company in the first
+              place.
+            </p>
+            <SplitFlapText
+              text="SIGNAL OVER NOISE"
+              className="font-science-gothic text-[36px] leading-[1.1] text-white md:text-[56px] lg:text-[68px]"
+            />
+          </section>
 
           <ScrollReveal>
             <CenteredCta />

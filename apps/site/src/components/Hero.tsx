@@ -16,16 +16,106 @@ const REVEAL_DELAY_MS = 300;
 const REVEAL_MS = 1400;
 const REVEAL_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
 
+// How far past "NOISE" (in px) the dip's right edge sits.
+const DIP_END_OFFSET_PX = 20;
+// Width of the fade in/out around each threshold, so the opacity change
+// reads as a gradual blend into black and back rather than a hard cut
+// right at the text edge.
+const DIP_RAMP_PX = 400;
+// Subtle vignette right at the container's literal left/right edges —
+// unrelated to the text dip, just keeps the canvas from stopping with a
+// hard seam at the screen edge.
+const EDGE_FADE_PCT = 3;
+
+type MaskGeometry = { startPct: number; endPct: number } | null;
+
+// Locates "SIGNAL"'s left edge and "NOISE"'s right edge (+ offset) within
+// the globe container, in percent of its width, so the dim zone tracks the
+// actual rendered headline instead of a hardcoded guess that only lines up
+// at one viewport size.
+function measureMaskGeometry(
+  container: HTMLElement,
+  headlineWrap: HTMLElement,
+): MaskGeometry {
+  const glyphRoot = headlineWrap.querySelector('h1 > span[aria-hidden="true"]');
+  const chars = glyphRoot ? Array.from(glyphRoot.children) : [];
+  if (chars.length === 0) return null;
+
+  const containerRect = container.getBoundingClientRect();
+  if (containerRect.width === 0) return null;
+
+  const firstRect = chars[0]!.getBoundingClientRect();
+  const lastRect = chars[chars.length - 1]!.getBoundingClientRect();
+
+  const startPct = ((firstRect.left - containerRect.left) / containerRect.width) * 100;
+  const endPct =
+    ((lastRect.right + DIP_END_OFFSET_PX - containerRect.left) / containerRect.width) * 100;
+
+  return { startPct, endPct };
+}
+
+function buildMaskGradient(geometry: MaskGeometry, containerWidth: number) {
+  if (!geometry || containerWidth === 0) {
+    return `linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) ${EDGE_FADE_PCT}%, rgba(0,0,0,0) ${100 - EDGE_FADE_PCT}%, rgba(0,0,0,1) 100%)`;
+  }
+
+  const rampPct = (DIP_RAMP_PX / containerWidth) * 100;
+  const { startPct, endPct } = geometry;
+
+  const leftEdge = Math.min(EDGE_FADE_PCT, Math.max(0, startPct - rampPct));
+  const rightEdge = 100 - Math.min(EDGE_FADE_PCT, Math.max(0, 100 - endPct - rampPct));
+  const rampInStart = Math.max(leftEdge, startPct - rampPct);
+  const rampOutEnd = Math.min(rightEdge, endPct + rampPct);
+
+  return [
+    "linear-gradient(90deg",
+    "rgba(0,0,0,1) 0%",
+    `rgba(0,0,0,0) ${leftEdge}%`,
+    `rgba(0,0,0,0) ${rampInStart}%`,
+    `rgba(0,0,0,0.7) ${startPct}%`,
+    `rgba(0,0,0,0.7) ${endPct}%`,
+    `rgba(0,0,0,0) ${rampOutEnd}%`,
+    `rgba(0,0,0,0) ${rightEdge}%`,
+    "rgba(0,0,0,1) 100%)",
+  ].join(", ");
+}
+
 export function Hero() {
   const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const globeContainerRef = useRef<HTMLDivElement>(null);
+  const headlineWrapRef = useRef<HTMLDivElement>(null);
   useFisheyeGlobe(canvasRef, globeContainerRef);
 
   const [revealed, setRevealed] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setRevealed(true), REVEAL_DELAY_MS);
     return () => clearTimeout(t);
+  }, []);
+
+  const [maskGeometry, setMaskGeometry] = useState<MaskGeometry>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  useEffect(() => {
+    const container = globeContainerRef.current;
+    const headlineWrap = headlineWrapRef.current;
+    if (!container || !headlineWrap) return;
+
+    function measure() {
+      if (!container || !headlineWrap) return;
+      setContainerWidth(container.getBoundingClientRect().width);
+      setMaskGeometry(measureMaskGeometry(container, headlineWrap));
+    }
+
+    measure();
+    // Re-measure once the reveal scale/opacity transition settles (the
+    // transform shifts the headline's rendered rect mid-animation) and on
+    // resize, so the dip stays locked to the text at any viewport width.
+    const settleTimer = setTimeout(measure, REVEAL_DELAY_MS + REVEAL_MS + 50);
+    window.addEventListener("resize", measure);
+    return () => {
+      clearTimeout(settleTimer);
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
   return (
@@ -61,15 +151,16 @@ export function Hero() {
         />
         {/* The mask: fades to black on all four edges (blends into the
             nav above, whatever follows below, and doesn't just stop at
-            the canvas boundary left/right); and horizontally, holds the
-            left ~60% (where the copy sits) at ~20% opacity so the globe
-            reads as texture rather than competing with the text, then
-            ramps up to full strength across the right ~40%. */}
+            the canvas boundary left/right); and horizontally, dips to
+            30% opacity across the headline — from "SIGNAL"'s left edge
+            to 20px past "NOISE"'s right edge, measured off the actual
+            rendered text via measureMaskGeometry — so the globe reads
+            as texture rather than competing with the copy, then holds
+            full strength everywhere else. */}
         <div
           className="absolute inset-0"
           style={{
-            background:
-              "linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 8%, rgba(0,0,0,0.8) 48%, rgba(0,0,0,0) 62%, rgba(0,0,0,0) 86%, rgba(0,0,0,1) 100%), linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,1) 100%)",
+            background: `${buildMaskGradient(maskGeometry, containerWidth)}, linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,1) 100%)`,
           }}
         />
       </div>
@@ -82,7 +173,7 @@ export function Hero() {
             transition: `opacity ${REVEAL_MS}ms ${REVEAL_EASE}, transform ${REVEAL_MS}ms ${REVEAL_EASE}`,
           }}
         >
-          <div className="flex max-w-[632px] flex-col gap-0">
+          <div ref={headlineWrapRef} className="flex max-w-[632px] flex-col gap-0">
             <SplitFlapText
               text="SIGNAL OVER NOISE"
               className="font-science-gothic text-[28px] leading-[1.1] text-white md:text-[48px] lg:text-[52px]"
