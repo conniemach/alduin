@@ -10,9 +10,10 @@ const PRODUCT_ROUTES: Record<string, string> = {
   Nightwatch: "/products/nightwatch",
 };
 
-// Cypher is hidden site-wide for now (left in PRODUCT_ROUTES/design-system
-// so it's a quick un-hide, not a rebuild) — see the ProductsMenu call
-// below, and the same hide on the pricing and about pages.
+// Cypher and Boreas are hidden site-wide for now (left in
+// PRODUCT_ROUTES/design-system so it's a quick un-hide, not a rebuild) —
+// see the ProductsMenu call below, and the same hide on the pricing and
+// about pages.
 
 /**
  * The homepage's actual nav bar — Figma's "Global Nav" frame on the Home
@@ -56,7 +57,7 @@ export function GlobalNav() {
         </button>
         <div className="flex items-center gap-8">
           <ProductsMenu
-            products={["Cobalt", "Boreas", "Nightwatch"]}
+            products={["Cobalt", "Nightwatch"]}
             onSelect={(product) => {
               const route = PRODUCT_ROUTES[product];
               if (route) router.push(route);

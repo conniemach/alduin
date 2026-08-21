@@ -23,16 +23,18 @@ export default function Home() {
       imageAlt: "Cobalt command map, showing fused weather, seismic, volcanic, marine, and infrastructure alerts",
       onLearnMore: () => router.push("/products/cobalt"),
     },
-    {
-      id: "boreas",
-      tabLabel: "BOREAS",
-      eyebrow: "BOREAS",
-      description:
-        "Command-grade visibility into every traveler, route, and risk signal—before exposure becomes incident.",
-      scene: "boreas",
-      imageAlt: "Boreas exposure map, showing live flight paths and traveler locations against threat zones",
-      onLearnMore: () => router.push("/products/boreas"),
-    },
+    // Boreas is hidden for now (not deleted — the PDP and design-system
+    // pieces still exist) — see the ProductsMenu/pricing hides too.
+    // {
+    //   id: "boreas",
+    //   tabLabel: "BOREAS",
+    //   eyebrow: "BOREAS",
+    //   description:
+    //     "Command-grade visibility into every traveler, route, and risk signal—before exposure becomes incident.",
+    //   scene: "boreas",
+    //   imageAlt: "Boreas exposure map, showing live flight paths and traveler locations against threat zones",
+    //   onLearnMore: () => router.push("/products/boreas"),
+    // },
     // Cypher is hidden for now (not deleted — the PDP and design-system
     // pieces still exist) — see the ProductsMenu/pricing/about hides too.
     {
