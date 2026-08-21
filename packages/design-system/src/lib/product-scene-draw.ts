@@ -6,12 +6,12 @@
  * the "Alduin — Product Visual Concepts v7" exploration; copy, codes, and
  * coordinates drawn here are still placeholders, not real product data.
  */
-const TAU = Math.PI * 2;
+export const TAU = Math.PI * 2;
 
-function lerp(a: number, b: number, t: number) {
+export function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
-function clamp01(x: number) {
+export function clamp01(x: number) {
   return Math.max(0, Math.min(1, x));
 }
 function easeInOut(t: number) {
@@ -28,12 +28,12 @@ function mulberry32(seed: number) {
   };
 }
 
-interface Point {
+export interface Point {
   x: number;
   y: number;
 }
 
-function glowDot(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, alpha: number, color?: string) {
+export function glowDot(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, alpha: number, color?: string) {
   const g = ctx.createRadialGradient(x, y, 0, x, y, Math.max(r, 0.001));
   const c = color || "255,255,255";
   g.addColorStop(0, `rgba(${c},${alpha})`);
@@ -108,7 +108,7 @@ function drawPin(ctx: CanvasRenderingContext2D, x: number, y: number, size: numb
   ctx.restore();
 }
 
-function dashedPolygon(ctx: CanvasRenderingContext2D, pts: Point[], alpha: number) {
+export function dashedPolygon(ctx: CanvasRenderingContext2D, pts: Point[], alpha: number) {
   ctx.setLineDash([4, 4]);
   ctx.beginPath();
   pts.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
@@ -119,7 +119,7 @@ function dashedPolygon(ctx: CanvasRenderingContext2D, pts: Point[], alpha: numbe
   ctx.setLineDash([]);
 }
 
-function pingRings(ctx: CanvasRenderingContext2D, x: number, y: number, t: number, period: number, maxR: number, color: string, count: number) {
+export function pingRings(ctx: CanvasRenderingContext2D, x: number, y: number, t: number, period: number, maxR: number, color: string, count: number) {
   for (let i = 0; i < count; i++) {
     const ph = ((t / period) + i / count) % 1;
     const r = ph * maxR;
@@ -165,7 +165,7 @@ function coordGrid(ctx: CanvasRenderingContext2D, w: number, h: number, origin: 
   }
 }
 
-function compassRose(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
+export function compassRose(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
   ctx.save();
   ctx.strokeStyle = "rgba(255,255,255,0.35)";
   ctx.lineWidth = 1;
@@ -286,7 +286,7 @@ function analogClock(ctx: CanvasRenderingContext2D, x: number, y: number, r: num
   ctx.restore();
 }
 
-function radarCell(ctx: CanvasRenderingContext2D, x: number, y: number, baseR: number, t: number, phase: number) {
+export function radarCell(ctx: CanvasRenderingContext2D, x: number, y: number, baseR: number, t: number, phase: number) {
   const wob = 1 + 0.06 * Math.sin(t * 0.4 + phase);
   glowDot(ctx, x, y, baseR * 1.6 * wob, 0.16, "120,196,150");
   glowDot(ctx, x + 4, y - 3, baseR * 1.05 * wob, 0.18, "224,196,96");
@@ -323,7 +323,7 @@ function envelopeIcon(ctx: CanvasRenderingContext2D, x: number, y: number, w: nu
   ctx.restore();
 }
 
-export type ProductSceneMode = "cobalt" | "boreas" | "cypher" | "nightwatch";
+export type ProductSceneMode = "cobalt" | "cobalt-corridor" | "boreas" | "cypher" | "nightwatch";
 
 interface SceneApi<S> {
   init: (w: number, h: number) => S;
@@ -435,6 +435,151 @@ const cobalt: SceneApi<CobaltState> = {
 
     compassRose(ctx, w - 34, h - 40, 13);
     scaleBar(ctx, 16, 26, 60, "50 km");
+  },
+};
+
+// ------------------------------------------------------- COBALT · CORRIDOR
+//
+// A tighter, single-hazard crop for the PDP's "Proactive Threat Mitigation"
+// slide — one storm, its recent forecast track, and the projected impact
+// corridor crossing into an AOR with an asset inside it. Deliberately
+// narrower in scope than the ambient `cobalt` scene (which fuses every
+// hazard type at once for the homepage's general "what Cobalt does"
+// framing): this slide's copy is about one specific capability — impact
+// corridors + early warning filtering — so the visual stays legible about
+// just that, at a larger, more foregrounded size than the homepage card.
+// Reuses the same map chrome and storm treatment as `cobalt` so it still
+// reads as the same product; the corridor wedge is the only new shape,
+// and it stays within the system's white-on-near-black language (a soft
+// radial-gradient fill, not a solid color) rather than borrowing a
+// literal red hazard-cone convention from generic weather-radar UIs.
+interface CobaltCorridorState {
+  aor: Point[];
+  storm: Point;
+  track: Point[];
+  infra: Point;
+  corridorAngle: number;
+  corridorLen: number;
+}
+
+const cobaltCorridor: SceneApi<CobaltCorridorState> = {
+  init: (w, h) => {
+    const aor: Point[] = [
+      { x: w * 0.5, y: h * 0.12 },
+      { x: w * 0.88, y: h * 0.22 },
+      { x: w * 0.82, y: h * 0.64 },
+      { x: w * 0.54, y: h * 0.74 },
+      { x: w * 0.4, y: h * 0.44 },
+    ];
+    const storm: Point = { x: w * 0.13, y: h * 0.5 };
+    const track: Point[] = [0, 1, 2, 3, 4].map((i) => {
+      const s = i / 4;
+      return {
+        x: lerp(w * 0.02, storm.x, s),
+        y: lerp(h * 0.72, storm.y, s) + Math.sin(s * 2.6) * h * 0.05,
+      };
+    });
+    const centroid = aor.reduce(
+      (acc, p) => ({ x: acc.x + p.x / aor.length, y: acc.y + p.y / aor.length }),
+      { x: 0, y: 0 },
+    );
+    const corridorAngle = Math.atan2(centroid.y - storm.y, centroid.x - storm.x);
+    const corridorLen = Math.hypot(centroid.x - storm.x, centroid.y - storm.y) * 1.25;
+    const infra: Point = {
+      x: lerp(storm.x, centroid.x, 0.78),
+      y: lerp(storm.y, centroid.y, 0.78),
+    };
+    return { aor, storm, track, infra, corridorAngle, corridorLen };
+  },
+  draw: (ctx, w, h, t, s) => {
+    ctx.clearRect(0, 0, w, h);
+    coordGrid(ctx, w, h, { lon: -71.06, lat: 18.47 }, 0.08, 7, 4);
+
+    // Projected impact corridor: a soft directional wedge from the storm
+    // toward the AOR, breathing gently at the same ~2.4s ambient cadence
+    // as pingRings elsewhere in this file.
+    const spread = 0.34;
+    const breathe = 0.55 + 0.25 * Math.sin(t * (TAU / 2.4));
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(s.storm.x, s.storm.y);
+    ctx.arc(s.storm.x, s.storm.y, s.corridorLen, s.corridorAngle - spread, s.corridorAngle + spread);
+    ctx.closePath();
+    ctx.clip();
+    const grad = ctx.createRadialGradient(s.storm.x, s.storm.y, 0, s.storm.x, s.storm.y, s.corridorLen);
+    grad.addColorStop(0, `rgba(255,255,255,${0.16 * breathe})`);
+    grad.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, w, h);
+    ctx.restore();
+
+    ctx.strokeStyle = "rgba(255,255,255,0.22)";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 5]);
+    ctx.beginPath();
+    ctx.moveTo(s.storm.x, s.storm.y);
+    ctx.lineTo(
+      s.storm.x + Math.cos(s.corridorAngle - spread) * s.corridorLen,
+      s.storm.y + Math.sin(s.corridorAngle - spread) * s.corridorLen,
+    );
+    ctx.moveTo(s.storm.x, s.storm.y);
+    ctx.lineTo(
+      s.storm.x + Math.cos(s.corridorAngle + spread) * s.corridorLen,
+      s.storm.y + Math.sin(s.corridorAngle + spread) * s.corridorLen,
+    );
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    dashedPolygon(ctx, s.aor, 0.3);
+
+    // Forecast track leading up to the storm's current position, with
+    // hour-out tick labels — same 9px map-label treatment as coordGrid.
+    ctx.setLineDash([2, 4]);
+    ctx.strokeStyle = "rgba(255,255,255,0.28)";
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    s.track.forEach((p, i) => (i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y)));
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = "9px ui-monospace, monospace";
+    ctx.fillStyle = "rgba(255,255,255,0.4)";
+    s.track.forEach((p, i) => {
+      if (i === s.track.length - 1) return;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2, 0, TAU);
+      ctx.strokeStyle = "rgba(255,255,255,0.5)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillText(`-${(s.track.length - 1 - i) * 12}H`, p.x + 5, p.y - 3);
+    });
+
+    // Storm cell + live sweep, matching `cobalt`'s storm treatment.
+    for (let i = 0; i < 3; i++) {
+      const a = t * 0.15 + i * 2.4;
+      radarCell(ctx, s.storm.x + Math.cos(a) * 8, s.storm.y + Math.sin(a) * 8, 14 + i * 4, t, i * 1.7);
+    }
+    const sweep = (t * 0.4) % TAU;
+    ctx.strokeStyle = "rgba(255,255,255,0.32)";
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.arc(s.storm.x, s.storm.y, 38, sweep, sweep + 0.55);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(s.storm.x, s.storm.y, 38, 0, TAU);
+    ctx.strokeStyle = "rgba(255,255,255,0.12)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // The asset sitting inside the projected corridor — what an early
+    // warning would actually be protecting.
+    const pulse = 0.5 + 0.5 * Math.sin(t * (TAU / 1.6));
+    glowDot(ctx, s.infra.x, s.infra.y, 7 + pulse * 2, 0.5, "207,159,82");
+    ctx.strokeStyle = "rgba(255,255,255,0.55)";
+    ctx.lineWidth = 1.2;
+    ctx.strokeRect(s.infra.x - 3.5, s.infra.y - 3.5, 7, 7);
+
+    compassRose(ctx, w - 34, h - 40, 13);
+    scaleBar(ctx, 16, 26, 60, "80 km");
   },
 };
 
@@ -726,6 +871,7 @@ const nightwatch: SceneApi<NightwatchState> = {
 
 export const productSceneModes: Record<ProductSceneMode, SceneApi<any>> = {
   cobalt,
+  "cobalt-corridor": cobaltCorridor,
   boreas,
   cypher,
   nightwatch,

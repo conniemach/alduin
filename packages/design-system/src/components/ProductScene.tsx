@@ -107,6 +107,16 @@ function ProductSceneOverlay({ mode }: { mode: ProductSceneMode }) {
           </div>
         </>
       );
+    case "cobalt-corridor":
+      return (
+        <>
+          <div className="product-scene-glow" style={{ top: "-20%", left: "-5%", width: "50%", height: "130%", background: "var(--product-scene-glow-a)" }} />
+          <div className="product-scene-badge" style={{ right: 20, bottom: 18 }}>
+            <span className="product-scene-dot product-scene-dot-warn" />
+            IMPACT CORRIDOR · ASSET FLAGGED
+          </div>
+        </>
+      );
     case "boreas":
       return (
         <>

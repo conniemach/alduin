@@ -5,6 +5,7 @@ import {
   EarthSpinIcon,
   ChartDrawIcon,
   AccountPulseIcon,
+  DEFAULT_CAMERA_STOPS,
 } from "@alduin/design-system";
 import { GlobalNav } from "@/components/GlobalNav";
 import { Footer } from "@/components/Footer";
@@ -54,6 +55,7 @@ const slides: FeatureSlide[] = [
         cross-reference disconnected hazard maps during a crisis.
       </>
     ),
+    scene: "cobalt",
     imageSrc: withBasePath("/products/cobalt-pdp-feature-1.png"),
     imageAlt: "Cobalt unified operating picture",
   },
@@ -62,6 +64,7 @@ const slides: FeatureSlide[] = [
     heading: "PROACTIVE THREAT MITIGATION",
     subheading: "From watching a storm to predicting its tactical impact.",
     body: "Go beyond basic threshold alerts. Cobalt automatically calculates projected impact corridors along your key areas of responsibility (AORs). The platform triggers early warning notifications only when evolving conditions directly threaten an active mission or physical asset, filtering out noise so operators focus on true risks.",
+    scene: "cobalt-corridor",
     imageSrc: withBasePath("/products/cobalt-pdp-feature-2.png"),
     imageAlt: "Cobalt proactive threat mitigation",
   },
@@ -96,9 +99,14 @@ export default function CobaltPage() {
               />
             </div>
           </ScrollReveal>
-          <ScrollReveal>
-            <Features slides={slides} className="mt-[60px]" />
-          </ScrollReveal>
+          {/* No ScrollReveal here — its IntersectionObserver fade doesn't
+              cooperate with a scroll-pinned/sticky panel, same reason
+              the About page doesn't wrap ProblemSolutionScroll in one. */}
+          <Features
+            slides={slides}
+            zoomScene={{ stops: DEFAULT_CAMERA_STOPS }}
+            className="mt-[60px]"
+          />
           <ScrollReveal>
             <div className="mt-[100px] grid grid-cols-2 gap-5">
               <ProductPricing
