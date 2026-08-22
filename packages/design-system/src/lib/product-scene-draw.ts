@@ -251,7 +251,7 @@ function lineGrid(ctx: CanvasRenderingContext2D, w: number, h: number, spacing: 
   }
 }
 
-function analogClock(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
+export function analogClock(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
   ctx.save();
   ctx.strokeStyle = "rgba(255,255,255,0.4)";
   ctx.lineWidth = 1;
@@ -293,7 +293,7 @@ export function radarCell(ctx: CanvasRenderingContext2D, x: number, y: number, b
   glowDot(ctx, x - 2, y + 2, baseR * 0.55 * wob, 0.22, "205,92,84");
 }
 
-function feedIcon(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, alpha: number) {
+export function feedIcon(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, alpha: number) {
   ctx.save();
   ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
   ctx.lineWidth = 1.2;
@@ -310,7 +310,7 @@ function feedIcon(ctx: CanvasRenderingContext2D, x: number, y: number, r: number
   ctx.restore();
 }
 
-function envelopeIcon(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, alpha: number) {
+export function envelopeIcon(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, alpha: number) {
   ctx.save();
   ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
   ctx.lineWidth = 1.2;
@@ -323,7 +323,14 @@ function envelopeIcon(ctx: CanvasRenderingContext2D, x: number, y: number, w: nu
   ctx.restore();
 }
 
-export type ProductSceneMode = "cobalt" | "cobalt-corridor" | "boreas" | "cypher" | "nightwatch";
+export type ProductSceneMode =
+  | "cobalt"
+  | "cobalt-corridor"
+  | "boreas"
+  | "cypher"
+  | "nightwatch"
+  | "nightwatch-topics"
+  | "nightwatch-report";
 
 interface SceneApi<S> {
   init: (w: number, h: number) => S;
@@ -869,10 +876,346 @@ const nightwatch: SceneApi<NightwatchState> = {
   },
 };
 
+// ------------------------------------------------------- NIGHTWATCH TOPICS
+
+interface NightwatchTopic {
+  label: string;
+  on: boolean;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+interface NightwatchTopicsState {
+  topics: NightwatchTopic[];
+  docX: number;
+  docY: number;
+  docW: number;
+  docH: number;
+  onTopics: NightwatchTopic[];
+}
+
+const NIGHTWATCH_TOPIC_LABELS: { label: string; on: boolean }[] = [
+  { label: "GEOPOLITICS", on: true },
+  { label: "CYBER OPS", on: true },
+  { label: "ENERGY MKTS", on: false },
+  { label: "MIL MOVEMENT", on: true },
+  { label: "CLIMATE RISK", on: false },
+  { label: "SUPPLY CHAIN", on: false },
+];
+
+const nightwatchTopics: SceneApi<NightwatchTopicsState> = {
+  init: (w, h) => {
+    const gridX = w * 0.07;
+    const gridY = h * 0.2;
+    const chipW = w * 0.19;
+    const chipH = h * 0.15;
+    const gapX = w * 0.03;
+    const gapY = h * 0.05;
+    const topics: NightwatchTopic[] = NIGHTWATCH_TOPIC_LABELS.map((tp, i) => {
+      const col = i % 2;
+      const row = Math.floor(i / 2);
+      return {
+        ...tp,
+        x: gridX + col * (chipW + gapX),
+        y: gridY + row * (chipH + gapY),
+        w: chipW,
+        h: chipH,
+      };
+    });
+    return {
+      topics,
+      docX: w * 0.58,
+      docY: h * 0.14,
+      docW: w * 0.36,
+      docH: h * 0.72,
+      onTopics: topics.filter((tp) => tp.on),
+    };
+  },
+  draw: (ctx, w, h, t, s) => {
+    ctx.clearRect(0, 0, w, h);
+    lineGrid(ctx, w, h, 22, 0.05);
+
+    const { docX, docY, docW, docH } = s;
+    const headerH = docH * 0.2;
+    const rowH = (docH - headerH) / Math.max(1, s.onTopics.length);
+    const rowY = (i: number) => docY + headerH + rowH * (i + 0.5);
+
+    ctx.strokeStyle = "rgba(255,255,255,0.35)";
+    ctx.lineWidth = 1.3;
+    ctx.strokeRect(docX, docY, docW, docH);
+    ctx.fillStyle = "rgba(255,255,255,0.03)";
+    ctx.fillRect(docX, docY, docW, docH);
+
+    envelopeIcon(ctx, docX + 12, docY + 10, 15, 10, 0.55);
+    ctx.font = "600 10px ui-monospace, monospace";
+    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.fillText("YOUR BRIEF", docX + 34, docY + 19);
+    ctx.beginPath();
+    ctx.moveTo(docX + 10, docY + headerH);
+    ctx.lineTo(docX + docW - 10, docY + headerH);
+    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // A soft "customizing" cursor sweeps across the chip grid, one chip at
+    // a time, so the panel reads as someone actively toggling topics
+    // rather than a static settings list.
+    const focusIdx = Math.floor(t / 0.9) % s.topics.length;
+
+    s.topics.forEach((tp, i) => {
+      const isFocused = i === focusIdx;
+      const focusAlpha = isFocused ? 0.35 + 0.25 * Math.sin(t * 6) : 0;
+
+      ctx.strokeStyle = `rgba(255,255,255,${0.22 + focusAlpha})`;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(tp.x, tp.y, tp.w, tp.h);
+      ctx.fillStyle = `rgba(255,255,255,${tp.on ? 0.05 : 0.02})`;
+      ctx.fillRect(tp.x, tp.y, tp.w, tp.h);
+
+      const boxSize = 8;
+      const boxX = tp.x + 10;
+      const boxY = tp.y + tp.h / 2 - boxSize / 2;
+      if (tp.on) {
+        const pulse = 0.75 + 0.25 * Math.sin(t * 2 + i);
+        ctx.fillStyle = `rgba(111,174,130,${pulse})`;
+        ctx.fillRect(boxX, boxY, boxSize, boxSize);
+        ctx.strokeStyle = "rgba(4,4,4,0.9)";
+        ctx.lineWidth = 1.3;
+        ctx.beginPath();
+        ctx.moveTo(boxX + 1.5, boxY + 4.2);
+        ctx.lineTo(boxX + 3.4, boxY + 6.4);
+        ctx.lineTo(boxX + 6.6, boxY + 1.8);
+        ctx.stroke();
+      } else {
+        ctx.strokeStyle = "rgba(255,255,255,0.25)";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(boxX, boxY, boxSize, boxSize);
+      }
+
+      ctx.font = "600 9px ui-monospace, monospace";
+      ctx.fillStyle = tp.on ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.32)";
+      ctx.fillText(tp.label, boxX + boxSize + 8, tp.y + tp.h / 2 + 3);
+    });
+
+    // Flowing connector from each active chip into its own row in the
+    // brief — the same "feed becomes a line" language as the plain
+    // nightwatch scene, but gated on the user's on/off choice instead of
+    // every source unconditionally.
+    s.onTopics.forEach((tp, i) => {
+      const ty = rowY(i);
+      const fromX = tp.x + tp.w;
+      const fromY = tp.y + tp.h / 2;
+      ctx.beginPath();
+      ctx.moveTo(fromX, fromY);
+      ctx.lineTo((fromX + docX) / 2, fromY);
+      ctx.lineTo(docX, ty);
+      ctx.strokeStyle = "rgba(111,174,130,0.5)";
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([2, 3]);
+      ctx.lineDashOffset = -t * 18;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.lineDashOffset = 0;
+
+      const blockX = docX + 16;
+      const maxW = docW - 30;
+      const headW = maxW * (0.72 + 0.14 * Math.sin(i * 2.3 + 1));
+      ctx.font = "8px ui-monospace, monospace";
+      ctx.fillStyle = "rgba(111,174,130,0.7)";
+      ctx.fillText(tp.label, blockX, ty - 9);
+      ctx.fillStyle = "rgba(255,255,255,0.22)";
+      ctx.fillRect(blockX, ty - 2, headW, 2);
+      ctx.fillStyle = "rgba(255,255,255,0.14)";
+      ctx.fillRect(blockX, ty + 5, headW * 0.6, 2);
+    });
+
+    ctx.font = "9px ui-monospace, monospace";
+    ctx.fillStyle = "rgba(255,255,255,0.35)";
+    ctx.fillText(`AI INGEST: ${s.onTopics.length}/${s.topics.length} TOPICS`, w * 0.07, h * 0.94);
+  },
+};
+
+// ------------------------------------------------------- NIGHTWATCH REPORT
+
+interface NightwatchSegment {
+  value: number;
+  color: string;
+  label: string;
+}
+interface NightwatchReportState {
+  donut: NightwatchSegment[];
+  bars: number[];
+}
+
+const nightwatchReport: SceneApi<NightwatchReportState> = {
+  init: () => ({
+    donut: [
+      { value: 0.52, color: "111,174,130", label: "HEADLINES" },
+      { value: 0.31, color: "207,159,82", label: "ANALYSIS" },
+      { value: 0.17, color: "196,106,94", label: "GEO/WX" },
+    ],
+    bars: [0.18, 0.24, 0.16, 0.26, 0.2, 0.19, 0.92],
+  }),
+  draw: (ctx, w, h, t, s) => {
+    ctx.clearRect(0, 0, w, h);
+    lineGrid(ctx, w, h, 22, 0.05);
+
+    const sumX = w * 0.06;
+    const sumW = w * 0.26;
+
+    // Donut — content distribution
+    const cx = sumX + sumW / 2;
+    const cy = h * 0.28;
+    const rOuter = Math.min(sumW, h * 0.32) * 0.42;
+    const ringW = rOuter * 0.42;
+    let angle = -Math.PI / 2 + t * 0.05;
+    ctx.lineCap = "butt";
+    s.donut.forEach((seg) => {
+      const sweep = seg.value * TAU;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rOuter, angle, angle + sweep - 0.03);
+      ctx.strokeStyle = `rgba(${seg.color},0.9)`;
+      ctx.lineWidth = ringW;
+      ctx.stroke();
+      angle += sweep;
+    });
+
+    ctx.font = "600 8.5px ui-monospace, monospace";
+    ctx.fillStyle = "rgba(255,255,255,0.4)";
+    ctx.textAlign = "center";
+    ctx.fillText("DATA MIX", cx, cy + 3);
+    ctx.textAlign = "left";
+
+    s.donut.forEach((seg, i) => {
+      const ly = cy + rOuter + 20 + i * 13;
+      ctx.fillStyle = `rgba(${seg.color},0.9)`;
+      ctx.fillRect(sumX, ly - 7, 7, 7);
+      ctx.font = "8.5px ui-monospace, monospace";
+      ctx.fillStyle = "rgba(255,255,255,0.5)";
+      ctx.fillText(seg.label, sumX + 12, ly - 1);
+    });
+
+    // Bars — section breakdown
+    const barsBase = h * 0.78;
+    const barsMaxH = h * 0.16;
+    const barW = sumW / (s.bars.length * 1.7);
+    const gap = barW * 0.7;
+    ctx.beginPath();
+    ctx.moveTo(sumX, barsBase);
+    ctx.lineTo(sumX + sumW, barsBase);
+    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    s.bars.forEach((v, i) => {
+      const hv = v * (0.95 + 0.05 * Math.sin(t * 1.4 + i));
+      const bh = hv * barsMaxH;
+      const bx = sumX + i * (barW + gap);
+      const isTall = i === s.bars.length - 1;
+      ctx.fillStyle = isTall ? "rgba(111,174,130,0.85)" : "rgba(255,255,255,0.32)";
+      ctx.fillRect(bx, barsBase - bh, barW, bh);
+    });
+
+    // Export control
+    const expX = sumX;
+    const expY = h * 0.86;
+    const expW = sumW * 0.72;
+    const expH = h * 0.07;
+    ctx.strokeStyle = "rgba(255,255,255,0.3)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(expX, expY, expW, expH);
+    ctx.fillStyle = "rgba(255,255,255,0.04)";
+    ctx.fillRect(expX, expY, expW, expH);
+
+    const iconX = expX + 14;
+    const iconY = expY + expH / 2;
+    const dropProg = (t * 0.8) % 1;
+    const arrowY = iconY - 4 + dropProg * 7;
+    const arrowAlpha = dropProg < 0.75 ? 1 : (1 - dropProg) * 4;
+    ctx.strokeStyle = `rgba(111,174,130,${0.8 * arrowAlpha})`;
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    ctx.moveTo(iconX, iconY - 5);
+    ctx.lineTo(iconX, arrowY);
+    ctx.moveTo(iconX - 2.5, arrowY - 2.5);
+    ctx.lineTo(iconX, arrowY);
+    ctx.lineTo(iconX + 2.5, arrowY - 2.5);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(iconX - 4, iconY + 5);
+    ctx.lineTo(iconX - 4, iconY + 7);
+    ctx.lineTo(iconX + 4, iconY + 7);
+    ctx.lineTo(iconX + 4, iconY + 5);
+    ctx.strokeStyle = "rgba(255,255,255,0.5)";
+    ctx.lineWidth = 1.1;
+    ctx.stroke();
+
+    ctx.font = "600 9px ui-monospace, monospace";
+    ctx.fillStyle = "rgba(255,255,255,0.6)";
+    ctx.fillText("EXPORT PDF", iconX + 14, iconY + 3);
+
+    // Consolidated report doc, tagged back to the donut's own colors so
+    // the chart and the report read as the same underlying data.
+    const docX = w * 0.4;
+    const docY = h * 0.1;
+    const docW = w * 0.54;
+    const docH = h * 0.8;
+    ctx.strokeStyle = "rgba(255,255,255,0.35)";
+    ctx.lineWidth = 1.3;
+    ctx.strokeRect(docX, docY, docW, docH);
+    ctx.fillStyle = "rgba(255,255,255,0.03)";
+    ctx.fillRect(docX, docY, docW, docH);
+
+    envelopeIcon(ctx, docX + 12, docY + 10, 15, 10, 0.55);
+    ctx.font = "600 10px ui-monospace, monospace";
+    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.fillText("CONSOLIDATED REPORT", docX + 34, docY + 19);
+    ctx.beginPath();
+    ctx.moveTo(docX + 10, docY + docH * 0.14);
+    ctx.lineTo(docX + docW - 10, docY + docH * 0.14);
+    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    const blockCount = 4;
+    const headerH = docH * 0.14;
+    const rowH = (docH - headerH) / blockCount;
+    for (let i = 0; i < blockCount; i++) {
+      const ty = docY + headerH + rowH * (i + 0.5);
+      const seg = s.donut[i % s.donut.length]!;
+      ctx.fillStyle = `rgba(${seg.color},0.85)`;
+      ctx.fillRect(docX + docW - 14, ty - 9, 3, 18);
+
+      const blockX = docX + 20;
+      const maxW = docW - 46;
+      const headW = maxW * (0.72 + 0.14 * Math.sin(i * 2.3 + 1));
+      ctx.fillStyle = "rgba(255,255,255,0.4)";
+      ctx.fillRect(blockX, ty - 9, headW, 3);
+      ctx.fillStyle = "rgba(255,255,255,0.2)";
+      ctx.fillRect(blockX, ty, headW * 0.8, 2);
+      ctx.fillStyle = "rgba(255,255,255,0.13)";
+      ctx.fillRect(blockX, ty + 7, headW * 0.52, 2);
+
+      if (i < blockCount - 1) {
+        ctx.beginPath();
+        ctx.moveTo(docX + 10, ty + rowH / 2);
+        ctx.lineTo(docX + docW - 10, ty + rowH / 2);
+        ctx.strokeStyle = "rgba(255,255,255,0.06)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+
+    analogClock(ctx, w - 34, h - 40, 13);
+  },
+};
+
 export const productSceneModes: Record<ProductSceneMode, SceneApi<any>> = {
   cobalt,
   "cobalt-corridor": cobaltCorridor,
   boreas,
   cypher,
   nightwatch,
+  "nightwatch-topics": nightwatchTopics,
+  "nightwatch-report": nightwatchReport,
 };

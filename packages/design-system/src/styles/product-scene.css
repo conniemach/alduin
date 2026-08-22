@@ -133,6 +133,31 @@
   50% { opacity: 0.35; }
 }
 
+/* A small flat readout label, anchored to a point on the canvas (a
+   storm's own center, say) rather than the scene's outer corners — the
+   same "CAT-3 HURRICANE" / "125 MPH · 4.0N 9.0E" tabs a real storm-ops
+   display hangs right off the storm itself, not tucked in a sidebar
+   card. Flat and rectangular on purpose, unlike the glassy pill badge
+   above — this reads as a label stuck to the map, not a floating chip. */
+.product-scene-tab {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(8, 10, 9, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 3px;
+  padding: 4px 9px;
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.7);
+}
+.product-scene-tab strong {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 600;
+}
+
 .product-scene-stepper {
   position: absolute;
   top: 20px;

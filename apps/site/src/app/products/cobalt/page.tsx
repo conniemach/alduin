@@ -19,63 +19,83 @@ import { withBasePath } from "@/lib/base-path";
 const benefits: Benefit[] = [
   {
     Icon: EarthSpinIcon,
-    label: "UNIFIED MULTI-HAZARD FUSION",
+    label: "GLOBAL SITUATIONAL PICTURE",
     description:
-      "Replaces multiple disconnected feeds with a single, live tactical map covering environmental, seismic, marine, and infrastructure risks.",
+      "See a realistic, live view of every active hazard across the globe—weather, seismic, volcanic, and marine—fused into a single map before drilling into what matters.",
     animationMs: 2200,
   },
   {
     Icon: ChartDrawIcon,
-    label: "PROACTIVE MISSION CONTROL",
+    label: "REGIONAL DRILL-DOWN & LIVE FOOTAGE",
     description:
-      "Go from passive monitoring to active coordination with regional AOR views, satellite/radar overlays, and live response dashboards.",
+      "Zoom or click into any region or city to see exactly what's unfolding there, down to live footage from the ground.",
     animationMs: 850,
   },
   {
     Icon: AccountPulseIcon,
-    label: "EARLY-WARNING DETECTION",
+    label: "PHYSICS-BASED SIMULATION",
     description:
-      "Ingest real-time alert layers to catch escalating threats and coordinate responses before they impact operations.",
+      "Run realistic physics and analytics simulations of unfolding events so teams can prepare and rehearse a response before it happens.",
     animationMs: 680,
   },
 ];
 
 const slides: FeatureSlide[] = [
   {
-    id: "unified-common-operating-picture",
-    heading: "UNIFIED COMMON OPERATING PICTURE",
-    subheading: "From raw data feeds to active mission intelligence.",
+    id: "global-situational-picture",
+    heading: "GLOBAL SITUATIONAL PICTURE",
+    subheading: "From scattered alerts to one realistic live map of the world.",
     body: (
       <>
-        <strong className="font-bold">Live Multi-Hazard Asset Mapping</strong>{" "}
-        Instantly overlay your global personnel, facilities, and supply
-        routes onto a single tactical map. Cobalt fuses real-time weather,
-        seismic, volcanic, and marine data directly over your proprietary
-        infrastructure layout—eliminating the need to manually
-        cross-reference disconnected hazard maps during a crisis.
+        <strong className="font-bold">Live Global Coverage</strong>{" "}
+        Cobalt fuses real-time weather, seismic, volcanic, and marine data
+        into a single realistic map of everything happening across the
+        globe right now—giving every team the same command-grade picture
+        from the first glance, before they ever drill into a single
+        region.
       </>
     ),
-    scene: "cobalt",
     imageSrc: withBasePath("/products/cobalt-pdp-feature-1.png"),
-    imageAlt: "Cobalt unified operating picture",
+    imageAlt: "Realistic live map of active hazards across the globe",
   },
   {
-    id: "proactive-threat-mitigation",
-    heading: "PROACTIVE THREAT MITIGATION",
-    subheading: "From watching a storm to predicting its tactical impact.",
-    body: "Go beyond basic threshold alerts. Cobalt automatically calculates projected impact corridors along your key areas of responsibility (AORs). The platform triggers early warning notifications only when evolving conditions directly threaten an active mission or physical asset, filtering out noise so operators focus on true risks.",
-    scene: "cobalt-corridor",
+    id: "regional-drill-down",
+    heading: "REGIONAL DRILL-DOWN",
+    subheading: "From the whole planet to the one block that matters.",
+    body: (
+      <>
+        <strong className="font-bold">Zoom & Click Navigation</strong>{" "}
+        Zoom into any region, or click directly onto a city or site, to
+        see exactly which events are unfolding there—storms, seismic
+        activity, volcanic movement, and more—without losing the global
+        context you started from.
+      </>
+    ),
     imageSrc: withBasePath("/products/cobalt-pdp-feature-2.png"),
-    imageAlt: "Cobalt proactive threat mitigation",
+    imageAlt: "Zooming into a region to see local storm, seismic, and volcanic activity",
   },
   {
-    id: "accelerated-command-decisions",
-    heading: "ACCELERATED COMMAND DECISIONS",
-    subheading:
-      "From chaotic communication to streamlined go/no-go coordination.",
-    body: "Speed up decision loops when minutes matter. Cobalt generates live, shareable tactical dashboards and event timelines that sync in real time across field personnel, operations centers, and executive leadership. Coordinate posture adjustments, evacuations, and resource staging with complete situational alignment.",
+    id: "live-ground-footage",
+    heading: "LIVE GROUND FOOTAGE",
+    subheading: "From sensor data to eyes on the ground.",
+    body: (
+      <>
+        <strong className="font-bold">Real-Time Camera Feeds</strong> See
+        live footage from the regions you're monitoring so you can verify
+        conditions on the ground in real time, instead of inferring them
+        from sensor data alone.
+      </>
+    ),
     imageSrc: withBasePath("/products/cobalt-pdp-feature-1.png"),
-    imageAlt: "Cobalt accelerated command decisions",
+    imageAlt: "Live ground camera feed from an active region",
+  },
+  {
+    id: "physics-based-simulation",
+    heading: "PHYSICS-BASED SIMULATION",
+    subheading: "From raw data to a rehearsed response.",
+    body: "Run real physics and analytics against live conditions to simulate how an event will actually unfold. Coordinate posture adjustments, evacuations, and resource staging against that simulation, so teams rehearse the response before they ever need it.",
+    imageSrc: withBasePath("/products/cobalt-pdp-feature-2.png"),
+    imageAlt: "Physics-based simulation of a storm's projected impact corridor",
   },
 ];
 
@@ -94,7 +114,7 @@ export default function CobaltPage() {
             <div className="mt-[60px]">
               <ProductBenefits
                 headline="One map for every hazard that can stop a mission"
-                description="Unlike fragmented monitoring tools, Cobalt fuses real-time global risk data—weather, seismic, volcanic, marine, and infrastructure—into a single tactical map to accelerate early detection and response."
+                description="Unlike fragmented monitoring tools, Cobalt fuses real-time global risk data—weather, seismic, volcanic, marine, and infrastructure—into one realistic map, then lets you zoom into ground-level footage and simulate how an event will actually unfold."
                 benefits={benefits}
               />
             </div>

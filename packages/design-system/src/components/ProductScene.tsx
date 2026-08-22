@@ -218,5 +218,27 @@ function ProductSceneOverlay({ mode }: { mode: ProductSceneMode }) {
           </div>
         </>
       );
+    case "nightwatch-topics":
+      return (
+        <>
+          <div className="product-scene-glow" style={{ top: "-20%", left: "-10%", width: "50%", height: "130%", background: "var(--product-scene-glow-a)" }} />
+          <div className="product-scene-glow" style={{ bottom: "-15%", right: "0%", width: "45%", height: "110%", background: "var(--product-scene-glow-b)" }} />
+          <div className="product-scene-badge" style={{ right: 20, bottom: 18 }}>
+            <span className="product-scene-dot product-scene-dot-good" />
+            PERSONALIZED · 3 TOPICS
+          </div>
+        </>
+      );
+    case "nightwatch-report":
+      return (
+        <>
+          <div className="product-scene-glow" style={{ top: "-20%", left: "-10%", width: "50%", height: "130%", background: "var(--product-scene-glow-a)" }} />
+          <div className="product-scene-glow" style={{ bottom: "-15%", right: "0%", width: "45%", height: "110%", background: "var(--product-scene-glow-b)" }} />
+          <div className="product-scene-badge" style={{ right: 20, top: 18 }}>
+            <span className="product-scene-dot product-scene-dot-good" />
+            EXPORT READY
+          </div>
+        </>
+      );
   }
 }

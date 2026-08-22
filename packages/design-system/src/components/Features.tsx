@@ -9,7 +9,7 @@ import {
 import clsx from "clsx";
 import { ProductScene } from "./ProductScene";
 import type { ProductSceneMode } from "../lib/product-scene-draw";
-import { ProductZoomScene } from "./ProductZoomScene";
+import { ProductZoomScene, type ZoomSceneMode } from "./ProductZoomScene";
 import type { CameraStop } from "../lib/product-zoom-scene";
 
 /**
@@ -77,7 +77,7 @@ export interface FeaturesProps {
    * sequence of otherwise-unrelated visuals. `stops` should have one
    * entry per slide, in the same order.
    */
-  zoomScene?: { stops: CameraStop[] };
+  zoomScene?: { stops: CameraStop[]; mode?: ZoomSceneMode };
 }
 
 // Matches GlobalNav's fixed h-[116px] — same offset ProblemSolutionScroll
@@ -191,6 +191,30 @@ export function Features({ slides, className, zoomScene }: FeaturesProps) {
     Math.floor(progress * slides.length),
   );
 
+  // Lets a heading be clicked instead of only reached by scrolling —
+  // scrolls the page to wherever inside that step's third of the pin
+  // range progress would already land there on its own (see `measure`
+  // above for the inverse of this math), landing centered in that third
+  // rather than right at its boundary so a little scroll jitter
+  // afterward doesn't immediately bounce into the neighboring step.
+  //
+  // Deliberately an instant jump, not `behavior: "smooth"`: this same
+  // click triggers `measure()` on every intermediate scroll event,
+  // which can shift `stickyHeight`/`wrapperHeight` mid-flight — a
+  // native smooth scroll racing that gets interrupted and stops short
+  // of the target. An instant jump has no window to race against.
+  const scrollToStep = useCallback(
+    (i: number) => {
+      const wrapper = wrapperRef.current;
+      if (!wrapper) return;
+      const desiredProgress = (i + 0.5) / slides.length;
+      const rect = wrapper.getBoundingClientRect();
+      const targetY = rect.top + window.scrollY - NAV_HEIGHT_PX + desiredProgress * pinScrollPx;
+      window.scrollTo({ top: targetY, behavior: "instant" });
+    },
+    [slides.length, pinScrollPx],
+  );
+
   const [activeSlot, setActiveSlot] = useState<SlotId>("A");
   const [slotSlide, setSlotSlide] = useState<Record<SlotId, number>>({ A: 0, B: 0 });
   const activeSlotRef = useRef(activeSlot);
@@ -256,16 +280,19 @@ export function Features({ slides, className, zoomScene }: FeaturesProps) {
                   the last title. */}
               <div className="flex flex-col justify-between py-1">
                 {slides.map((slide, i) => (
-                  <span
+                  <button
                     key={slide.id}
+                    type="button"
+                    onClick={() => scrollToStep(i)}
+                    aria-current={i === stepIndex ? "step" : undefined}
                     className={clsx(
-                      "font-condensed text-[28px] leading-[33.6px] transition-colors",
+                      "cursor-pointer border-0 bg-transparent p-0 text-left font-condensed text-[28px] leading-[33.6px] transition-colors",
                       CROSSFADE_CLASS,
-                      i === stepIndex ? "text-white" : "text-neutral-500",
+                      i === stepIndex ? "text-white" : "text-neutral-500 hover:text-neutral-300",
                     )}
                   >
                     {slide.heading}
-                  </span>
+                  </button>
                 ))}
               </div>
             </div>
@@ -315,7 +342,7 @@ export function Features({ slides, className, zoomScene }: FeaturesProps) {
                 style={{ height: SCENE_HEIGHT_PX }}
               >
                 {zoomScene ? (
-                  <ProductZoomScene activeIndex={stepIndex} stops={zoomScene.stops} className="size-full" />
+                  <ProductZoomScene activeIndex={stepIndex} stops={zoomScene.stops} mode={zoomScene.mode} className="size-full" />
                 ) : (
                   SLOTS.map((slot) => {
                     const slide = slides[slotSlide[slot]];
@@ -344,7 +371,7 @@ export function Features({ slides, className, zoomScene }: FeaturesProps) {
               style={{ height: SCENE_HEIGHT_PX * 0.6 }}
             >
               {zoomScene ? (
-                <ProductZoomScene activeIndex={i} stops={zoomScene.stops} className="size-full" />
+                <ProductZoomScene activeIndex={i} stops={zoomScene.stops} mode={zoomScene.mode} className="size-full" />
               ) : slide.scene ? (
                 <ProductScene mode={slide.scene} className="size-full" />
               ) : (

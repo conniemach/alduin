@@ -5,6 +5,7 @@ import {
   EarthSpinIcon,
   ChartDrawIcon,
   AccountPulseIcon,
+  NIGHTWATCH_CAMERA_STOPS,
 } from "@alduin/design-system";
 import { GlobalNav } from "@/components/GlobalNav";
 import { Footer } from "@/components/Footer";
@@ -20,22 +21,22 @@ const benefits: Benefit[] = [
     Icon: EarthSpinIcon,
     label: "UNIFIED SOURCE AGGREGATION",
     description:
-      "Replaces dozens of manual source checks with a single pipeline that ingests selected reporting and reduces briefing noise without losing decision-critical context.",
+      "Pulls in reporting from other news outlets and wire services and consolidates it into Nightwatch, replacing dozens of manual source checks with a single pipeline.",
     animationMs: 2200,
   },
   {
-    Icon: ChartDrawIcon,
-    label: "PROACTIVE SIGNAL RANKING",
+    Icon: AccountPulseIcon,
+    label: "PERSONALIZED TOPIC INGESTION",
     description:
-      "Go from a flat stream of reporting to priority-ranked signals, automatically scored so leadership sees what matters most before tempo spikes.",
-    animationMs: 850,
+      "Choose which topics the AI ingests into the report, so every brief is scoped to what a given user or team actually needs to see.",
+    animationMs: 680,
   },
   {
-    Icon: AccountPulseIcon,
-    label: "ACCELERATED MORNING DISTRIBUTION",
+    Icon: ChartDrawIcon,
+    label: "CONSOLIDATED DATA & EXPORT",
     description:
-      "Ingest overnight developments to generate a command-ready brief at start of day, cutting the delays that come from manual morning synthesis.",
-    animationMs: 680,
+      "See every ingested source consolidated in one report, with a summary chart that breaks down the data at a glance—then export it for easy distribution.",
+    animationMs: 850,
   },
 ];
 
@@ -43,35 +44,43 @@ const slides: FeatureSlide[] = [
   {
     id: "unified-overnight-intelligence-picture",
     heading: "UNIFIED OVERNIGHT INTELLIGENCE PICTURE",
-    subheading: "From scattered sources to one repeatable pipeline.",
+    subheading: "From scattered outlets to one consolidated feed.",
     body: (
       <>
         <strong className="font-bold">Live Source Aggregation</strong>{" "}
-        Instantly ingest selected reporting and consolidate it into a
-        single overnight briefing. Nightwatch reduces source-by-source
-        noise while preserving the context decision-makers need—giving
-        teams a repeatable pipeline that holds up across rotating shifts
-        and changing source conditions.
+        Nightwatch pulls in reporting from other news outlets and wire
+        services and consolidates it into a single overnight briefing,
+        reducing source-by-source noise while preserving the context
+        decision-makers need—giving teams a repeatable pipeline that holds
+        up across rotating shifts and changing source conditions.
       </>
     ),
     imageSrc: withBasePath("/products/nightwatch.png"),
-    imageAlt: "Nightwatch unified overnight intelligence picture",
+    imageAlt: "News outlets and wire feeds streaming into a single Nightwatch brief",
   },
   {
-    id: "proactive-signal-ranking",
-    heading: "PROACTIVE SIGNAL RANKING",
-    subheading: "From flat reporting to ranked, decision-ready signals.",
-    body: "Go beyond raw headlines. Nightwatch automatically ranks priority signals so the same high-quality discipline holds regardless of who's on shift or how source conditions change. The platform surfaces what leadership needs before tempo spikes, without sacrificing analyst judgment.",
+    id: "personalized-topic-ingestion",
+    heading: "PERSONALIZED TOPIC INGESTION",
+    subheading: "From one-size-fits-all to a report tuned to you.",
+    body: (
+      <>
+        <strong className="font-bold">Custom Topic Selection</strong>{" "}
+        Users choose which topics the AI ingests—geopolitics, cyber,
+        energy markets, and more—so Nightwatch only pulls in what's
+        relevant. Every report is personalized to the reader's needs
+        instead of forcing everyone through the same generic feed.
+      </>
+    ),
     imageSrc: withBasePath("/products/nightwatch.png"),
-    imageAlt: "Nightwatch proactive signal ranking",
+    imageAlt: "Topic toggles feeding only selected subjects into a personalized brief",
   },
   {
-    id: "accelerated-morning-distribution",
-    heading: "ACCELERATED MORNING DISTRIBUTION",
-    subheading: "From manual synthesis to command-ready delivery.",
-    body: "Speed up the start of day when leadership can't wait. Nightwatch generates a command-ready brief and syncs it in real time across leadership, watch officers, and field teams—improving decision tempo and closing the delays caused by manual morning synthesis.",
+    id: "consolidated-data-and-export",
+    heading: "CONSOLIDATED DATA & EXPORT",
+    subheading: "From raw ingest to a report you can read and share.",
+    body: "See the consolidated data directly inside Nightwatch, alongside a summarized chart that shows how the report breaks down at a glance. When it's ready, export the full report as a PDF for easy distribution across leadership, watch officers, and field teams.",
     imageSrc: withBasePath("/products/nightwatch.png"),
-    imageAlt: "Nightwatch accelerated morning distribution",
+    imageAlt: "Consolidated report with a data distribution chart and PDF export control",
   },
 ];
 
@@ -82,7 +91,7 @@ export default function NightwatchPage() {
       <div className="pt-[116px]">
         <ProductHero
           name="NIGHTWATCH"
-          description="Every trusted source, ranked and delivered as a command-ready brief before the first meeting starts."
+          description="Every trusted source, consolidated into a personalized, command-ready brief before the first meeting starts."
           Mark={NightwatchMark}
         />
         <div className="mx-auto flex max-w-[1440px] flex-col px-[70px] min-[1440px]:px-[150px]">
@@ -90,14 +99,19 @@ export default function NightwatchPage() {
             <div className="mt-[60px]">
               <ProductBenefits
                 headline="The morning brief leadership actually reads first"
-                description="Most teams start the day piecing together a dozen sources by hand. Nightwatch does the ranking overnight, so leadership opens one command-ready brief instead of a stack of raw reporting."
+                description="Most teams start the day piecing together a dozen sources by hand. Nightwatch consolidates them overnight into topics you choose, so leadership opens one command-ready, exportable brief instead of a stack of raw reporting."
                 benefits={benefits}
               />
             </div>
           </ScrollReveal>
-          <ScrollReveal>
-            <Features slides={slides} className="mt-[60px]" />
-          </ScrollReveal>
+          {/* No ScrollReveal here — its IntersectionObserver fade doesn't
+              cooperate with a scroll-pinned/sticky panel (see Cobalt's
+              own Features usage for the same reasoning). */}
+          <Features
+            slides={slides}
+            zoomScene={{ stops: NIGHTWATCH_CAMERA_STOPS, mode: "nightwatch" }}
+            className="mt-[60px]"
+          />
           <ScrollReveal>
             <div className="mt-[100px] grid grid-cols-2 gap-5">
               <ProductPricing

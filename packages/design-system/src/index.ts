@@ -14,6 +14,7 @@ export type { ProductSceneMode } from "./lib/product-scene-draw";
 export * from "./components/ProductZoomScene";
 export { DEFAULT_CAMERA_STOPS } from "./lib/product-zoom-scene";
 export type { CameraStop } from "./lib/product-zoom-scene";
+export { NIGHTWATCH_CAMERA_STOPS } from "./lib/product-zoom-scene-nightwatch";
 export * from "./components/SplitFlapText";
 export * from "./components/Logo";
 export * from "./components/CobaltMark";

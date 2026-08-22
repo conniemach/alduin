@@ -6,6 +6,10 @@ import {
   DEFAULT_CAMERA_STOPS,
   type CameraStop,
 } from "../lib/product-zoom-scene";
+import {
+  drawNightwatchZoomScene,
+  NIGHTWATCH_CAMERA_STOPS,
+} from "../lib/product-zoom-scene-nightwatch";
 
 /**
  * Continuous camera-move counterpart to ProductScene — see
@@ -19,8 +23,11 @@ import {
  * scrolling, matching how every other crossfade in this system already
  * behaves (fixed duration, scroll only decides *when* it fires).
  */
+export type ZoomSceneMode = "cobalt" | "nightwatch";
+
 export interface ProductZoomSceneProps {
   activeIndex: number;
+  mode?: ZoomSceneMode;
   stops?: CameraStop[];
   className?: string;
 }
@@ -29,40 +36,95 @@ export interface ProductZoomSceneProps {
 // badge chrome ProductScene's overlays already use (see product-scene.css)
 // rather than drawn on the canvas — real text is much easier to keep
 // crisp and accessible as DOM than as canvas glyphs. Swap alongside
-// DEFAULT_CAMERA_STOPS once real feature content is decided.
+// DEFAULT_CAMERA_STOPS once real feature content is decided. Order
+// matches the camera stops: global picture, regional drill-down, live
+// ground footage, impact simulation.
 const STOP_OVERLAYS = [
   {
+    card: null,
+    badge: { dot: "good" as const, text: "GLOBAL · 9 ACTIVE HAZARDS" },
+  },
+  {
     card: {
-      title: "STORM CELL // SECTOR 4",
+      title: "ERUPTIVE ACTIVITY // SECTOR 4",
       rows: [
-        { label: "Category", value: "CAT 3", dot: "warn" as const },
-        { label: "Wind Speed", value: "125 MPH" },
+        { label: "Alert Level", value: "ORANGE", dot: "warn" as const },
+        { label: "Ash Plume", value: "4.2 KM" },
         { label: "Status", value: "MONITORING" },
       ],
     },
     badge: { dot: "crit" as const, text: "SEISMIC M4.2 · 12KM" },
+    // Hung directly off the eruption's own center (which sits at this
+    // stop's exact canvas center — see REGIONAL/DEFAULT_CAMERA_STOPS in
+    // product-zoom-scene.ts) rather than the scene's outer corners —
+    // the same "label stuck to the map, right where the event is" read
+    // a real volcano-ops display's own readouts give it. This spot is
+    // ~4°N, right on Mount Cameroon — too close to the equator for a
+    // tropical cyclone to plausibly form (real cyclones need the
+    // Coriolis effect, which is essentially zero this near the
+    // equator), but it's one of Africa's genuinely active volcanoes.
+    tabs: [
+      { text: "VEI 3 ERUPTION", top: "calc(50% - 62px)" },
+      { text: "ASH PLUME 4.2KM · 4.0°N 9.0°E", top: "calc(50% + 46px)" },
+    ],
   },
   {
     card: {
-      title: "IMPACT CORRIDOR",
+      title: "GROUND FEED // SECTOR 4",
+      rows: [
+        { label: "Signal", value: "STRONG", dot: "good" as const },
+        { label: "Feed", value: "ACTIVE", dot: "good" as const },
+        { label: "Latency", value: "220 MS" },
+      ],
+    },
+    badge: { dot: "crit" as const, text: "LIVE · GROUND CAM 04" },
+  },
+  {
+    card: {
+      title: "IMPACT SIMULATION",
       rows: [
         { label: "AOR", value: "COASTAL SECTOR" },
-        { label: "ETA", value: "18H" },
+        { label: "Window", value: "T+0 → T+24H" },
         { label: "Asset", value: "FLAGGED", dot: "warn" as const },
       ],
     },
-    badge: { dot: "warn" as const, text: "EARLY WARNING · ACTIVE" },
-  },
-  {
-    card: null,
-    badge: { dot: "good" as const, text: "GLOBAL · 4 ACTIVE HAZARDS" },
+    badge: { dot: "warn" as const, text: "SIMULATION RUNNING" },
+    // The simulation stop draws an actual bezeled monitor that fills the
+    // whole frame (see drawSimulationScreen in product-zoom-scene.ts) —
+    // its own inner "glass" area starts 20px in from the frame edge
+    // (marginPx + bezelPx there). This card/badge need to sit inside
+    // that with real padding, not at the scene's generic 16-20px outer
+    // corners (which land right on the monitor's own bezel band).
+    cardStyle: { left: 40, bottom: 40, width: 186 },
+    badgeStyle: { top: 40, right: 40 },
   },
 ];
 
-function ZoomSceneOverlay({ activeIndex }: { activeIndex: number }) {
+// Same glass-card/badge chrome, keyed to Nightwatch's own three pipeline
+// stages instead of cobalt's map stops. Only a badge, no card, at every
+// stop — the canvas composition itself (feed cards, topic chips, the
+// report) is already the detailed readout here, so a duplicate glass
+// card just overlaps and re-states it.
+const NIGHTWATCH_STOP_OVERLAYS = [
+  {
+    card: null,
+    badge: { dot: "good" as const, text: "4 SOURCES CONNECTED" },
+  },
+  {
+    card: null,
+    badge: { dot: "good" as const, text: "PERSONALIZED · 3 TOPICS" },
+  },
+  {
+    card: null,
+    badge: { dot: "good" as const, text: "EXPORT READY" },
+  },
+];
+
+function ZoomSceneOverlay({ activeIndex, mode }: { activeIndex: number; mode: ZoomSceneMode }) {
+  const overlays = mode === "nightwatch" ? NIGHTWATCH_STOP_OVERLAYS : STOP_OVERLAYS;
   return (
     <>
-      {STOP_OVERLAYS.map((overlay, i) => {
+      {overlays.map((overlay, i) => {
         const isFront = i === activeIndex;
         return (
           <div
@@ -74,7 +136,10 @@ function ZoomSceneOverlay({ activeIndex }: { activeIndex: number }) {
             )}
           >
             {overlay.card && (
-              <div className="product-scene-card" style={{ left: 18, bottom: 16, width: 186 }}>
+              <div
+                className="product-scene-card"
+                style={{ left: 18, bottom: 16, width: 186, ...("cardStyle" in overlay ? overlay.cardStyle : null) }}
+              >
                 <div className="product-scene-card-title">{overlay.card.title}</div>
                 {overlay.card.rows.map((row) => (
                   <div className="product-scene-row" key={row.label}>
@@ -85,10 +150,19 @@ function ZoomSceneOverlay({ activeIndex }: { activeIndex: number }) {
                 ))}
               </div>
             )}
-            <div className="product-scene-badge" style={{ top: 16, right: 20 }}>
+            <div
+              className="product-scene-badge"
+              style={{ top: 16, right: 20, ...("badgeStyle" in overlay ? overlay.badgeStyle : null) }}
+            >
               <span className={`product-scene-dot product-scene-dot-${overlay.badge.dot}`} />
               {overlay.badge.text}
             </div>
+            {"tabs" in overlay &&
+              overlay.tabs?.map((tab) => (
+                <div className="product-scene-tab" style={{ top: tab.top }} key={tab.text}>
+                  {tab.text}
+                </div>
+              ))}
           </div>
         );
       })}
@@ -98,22 +172,38 @@ function ZoomSceneOverlay({ activeIndex }: { activeIndex: number }) {
 
 export function ProductZoomScene({
   activeIndex,
-  stops = DEFAULT_CAMERA_STOPS,
+  mode = "cobalt",
+  stops,
   className,
 }: ProductZoomSceneProps) {
+  const resolvedStops = stops ?? (mode === "nightwatch" ? NIGHTWATCH_CAMERA_STOPS : DEFAULT_CAMERA_STOPS);
+  const draw = mode === "nightwatch" ? drawNightwatchZoomScene : drawZoomScene;
   const frameRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const controllerRef = useRef<CameraController | null>(null);
-  if (!controllerRef.current) controllerRef.current = new CameraController(stops);
+  if (!controllerRef.current) controllerRef.current = new CameraController(resolvedStops);
 
   useEffect(() => {
-    controllerRef.current!.setStops(stops);
-  }, [stops]);
+    controllerRef.current!.setStops(resolvedStops);
+  }, [resolvedStops]);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) controllerRef.current!.snapTo(activeIndex);
-    else controllerRef.current!.setActive(activeIndex, performance.now());
+    if (reduced) {
+      controllerRef.current!.snapTo(activeIndex);
+      return;
+    }
+    // Debounced on purpose: a fast scroll can sweep `activeIndex`
+    // through every stop in between on its way to wherever it settles
+    // (each one a real, if momentary, value) — reacting to every single
+    // one restarts the flight mid-air toward a new target each time,
+    // which reads as "zoom, shift, zoom, shift again" instead of one
+    // direct move. Waiting for activeIndex to hold still for a beat
+    // means only the value it actually lands on ever starts a flight.
+    const timeoutId = window.setTimeout(() => {
+      controllerRef.current!.setActive(activeIndex, performance.now());
+    }, 90);
+    return () => window.clearTimeout(timeoutId);
   }, [activeIndex]);
 
   useEffect(() => {
@@ -128,9 +218,9 @@ export function ProductZoomScene({
     let logicalW = 0;
     let logicalH = 0;
 
-    function draw(t: number) {
+    function render(t: number) {
       const cam = controllerRef.current!.update(performance.now());
-      if (logicalW && logicalH) drawZoomScene(ctx!, logicalW, logicalH, t, cam, stops);
+      if (logicalW && logicalH) draw(ctx!, logicalW, logicalH, t, cam, resolvedStops);
     }
 
     function resize() {
@@ -140,7 +230,7 @@ export function ProductZoomScene({
       canvas!.width = Math.max(1, Math.round(logicalW * dpr));
       canvas!.height = Math.max(1, Math.round(logicalH * dpr));
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-      draw(reduced ? 0 : performance.now() / 1000);
+      render(reduced ? 0 : performance.now() / 1000);
     }
 
     const ro = new ResizeObserver(resize);
@@ -150,7 +240,7 @@ export function ProductZoomScene({
     let rafId = 0;
     if (!reduced) {
       const tick = (now: number) => {
-        draw(now / 1000);
+        render(now / 1000);
         rafId = requestAnimationFrame(tick);
       };
       rafId = requestAnimationFrame(tick);
@@ -177,14 +267,14 @@ export function ProductZoomScene({
     if (!ctx) return;
     const rect = frame.getBoundingClientRect();
     const cam = controllerRef.current!.update(performance.now());
-    drawZoomScene(ctx, rect.width, rect.height, 0, cam, stops);
-  }, [activeIndex, stops]);
+    draw(ctx, rect.width, rect.height, 0, cam, resolvedStops);
+  }, [activeIndex, resolvedStops, draw]);
 
   return (
     <div ref={frameRef} className={clsx("product-scene", className)}>
       <canvas ref={canvasRef} className="product-scene-canvas" />
       <div className="product-scene-glow" style={{ top: "-20%", left: "-5%", width: "50%", height: "130%", background: "var(--product-scene-glow-a)" }} />
-      <ZoomSceneOverlay activeIndex={activeIndex} />
+      <ZoomSceneOverlay activeIndex={activeIndex} mode={mode} />
     </div>
   );
 }
